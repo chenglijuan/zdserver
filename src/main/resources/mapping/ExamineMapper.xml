@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tbl_examine" >
+  <resultMap id="BaseResultMap" type="com.lemi.msloan.entity.Examine" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="stop_time" property="stopTime" jdbcType="DATE" />
+    <result column="dtxsny" property="dtxsny" jdbcType="VARCHAR" />
+    <result column="ffbj" property="ffbj" jdbcType="VARCHAR" />
+    <result column="is_Insured" property="isInsured" jdbcType="INTEGER" />
+    <result column="unemployment" property="unemployment" jdbcType="INTEGER" />
+    <result column="comping" property="comping" jdbcType="INTEGER" />
+    <result column="changes" property="changes" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="batch" property="batch" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, start_time, stop_time, dtxsny, ffbj, is_Insured, unemployment, comping, changes, 
+    remark, batch, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from zd_examine
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from zd_examine
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lemi.msloan.entity.Examine" >
+    insert into zd_examine (id, start_time, stop_time, 
+      dtxsny, ffbj, is_Insured, 
+      unemployment, comping, changes, 
+      remark, batch, state
+      )
+    values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{stopTime,jdbcType=DATE}, 
+      #{dtxsny,jdbcType=VARCHAR}, #{ffbj,jdbcType=VARCHAR}, #{isInsured,jdbcType=INTEGER}, 
+      #{unemployment,jdbcType=INTEGER}, #{comping,jdbcType=INTEGER}, #{changes,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{batch,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Examine" >
+    insert into zd_examine
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="stopTime != null" >
+        stop_time,
+      </if>
+      <if test="dtxsny != null" >
+        dtxsny,
+      </if>
+      <if test="ffbj != null" >
+        ffbj,
+      </if>
+      <if test="isInsured != null" >
+        is_Insured,
+      </if>
+      <if test="unemployment != null" >
+        unemployment,
+      </if>
+      <if test="comping != null" >
+        comping,
+      </if>
+      <if test="changes != null" >
+        changes,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="batch != null" >
+        batch,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="stopTime != null" >
+        #{stopTime,jdbcType=DATE},
+      </if>
+      <if test="dtxsny != null" >
+        #{dtxsny,jdbcType=VARCHAR},
+      </if>
+      <if test="ffbj != null" >
+        #{ffbj,jdbcType=VARCHAR},
+      </if>
+      <if test="isInsured != null" >
+        #{isInsured,jdbcType=INTEGER},
+      </if>
+      <if test="unemployment != null" >
+        #{unemployment,jdbcType=INTEGER},
+      </if>
+      <if test="comping != null" >
+        #{comping,jdbcType=INTEGER},
+      </if>
+      <if test="changes != null" >
+        #{changes,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="batch != null" >
+        #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.Examine" >
+    update zd_examine
+    <set >
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="stopTime != null" >
+        stop_time = #{stopTime,jdbcType=DATE},
+      </if>
+      <if test="dtxsny != null" >
+        dtxsny = #{dtxsny,jdbcType=VARCHAR},
+      </if>
+      <if test="ffbj != null" >
+        ffbj = #{ffbj,jdbcType=VARCHAR},
+      </if>
+      <if test="isInsured != null" >
+        is_Insured = #{isInsured,jdbcType=INTEGER},
+      </if>
+      <if test="unemployment != null" >
+        unemployment = #{unemployment,jdbcType=INTEGER},
+      </if>
+      <if test="comping != null" >
+        comping = #{comping,jdbcType=INTEGER},
+      </if>
+      <if test="changes != null" >
+        changes = #{changes,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="batch != null" >
+        batch = #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.Examine" >
+    update zd_examine
+    set start_time = #{startTime,jdbcType=DATE},
+      stop_time = #{stopTime,jdbcType=DATE},
+      dtxsny = #{dtxsny,jdbcType=VARCHAR},
+      ffbj = #{ffbj,jdbcType=VARCHAR},
+      is_Insured = #{isInsured,jdbcType=INTEGER},
+      unemployment = #{unemployment,jdbcType=INTEGER},
+      comping = #{comping,jdbcType=INTEGER},
+      changes = #{changes,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      batch = #{batch,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
