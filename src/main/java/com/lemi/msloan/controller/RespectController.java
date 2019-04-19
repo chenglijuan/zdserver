@@ -1,5 +1,6 @@
 package com.lemi.msloan.controller;
 
+import com.lemi.msloan.entity.Respect;
 import com.lemi.msloan.response.ApiResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -55,9 +56,9 @@ public class RespectController {
      * @param loginId  当前登录用户
      * @return
      */
-    @RequestMapping(value = "insertRoster")
+    @RequestMapping(value = "insertRespect")
     @ResponseBody
-    public ApiResult insertRoster(String idCard, String name, Integer gender, String birthday,Integer type, String house,Integer communityId,
+    public ApiResult insertRespect(String idCard, String name, Integer gender, String birthday,Integer type, String house,Integer communityId,
                                   String communityName,String dynamicYearMonth,String grantTime,String phone,String remark,Integer issuStandard,
                                   Integer auditState,Integer grantState,Integer loginId)
     {
@@ -70,10 +71,29 @@ public class RespectController {
         if (gender == null ) {
             return new ApiResult(false, "请输入性别", -1);
         }
-        if (gender == null ) {
-            return new ApiResult(false, "请输入性别", -1);
+        if (StringUtils.isBlank(birthday)) {
+            return new ApiResult(false, "请输入出生年月", -1);
+        }
+        if (StringUtils.isBlank(house)) {
+            return new ApiResult(false, "请输入现户籍所在地", -1);
+        }
+        if ( null == communityId) {
+            return new ApiResult(false, "请输入社区", -1);
         }
         try{
+            Respect respect = new Respect();
+            respect.setIdCard(idCard);
+            respect.setName(name);
+            respect.setType(type);
+            respect.setCommunityName(communityName);
+            respect.setDynamicYearMonth(dynamicYearMonth);
+            respect.setGrantTime(grantTime);
+            respect.setPhone(phone);
+            respect.setRemark(remark);
+            respect.setIssuStandard(issuStandard);
+            respect.setAuditState(auditState);
+            respect.setGrantState(grantState);
+
             return new ApiResult(true, "操作成功", 0);
         } catch (Exception e){
             e.printStackTrace();

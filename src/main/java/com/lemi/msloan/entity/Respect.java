@@ -9,7 +9,7 @@ public class Respect {
 
     private Integer gender;
 
-    private Integer idCard;
+    private String idCard;
 
     private String birthday;
 
@@ -65,11 +65,11 @@ public class Respect {
         this.gender = gender;
     }
 
-    public Integer getIdCard() {
+    public String getIdCard() {
         return idCard;
     }
 
-    public void setIdCard(Integer idCard) {
+    public void setIdCard(String idCard) {
         this.idCard = idCard;
     }
 

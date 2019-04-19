@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="INTEGER" />
-    <result column="id_card" property="idCard" jdbcType="INTEGER" />
+    <result column="id_card" property="idCard" jdbcType="VARCHAR" />
     <result column="birthday" property="birthday" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="house" property="house" jdbcType="VARCHAR" />
@@ -46,7 +46,7 @@
       grant_state, update_time, create_time, 
       operator)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
-      #{idCard,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{idCard,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
       #{house,jdbcType=VARCHAR}, #{communityId,jdbcType=INTEGER}, #{communityName,jdbcType=VARCHAR}, 
       #{dynamicYearMonth,jdbcType=VARCHAR}, #{grantTime,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{issuStandard,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, 
@@ -125,7 +125,7 @@
         #{gender,jdbcType=INTEGER},
       </if>
       <if test="idCard != null" >
-        #{idCard,jdbcType=INTEGER},
+        #{idCard,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null" >
         #{birthday,jdbcType=VARCHAR},
@@ -184,7 +184,7 @@
         gender = #{gender,jdbcType=INTEGER},
       </if>
       <if test="idCard != null" >
-        id_card = #{idCard,jdbcType=INTEGER},
+        id_card = #{idCard,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null" >
         birthday = #{birthday,jdbcType=VARCHAR},
@@ -238,7 +238,7 @@
     update zd_respect
     set name = #{name,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=INTEGER},
-      id_card = #{idCard,jdbcType=INTEGER},
+      id_card = #{idCard,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       house = #{house,jdbcType=VARCHAR},
