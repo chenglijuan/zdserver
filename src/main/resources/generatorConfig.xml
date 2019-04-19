@@ -7,8 +7,8 @@
 <generatorConfiguration>
 
     <!-- <classPathEntry location="E://mysql-connector-java-5.1.16.jar" />-->
-    <classPathEntry location="E://mysql-connector-java-5.1.16.jar"/>
-    <!--<classPathEntry location="/Users/chenglijuan/Downloads/mysql-connector-java-5.1.16.jar" />-->
+    <!--<classPathEntry location="E://mysql-connector-java-5.1.16.jar"/>-->
+    <classPathEntry location="/Users/chenglijuan/Downloads/mysql-connector-java-5.1.16.jar" />
     <context id="mysqlTables" targetRuntime="MyBatis3">
 
         <commentGenerator>
@@ -16,8 +16,8 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/zd_service"
-                        userId="root" password="123456">
+                        connectionURL="jdbc:mysql://119.3.39.98:3306/zdserver"
+                        userId="root" password="Lemi20132015!">
         </jdbcConnection>
 
         <javaTypeResolver>
@@ -39,7 +39,7 @@
         <!-- 这里是数据库的表名table_user 以及 POJO类的名字User -->
 
 
-        <table tableName="zd_user" domainObjectName="User"
+        <table tableName="zd_respect" domainObjectName="Respect"
                enableCountByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false">
         </table>

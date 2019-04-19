@@ -1,11 +1,11 @@
 ﻿<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>msloan</groupId>
-    <artifactId>msloan</artifactId>
+    <groupId>zdserver</groupId>
+    <artifactId>zdserver</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>msloan Maven Webapp</name>
+    <name>zdserver Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -427,6 +427,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>msloan</finalName>
+        <finalName>zdserver</finalName>
     </build>
 </project>

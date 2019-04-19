@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tbl_respect" >
+  <resultMap id="BaseResultMap" type="com.lemi.msloan.entity.Respect" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="id_card" property="idCard" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="house" property="house" jdbcType="VARCHAR" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="community_name" property="communityName" jdbcType="VARCHAR" />
+    <result column="dynamic_year_month" property="dynamicYearMonth" jdbcType="VARCHAR" />
+    <result column="grant_time" property="grantTime" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="issu_standard" property="issuStandard" jdbcType="INTEGER" />
+    <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="grant_state" property="grantState" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, gender, id_card, birthday, type, house, community_id, community_name, dynamic_year_month, 
+    grant_time, phone, remark, issu_standard, audit_state, grant_state, update_time, 
+    create_time, operator
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from zd_respect
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from zd_respect
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lemi.msloan.entity.Respect" >
+    insert into zd_respect (id, name, gender, 
+      id_card, birthday, type, 
+      house, community_id, community_name, 
+      dynamic_year_month, grant_time, phone, 
+      remark, issu_standard, audit_state, 
+      grant_state, update_time, create_time, 
+      operator)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{idCard,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{house,jdbcType=VARCHAR}, #{communityId,jdbcType=INTEGER}, #{communityName,jdbcType=VARCHAR}, 
+      #{dynamicYearMonth,jdbcType=VARCHAR}, #{grantTime,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{issuStandard,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, 
+      #{grantState,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{operator,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Respect" >
+    insert into zd_respect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="idCard != null" >
+        id_card,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="house != null" >
+        house,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="communityName != null" >
+        community_name,
+      </if>
+      <if test="dynamicYearMonth != null" >
+        dynamic_year_month,
+      </if>
+      <if test="grantTime != null" >
+        grant_time,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="issuStandard != null" >
+        issu_standard,
+      </if>
+      <if test="auditState != null" >
+        audit_state,
+      </if>
+      <if test="grantState != null" >
+        grant_state,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="house != null" >
+        #{house,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="communityName != null" >
+        #{communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicYearMonth != null" >
+        #{dynamicYearMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="grantTime != null" >
+        #{grantTime,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="issuStandard != null" >
+        #{issuStandard,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null" >
+        #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="grantState != null" >
+        #{grantState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.Respect" >
+    update zd_respect
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idCard != null" >
+        id_card = #{idCard,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="house != null" >
+        house = #{house,jdbcType=VARCHAR},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="communityName != null" >
+        community_name = #{communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="dynamicYearMonth != null" >
+        dynamic_year_month = #{dynamicYearMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="grantTime != null" >
+        grant_time = #{grantTime,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="issuStandard != null" >
+        issu_standard = #{issuStandard,jdbcType=INTEGER},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=INTEGER},
+      </if>
+      <if test="grantState != null" >
+        grant_state = #{grantState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.Respect" >
+    update zd_respect
+    set name = #{name,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      id_card = #{idCard,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      house = #{house,jdbcType=VARCHAR},
+      community_id = #{communityId,jdbcType=INTEGER},
+      community_name = #{communityName,jdbcType=VARCHAR},
+      dynamic_year_month = #{dynamicYearMonth,jdbcType=VARCHAR},
+      grant_time = #{grantTime,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      issu_standard = #{issuStandard,jdbcType=INTEGER},
+      audit_state = #{auditState,jdbcType=INTEGER},
+      grant_state = #{grantState,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      operator = #{operator,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
