@@ -1,9 +1,11 @@
 package com.lemi.msloan.controller;
 
 import com.lemi.msloan.entity.Community;
+import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.service.CommunityService;
+import com.lemi.msloan.service.ExamineService;
 import com.lemi.msloan.service.RosterService;
 import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
@@ -31,6 +33,9 @@ public class RosterController {
 
     @Autowired
     private CommunityService communityService;
+
+    @Autowired
+    private ExamineService examineService;
 
     @RequestMapping(value = "updateRosterPager")
     public ModelAndView updateRosterPager(Integer rosterId,Integer loginId) {
@@ -177,14 +182,53 @@ public class RosterController {
             return new ApiResult(false, "请选择现所属社区", -1);
         }
 
-        Roster roster = rosterService.getByIdCard(idCard);
-        if (roster != null) {
+        Roster item = rosterService.getByIdCard(idCard);
+        if (item != null) {
             return new ApiResult(false, "身份证号码已存在", -1);
         }
-
-        int result = rosterService.insertRoster(idCard, name, gender, birthday, address, village, isMove, communityId, communityName, house, status, remark);
+        Roster roster = new Roster();
+        roster.setIdCard(idCard);
+        roster.setName(name);
+        roster.setGender(gender);
+        roster.setBirthday(DateUtil.getDateToString(birthday, "yyyy-MM-dd"));
+        roster.setAddress(address);
+        roster.setVillage(village);
+        roster.setIsMove(isMove);
+        roster.setCommunityId(communityId);
+        roster.setHouse(house);
+        roster.setRemark(remark);
+        roster.setStatus(1);
+        roster.setTime(new Date());
+        int result = rosterService.save(roster);
+//        int result = rosterService.insertRoster(idCard, name, gender, birthday, address, village, isMove, communityId, communityName, house, status, remark);
         if (result == 1) {
-            return new ApiResult(true, "新增成功", 0);
+            Integer rosterId = roster.getId();
+            Examine examine = new Examine();
+            examine.setIdCard(idCard);
+            examine.setName(name);
+            examine.setGender(gender);
+            examine.setBirthday(DateUtil.getDateToString(birthday, "yyyy-MM-dd"));
+            examine.setAddress(address);
+            examine.setVillage(village);
+            examine.setIsMove(isMove);
+            examine.setCommunityId(communityId);
+            examine.setHouse(house);
+            examine.setRemark(remark);
+            examine.setStatus(1);
+            examine.setTime(new Date());
+            examine.setState(5);
+            int res = examineService.save(examine);
+            if (res == 1){
+                Integer examineId = examine.getId();
+                Roster rosterItem = rosterService.get(rosterId);
+                rosterItem.setExamineId(examineId);
+                rosterService.update(rosterItem);
+                return new ApiResult(true, "新增成功", 0);
+            }else {
+                rosterService.delete(rosterId);
+                return new ApiResult(false, "新增失败", -1);
+            }
+
         } else {
             return new ApiResult(false, "新增失败", -1);
         }
@@ -218,118 +262,6 @@ public class RosterController {
         map.put("count", count);
 
         return new ApiResult(true, "新增成功", 0, map);
-    }
-
-    /**
-     * 征地社会救济金
-     *
-     * @param house
-     * @param name
-     * @param idCard
-     * @param comping
-     * @param age
-     * @param changes
-     * @param status
-     * @param unemployment
-     * @param isInsured
-     * @param communityId
-     * @param pageSize
-     * @param pageNum
-     * @return
-     */
-    @RequestMapping(value = "selectRosterExamine")
-    @ResponseBody
-    public ApiResult selectRosterExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
-
-        List<Roster> list = rosterService.selectRosterExamine(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
-
-        Integer count = rosterService.selectRosterExamineCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
-
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("list", list);
-
-        map.put("count", count);
-
-        return new ApiResult(true, "查询成功", 0, map);
-    }
-
-    /**
-     * 查询到龄进入预警的花名册
-     *
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    @RequestMapping(value = "selectStartWarning")
-    @ResponseBody
-    public ApiResult selectStartWarning(Integer pageNum, Integer pageSize) {
-
-        List<Roster> list = rosterService.selectStartWarning(pageNum, pageSize);
-        Integer count = rosterService.selectStartWarningCount();
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("list", list);
-        map.put("count", count);
-
-        return new ApiResult(true, "查询成功", 0, map);
-    }
-
-    /**
-     * 查询到龄退出预警的花名册
-     *
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    @RequestMapping(value = "selectEndWarning")
-    @ResponseBody
-    public ApiResult selectEndWarning(Integer pageNum, Integer pageSize) {
-
-        List<Roster> list = rosterService.selectEndWarning(pageNum, pageSize);
-        Integer count = rosterService.selectEndWarningCount();
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("list", list);
-        map.put("count", count);
-
-        return new ApiResult(true, "查询成功", 0, map);
-    }
-
-    /**
-     * 查询待审核
-     *
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    @RequestMapping(value = "selectExamine")
-    @ResponseBody
-    public ApiResult selectExamine(Integer pageNum, Integer pageSize) {
-        List<Roster> list = rosterService.selectExamine(pageNum, pageSize);
-        Integer count = rosterService.selectExamineCount();
-        Map<String, Object> map = new HashMap<>();
-        map.put("list", list);
-        map.put("count", count);
-        return new ApiResult(true, "查询成功", 0, map);
-    }
-
-    /**
-     * 查询待定人员名单
-     *
-     * @param pageSize
-     * @param pageNum
-     * @return
-     */
-    @RequestMapping(value = "selectUndetermined")
-    @ResponseBody
-    public ApiResult selectUndetermined(Integer pageSize, Integer pageNum) {
-        List<Roster> list = rosterService.selectUndetermined(pageNum, pageSize);
-        Integer count = rosterService.selectUndeterminedCount();
-        Map<String, Object> map = new HashMap<>();
-        map.put("list", list);
-        map.put("count", count);
-        return new ApiResult(true, "查询成功", 0, map);
     }
 
     /**
@@ -387,7 +319,7 @@ public class RosterController {
         }
 
         Roster roster = rosterService.get(rosterId);
-
+        Examine examine = examineService.get(roster.getExamineId());
         if (roster == null) {
             return new ApiResult(false, "花名册信息不存在", -1);
         }
@@ -406,58 +338,69 @@ public class RosterController {
                     return new ApiResult(false, "身份证号码长度必须等于15或18位", -1);
                 }
                 roster.setIdCard(idCard);
+                examine.setIdCard(idCard);
             }
         }
 
         if (!StringUtils.isBlank(name)) {
             if (!roster.getName().equals(name)) {
                 roster.setName(name);
+                examine.setName(name);
             }
         }
         if (gender != null) {
             if (roster.getGender() != gender) {
                 roster.setGender(gender);
+                examine.setGender(gender);
             }
         }
         if (!StringUtils.isBlank(birthday)) {
             if (!roster.getBirthday().equals(birthday)) {
                 roster.setBirthday(DateUtil.getDateToString(birthday, "yyyy-MM-dd"));
+                examine.setBirthday(DateUtil.getDateToString(birthday, "yyyy-MM-dd"));
             }
         }
         if (!StringUtils.isBlank(address)) {
             if (!roster.getAddress().equals(address)) {
                 roster.setAddress(address);
+                examine.setAddress(address);
             }
         }
         if (!StringUtils.isBlank(village)) {
             if (!roster.getVillage().equals(village)) {
                 roster.setVillage(village);
+                examine.setVillage(village);
             }
         }
         if (isMove != null) {
             if (roster.getIsMove() != isMove) {
                 roster.setIsMove(isMove);
+                examine.setIsMove(isMove);
             }
         }
         if (communityId != null) {
             if (roster.getCommunityId() != communityId) {
                 roster.setCommunityId(communityId);
+                examine.setCommunityId(communityId);
             }
         }
         if (!StringUtils.isBlank(house)) {
             if (!roster.getHouse().equals(house)) {
                 roster.setHouse(house);
+                examine.setHouse(house);
             }
         }
         if (status != null) {
             if (roster.getStatus() != status) {
                 roster.setStatus(status);
+                examine.setStatus(status);
             }
         }
         if (!StringUtils.isBlank(remark)) {
             roster.setRemark(remark);
         }
         rosterService.update(roster);
+        examineService.update(examine);
         return new ApiResult(true, "编辑成功", 0);
     }
 

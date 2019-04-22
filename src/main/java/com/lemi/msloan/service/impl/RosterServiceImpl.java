@@ -38,25 +38,6 @@ public class RosterServiceImpl extends BaseServiceImpl<Roster> implements Roster
     }
 
     @Override
-    public Integer insertRoster(String idCard, String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String communityName, String house, Integer status, String remark) {
-
-        Roster roster = new Roster();
-        roster.setIdCard(idCard);
-        roster.setName(name);
-        roster.setGender(gender);
-        roster.setBirthday(DateUtil.getDateToString(birthday, "yyyy-MM-dd"));
-        roster.setAddress(address);
-        roster.setVillage(village);
-        roster.setIsMove(isMove);
-        roster.setCommunityId(communityId);
-        roster.setHouse(house);
-        roster.setRemark(remark);
-        roster.setStatus(1);
-        roster.setTime(new Date());
-        return rosterDao.save(roster);
-    }
-
-    @Override
     public List<Roster> selectRoster(String name, String idCard, Integer communityId, Integer isMove, Integer status, Integer age, Integer pageNum, Integer pageSize) {
 
         RosterRequest rosterRequest = new RosterRequest();
@@ -109,130 +90,11 @@ public class RosterServiceImpl extends BaseServiceImpl<Roster> implements Roster
 
         return rosterDao.selectRosterCount(rosterRequest);
     }
-
     @Override
-    public List<Roster> selectRosterExamine(String house,String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
-
+    public Roster getByExamineId(Integer examineId) {
         RosterRequest rosterRequest = new RosterRequest();
-        if (!StringUtils.isBlank(house)){
-            rosterRequest.setHouse(house);
-        }
-        if (!StringUtils.isBlank(name)) {
-            rosterRequest.setName(name);
-        }
-        if (!StringUtils.isBlank(idCard)) {
-            rosterRequest.setIdCard(idCard);
-        }
-        if (comping != null) {
-            rosterRequest.setComping(comping);
-        }
-        if (age != null) {
-            rosterRequest.setAge(age);
-        }
-        if (changes != null) {
-            rosterRequest.setChanges(changes);
-        }
-        if (status != null) {
-            rosterRequest.setStatus(status);
-        }
-        if (unemployment != null) {
-            rosterRequest.setUnemployment(unemployment);
-        }
-        if (isInsured != null) {
-            rosterRequest.setIsInsured(isInsured);
-        }
-        if (communityId != null) {
-            rosterRequest.setCommunityId(communityId);
-        }
-        if (pageNum != null && pageSize != null) {
-            rosterRequest.setPager(pageNum, pageSize);
-        }
-
-        return rosterDao.selectRosterExamine(rosterRequest);
-    }
-
-    @Override
-    public Integer selectRosterExamineCount(String house,String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
-        RosterRequest rosterRequest = new RosterRequest();
-        if (!StringUtils.isBlank(house)){
-            rosterRequest.setHouse(house);
-        }
-        if (!StringUtils.isBlank(name)) {
-            rosterRequest.setName(name);
-        }
-        if (!StringUtils.isBlank(idCard)) {
-            rosterRequest.setIdCard(idCard);
-        }
-        if (comping != null) {
-            rosterRequest.setComping(comping);
-        }
-        if (age != null) {
-            rosterRequest.setAge(age);
-        }
-        if (changes != null) {
-            rosterRequest.setChanges(changes);
-        }
-        if (status != null) {
-            rosterRequest.setStatus(status);
-        }
-        if (unemployment != null) {
-            rosterRequest.setUnemployment(unemployment);
-        }
-        if (isInsured != null) {
-            rosterRequest.setIsInsured(isInsured);
-        }
-        if (communityId != null) {
-            rosterRequest.setCommunityId(communityId);
-        }
-        return rosterDao.selectRosterExamineCount(rosterRequest);
-    }
-
-    @Override
-    public List<Roster> selectStartWarning(Integer pageNum, Integer pageSize) {
-        RosterRequest rosterRequest = new RosterRequest();
-        rosterRequest.setPager(pageNum,pageSize);
-        return rosterDao.selectStartWarning(rosterRequest);
-    }
-
-    @Override
-    public Integer selectStartWarningCount() {
-        return rosterDao.selectStartWarningCount();
-    }
-
-    @Override
-    public List<Roster> selectEndWarning(Integer pageNum, Integer pageSize) {
-        RosterRequest rosterRequest = new RosterRequest();
-        rosterRequest.setPager(pageNum,pageSize);
-        return rosterDao.selectEndWarning(rosterRequest);
-    }
-
-    @Override
-    public Integer selectEndWarningCount() {
-        return rosterDao.selectEndWarningCount();
-    }
-
-    @Override
-    public List<Roster> selectExamine(Integer pageNum, Integer pageSize) {
-        RosterRequest rosterRequest = new RosterRequest();
-        rosterRequest.setPager(pageNum,pageSize);
-        return rosterDao.selectExamine(rosterRequest);
-    }
-
-    @Override
-    public Integer selectExamineCount() {
-        return rosterDao.selectExamineCount();
-    }
-
-    @Override
-    public List<Roster> selectUndetermined(Integer pageNum, Integer pageSize) {
-        RosterRequest rosterRequest = new RosterRequest();
-        rosterRequest.setPager(pageNum,pageSize);
-        return rosterDao.selectUndetermined(rosterRequest);
-    }
-
-    @Override
-    public Integer selectUndeterminedCount() {
-        return rosterDao.selectUndeterminedCount();
+        rosterRequest.setExamineId(examineId);
+        return rosterDao.getByExamineId(rosterRequest);
     }
 }
 

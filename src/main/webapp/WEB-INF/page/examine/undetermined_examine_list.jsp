@@ -427,6 +427,16 @@
     })
 
     function selectUndetermined(pageNum, pageSize) {
+        var name = $("#name").val();
+        var idCard = $("#idCard").val();
+        var house = $("#house").val();
+        var comping = $("#comping").val();
+        var age = $("#age").val();
+        var changes = $("#changes").val();
+        var status = $("#status").val();
+        var unemployment = $("#unemployment").val();
+        var isInsured = $("#isInsured").val();
+        var communityId = $("#communityId").val();
         var columns = [];
         var a = {
             field: 'name',
@@ -681,7 +691,18 @@
         columns.push(u);
         columns.push(v);
         columns.push(w);
-        $.post("<%=basePath%>roster/selectUndetermined", {
+        $.post("<%=basePath%>examine/findAllExamine", {
+            "name": name,
+            "idCard": idCard,
+            "state":3,
+            "house": house,
+            "comping": comping,
+            "age": age,
+            "changes": changes,
+            "status": status,
+            "unemployment": unemployment,
+            "isInsured": isInsured,
+            "communityId": communityId,
             "pageNum": pageNum,
             "pageSize": pageSize
         }, function (data) {
