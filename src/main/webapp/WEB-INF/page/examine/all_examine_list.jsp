@@ -318,7 +318,7 @@
                     <div class="card">
                         <div class="card-block">
                             <button type="button" class="btn btn-info">批量导入</button>
-                            <button type="button" class="btn btn-info" id="addRoster"><span
+                            <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
                             <div class="table-responsive">
@@ -430,7 +430,7 @@
         selectRosterExamine(1, 10);
     })
 
-    $("#addRoster").on("click",function () {
+    $("#addExamine").on("click",function () {
         window.location.href="<%=basePath%>roster/addExaminePage?loginId="+$("#loginId").val();
     })
     
@@ -764,8 +764,8 @@
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
     
-    function updateExamineById(rosterId) {
-        alert(rosterId);
+    function updateExamineById(examineId) {
+        window.location.href="<%=basePath%>examine/updateExaminePager?loginId="+$("#loginId").val()+"&examineId="+examineId;
     }
 </script>
 </body>

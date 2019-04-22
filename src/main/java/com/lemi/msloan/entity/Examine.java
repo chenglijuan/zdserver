@@ -59,6 +59,56 @@ public class Examine {
 
     private Integer cdState;
 
+    private Date unStart;
+
+    private Date unEnd;
+
+    private Integer stopType;
+
+    private String stopReason;
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Date getUnStart() {
+        return unStart;
+    }
+
+    public void setUnStart(Date unStart) {
+        this.unStart = unStart;
+    }
+
+    public Date getUnEnd() {
+        return unEnd;
+    }
+
+    public void setUnEnd(Date unEnd) {
+        this.unEnd = unEnd;
+    }
+
+    public Integer getStopType() {
+        return stopType;
+    }
+
+    public void setStopType(Integer stopType) {
+        this.stopType = stopType;
+    }
+
+    public String getStopReason() {
+        return stopReason;
+    }
+
+    public void setStopReason(String stopReason) {
+        this.stopReason = stopReason;
+    }
+
     public Integer getAge() {
         return age;
     }

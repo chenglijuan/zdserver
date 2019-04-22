@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CommunityService extends BaseService<Community> {
     List<Community> findAll();
+
+    Community selectByUserId(Integer userId);
 }

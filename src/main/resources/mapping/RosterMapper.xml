@@ -62,9 +62,6 @@
             <if test="id != null">
                 id,
             </if>
-            <if test="examineId != null">
-                examine_id,
-            </if>
             <if test="idCard != null">
                 id_card,
             </if>
@@ -120,9 +117,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
-            </if>
-            <if test="examineId != null">
-                #{examineId,jdbcType=INTEGER},
             </if>
             <if test="idCard != null">
                 #{idCard,jdbcType=VARCHAR},

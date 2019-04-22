@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +36,24 @@ public class ExamineController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "updateExaminePager")
+    public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/examine/update_examine");
+        modelAndView.addObject("examineId", examineId);
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "auditExaminePager")
+    public ModelAndView auditExaminePager(Integer examineId, Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/examine/audit_examine");
+        modelAndView.addObject("examineId", examineId);
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
     /**
      * 查询
      *
@@ -55,11 +74,11 @@ public class ExamineController {
      */
     @RequestMapping(value = "findAllExamine")
     @ResponseBody
-    public ApiResult findAllExamine(Integer state,String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult findAllExamine(Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
 
-        List<Examine> list = examineService.findAllExamine(state,house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.findAllExamine(state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.findAllExamineCount(state,house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.findAllExamineCount(state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -73,6 +92,10 @@ public class ExamineController {
     /**
      * 新增征地人员社会救济金
      *
+     * @param unStart      领取失业金开始时间
+     * @param unEnd        领取失业金截止时间
+     * @param stopType     暂停发放原因：1.就业  2.退休  3.其他
+     * @param stopReason   暂停发放备注
      * @param startTime    开始发放时间
      * @param stopTime     停止发放时间
      * @param dtxsny       动态享受年月
@@ -95,19 +118,26 @@ public class ExamineController {
      * @param house        现户籍所在地
      * @param status       发放状态 1：未开始 2：发放中 3：已暂停 4：已退出
      * @param villageTime  征地时间
-     * @param villageAage  征地时年龄
+     * @param villageAge  征地时年龄
      * @param cdState      撤队时安置情况  1.未撤队先安置  2.撤队时安置 3.领取征地待业  4.领取一次性补偿金
      * @return
      */
     @RequestMapping(value = "addExamine")
     @ResponseBody
-    public ApiResult addExamine(String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
-                                String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAage, Integer cdState) {
+    public ApiResult addExamine(String phone, String unStart, String unEnd, Integer stopType, String stopReason, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
+                                String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState) {
         if (isInsured == null) {
             return new ApiResult(false, "请选择是否参保", -1);
         }
         if (unemployment == null) {
             return new ApiResult(false, "请选择失业状态", -1);
+        }
+        if (unemployment != null) {
+            if (unemployment.intValue() == 1) {
+                if (StringUtils.isBlank(unStart) || StringUtils.isBlank(unEnd)) {
+                    return new ApiResult(false, "请选择领取失业金开始时间和截止时间", -1);
+                }
+            }
         }
         if (comping == null) {
             return new ApiResult(false, "请选择是否并轨", -1);
@@ -127,7 +157,12 @@ public class ExamineController {
         if (status == null) {
             return new ApiResult(false, "请选择发放状态", -1);
         }
-        if (villageAage == null) {
+        if (status.intValue() == 3) {
+            if (stopType == null) {
+                return new ApiResult(false, "请选择暂停原因", -1);
+            }
+        }
+        if (villageAge == null) {
             return new ApiResult(false, "请输入征地时年龄", -1);
         }
         if (cdState == null) {
@@ -177,6 +212,7 @@ public class ExamineController {
         examine.setStartTime(DateUtil.getDateToString(startTime, "yyyy-MM-dd"));
         examine.setStopTime(DateUtil.getDateToString(stopTime, "yyyy-MM-dd"));
         examine.setDtxsny(dtxsny);
+        examine.setPhone(phone);
         examine.setFfbj(ffbj);
         examine.setIsInsured(isInsured);
         examine.setUnemployment(unemployment);
@@ -196,8 +232,20 @@ public class ExamineController {
         examine.setHouse(house);
         examine.setStatus(status);
         examine.setVillageTime(DateUtil.getDateToString(villageTime, "yyyy-MM-dd"));
-        examine.setVillageAge(villageAage);
+        examine.setVillageAge(villageAge);
         examine.setCdState(cdState);
+        if (!StringUtils.isBlank(unEnd)) {
+            examine.setUnEnd(DateUtil.getDateToString(unEnd, "yyyy-MM-dd"));
+        }
+        if (!StringUtils.isBlank(unStart)) {
+            examine.setUnEnd(DateUtil.getDateToString(unStart, "yyyy-MM-dd"));
+        }
+        if (stopType != null) {
+            examine.setStopType(stopType);
+        }
+        if (!StringUtils.isBlank(stopReason)) {
+            examine.setStopReason(stopReason);
+        }
         examine.setTime(new Date());
         int result = examineService.save(examine);
         if (result == 1) {
@@ -231,6 +279,10 @@ public class ExamineController {
     /**
      * 编辑征地人员社会救济金
      *
+     * @param unStart      领取失业金开始时间
+     * @param unEnd        领取失业金截止时间
+     * @param stopType     暂停发放原因：1.就业  2.退休  3.其他
+     * @param stopReason   暂停发放备注
      * @param examineId    征地人员社会救济金ID
      * @param startTime    开始发放时间
      * @param stopTime     停止发放时间
@@ -254,19 +306,26 @@ public class ExamineController {
      * @param house        现户籍所在地
      * @param status       发放状态 1：未开始 2：发放中 3：已暂停 4：已退出
      * @param villageTime  征地时间
-     * @param villageAage  征地时年龄
+     * @param villageAge  征地时年龄
      * @param cdState      撤队时安置情况  1.未撤队先安置  2.撤队时安置 3.领取征地待业  4.领取一次性补偿金
      * @return
      */
     @RequestMapping(value = "updateExamineById")
     @ResponseBody
-    public ApiResult updateExamineById(Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
-                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAage, Integer cdState) {
+    public ApiResult updateExamineById(String phone, String unStart, String unEnd, Integer stopType, String stopReason, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
+                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState) {
         if (isInsured == null) {
             return new ApiResult(false, "请选择是否参保", -1);
         }
         if (unemployment == null) {
             return new ApiResult(false, "请选择失业状态", -1);
+        }
+        if (unemployment != null) {
+            if (unemployment.intValue() == 1) {
+                if (StringUtils.isBlank(unStart) || StringUtils.isBlank(unEnd)) {
+                    return new ApiResult(false, "请选择领取失业金开始时间和截止时间", -1);
+                }
+            }
         }
         if (comping == null) {
             return new ApiResult(false, "请选择是否并轨", -1);
@@ -286,7 +345,12 @@ public class ExamineController {
         if (status == null) {
             return new ApiResult(false, "请选择发放状态", -1);
         }
-        if (villageAage == null) {
+        if (status.intValue() == 3) {
+            if (stopType == null) {
+                return new ApiResult(false, "请选择暂停原因", -1);
+            }
+        }
+        if (villageAge == null) {
             return new ApiResult(false, "请输入征地时年龄", -1);
         }
         if (cdState == null) {
@@ -347,6 +411,7 @@ public class ExamineController {
         examine.setStopTime(DateUtil.getDateToString(stopTime, "yyyy-MM-dd"));
         examine.setDtxsny(dtxsny);
         examine.setFfbj(ffbj);
+        examine.setPhone(phone);
         examine.setIsInsured(isInsured);
         examine.setUnemployment(unemployment);
         examine.setComping(comping);
@@ -365,7 +430,7 @@ public class ExamineController {
         examine.setHouse(house);
         examine.setStatus(status);
         examine.setVillageTime(DateUtil.getDateToString(villageTime, "yyyy-MM-dd"));
-        examine.setVillageAge(villageAage);
+        examine.setVillageAge(villageAge);
         examine.setCdState(cdState);
         examine.setTime(new Date());
         examineService.update(examine);
@@ -382,6 +447,18 @@ public class ExamineController {
         roster.setRemark(remark);
         roster.setStatus(status);
         roster.setTime(new Date());
+        if (!StringUtils.isBlank(unEnd)) {
+            examine.setUnEnd(DateUtil.getDateToString(unEnd, "yyyy-MM-dd"));
+        }
+        if (!StringUtils.isBlank(unStart)) {
+            examine.setUnEnd(DateUtil.getDateToString(unStart, "yyyy-MM-dd"));
+        }
+        if (stopType != null) {
+            examine.setStopType(stopType);
+        }
+        if (!StringUtils.isBlank(stopReason)) {
+            examine.setStopReason(stopReason);
+        }
         rosterService.update(roster);
         return new ApiResult(true, "编辑成功", 0);
     }
@@ -461,7 +538,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "getExamineWillStop")
     @ResponseBody
-    public ApiResult getExamineWillStop(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum){
+    public ApiResult getExamineWillStop(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         List<Examine> list = examineService.getExamineWillStop(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
         Integer count = examineService.getExamineWillStopCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
@@ -477,23 +554,40 @@ public class ExamineController {
 
     /**
      * 征地人员社会救济金审核操作
-     * @param loginId 当前登录ID
+     *
+     * @param loginId   当前登录ID
      * @param examineId 征地人员社会救济金ID
-     * @param state 状态：1.审核通过  2.审核不通过  3、待定 4、待复审 5、未审核
+     * @param state     状态：1.审核通过  2.审核不通过  3、待定 4、待复审 5、未审核
      * @return
      */
     @RequestMapping(value = "examineSH")
     @ResponseBody
-    public ApiResult examineSH(Integer loginId,Integer examineId,Integer state){
+    public ApiResult examineSH(Integer loginId, Integer examineId, Integer state) {
 
-        if (loginId == null){
+        if (loginId == null) {
             return new ApiResult(false, "登录用户ID为空", -1);
         }
+        if (examineId == null) {
+            return new ApiResult(false, "征地人员社会救济金ID为空", -1);
+        }
+        if (state == null) {
+            return new ApiResult(false, "状态为空", -1);
+        }
         User user = userService.get(loginId);
-        if (user == null){
+        if (user == null) {
             return new ApiResult(false, "登录用户不存在", -1);
         }
-
-        return null;
+        Examine examine = examineService.get(examineId);
+        if (examine == null) {
+            return new ApiResult(false, "征地人员社会救济金不存在", -1);
+        }
+        examine.setState(state);
+        if (user.getType().intValue() == 2) {
+            if (state.intValue() == 1) {
+                examine.setState(4);
+            }
+        }
+        examineService.update(examine);
+        return new ApiResult(true, "审核成功", 0);
     }
 }

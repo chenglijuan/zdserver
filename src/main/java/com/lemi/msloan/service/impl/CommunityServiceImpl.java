@@ -2,6 +2,7 @@ package com.lemi.msloan.service.impl;
 
 import com.lemi.msloan.dao.CommunityDao;
 import com.lemi.msloan.entity.Community;
+import com.lemi.msloan.request.CommunityRequest;
 import com.lemi.msloan.service.CommunityService;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,12 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community> implements 
     @Override
     public List<Community> findAll() {
         return communityDao.findAll();
+    }
+
+    @Override
+    public Community selectByUserId(Integer userId) {
+        CommunityRequest communityRequest = new CommunityRequest();
+        communityRequest.setUserId(userId);
+        return communityDao.selectByUserId(communityRequest);
     }
 }

@@ -29,6 +29,11 @@
         <result column="village_time" property="villageTime" jdbcType="DATE"/>
         <result column="village_age" property="villageAge" jdbcType="INTEGER"/>
         <result column="cd_state" property="cdState" jdbcType="INTEGER"/>
+        <result column="un_start" property="unStart" jdbcType="DATE"/>
+        <result column="un_end" property="unEnd" jdbcType="DATE"/>
+        <result column="stop_type" property="stopType" jdbcType="INTEGER"/>
+        <result column="stop_reason" property="stopReason" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Examine" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
@@ -36,11 +41,12 @@
     <sql id="Base_Column_List">
     id, start_time, stop_time, dtxsny, ffbj, is_Insured, unemployment, comping, changes, 
     remark, batch, state, id_card, name, gender, birthday, address, village, is_move, 
-    community_id, community_name, house, status, time, village_time, village_age, cd_state
+    community_id, community_name, house, status, time, village_time, village_age, cd_state, un_start, un_end, stop_type, stop_reason, phone
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
+        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         from zd_examine
         where id = #{id,jdbcType=INTEGER}
     </select>
@@ -57,7 +63,7 @@
       birthday, address, village, 
       is_move, community_id, community_name, 
       house, status, time, 
-      village_time, village_age, cd_state
+      village_time, village_age, cd_state, un_start, un_end, stop_type, stop_reason, phone
       )
     values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{stopTime,jdbcType=DATE}, 
       #{dtxsny,jdbcType=VARCHAR}, #{ffbj,jdbcType=VARCHAR}, #{isInsured,jdbcType=INTEGER}, 
@@ -67,7 +73,8 @@
       #{birthday,jdbcType=DATE}, #{address,jdbcType=VARCHAR}, #{village,jdbcType=VARCHAR}, 
       #{isMove,jdbcType=INTEGER}, #{communityId,jdbcType=INTEGER}, #{communityName,jdbcType=VARCHAR}, 
       #{house,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
-      #{villageTime,jdbcType=DATE}, #{villageAge,jdbcType=INTEGER}, #{cdState,jdbcType=INTEGER}
+      #{villageTime,jdbcType=DATE}, #{villageAge,jdbcType=INTEGER}, #{cdState,jdbcType=INTEGER},
+      #{unStart,jdbcType=DATE}, #{unEnd,jdbcType=DATE}, #{stopType,jdbcType=INTEGER}, #{stopReason,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Examine" keyProperty="id"
@@ -155,6 +162,21 @@
             <if test="cdState != null">
                 cd_state,
             </if>
+            <if test="unStart != null">
+                un_start,
+            </if>
+            <if test="unEnd != null">
+                un_end,
+            </if>
+            <if test="stopType != null">
+                stop_type,
+            </if>
+            <if test="stopReason != null">
+                stop_reason,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -237,6 +259,21 @@
             </if>
             <if test="cdState != null">
                 #{cdState,jdbcType=INTEGER},
+            </if>
+            <if test="unStart != null">
+                #{unStart,jdbcType=DATE},
+            </if>
+            <if test="unEnd != null">
+                #{unEnd,jdbcType=DATE},
+            </if>
+            <if test="stopType != null">
+                #{stopType,jdbcType=INTEGER},
+            </if>
+            <if test="stopReason != null">
+                #{stopReason,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -321,6 +358,21 @@
             <if test="cdState != null">
                 cd_state = #{cdState,jdbcType=INTEGER},
             </if>
+            <if test="unStart != null">
+                un_start = #{unStart,jdbcType=DATE},
+            </if>
+            <if test="unEnd != null">
+                un_end = #{unEnd,jdbcType=DATE},
+            </if>
+            <if test="stopType != null">
+                stop_type = #{stopType,jdbcType=INTEGER},
+            </if>
+            <if test="stopReason != null">
+                stop_reason = #{stopReason,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -351,7 +403,12 @@
       time = #{time,jdbcType=TIMESTAMP},
       village_time = #{villageTime,jdbcType=DATE},
       village_age = #{villageAge,jdbcType=INTEGER},
-      cd_state = #{cdState,jdbcType=INTEGER}
+      cd_state = #{cdState,jdbcType=INTEGER},
+      un_start = #{unStart,jdbcType=DATE},
+      un_end = #{unEnd,jdbcType=DATE},
+      stop_type = #{stopType,jdbcType=INTEGER},
+      stop_reason = #{stopReason,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -457,9 +514,9 @@
         state = 5
         AND
         (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
+        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 50)
         OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
+        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 40)
         )
         <if test="house != null">
             AND house LIKE '%${house}%'
@@ -588,4 +645,4 @@
             LIMIT #{start},#{end}
         </if>
     </select>
- </mapper>
+</mapper>
