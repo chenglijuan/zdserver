@@ -155,15 +155,18 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
                             <li>
@@ -171,7 +174,8 @@
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
                             </li>
                         </ul>
@@ -388,10 +392,10 @@
         verification(loginId);
     })
     function verification(loginId) {
-        $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
-            if (data.code == -1){
+        $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
+            if (data.code == -1) {
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href = "<%=basePath%>/login.jsp";
             }
         });
     }
@@ -427,7 +431,16 @@
     })
 
     function selectStartWarning(pageNum, pageSize) {
-
+        var name = $("#name").val();
+        var idCard = $("#idCard").val();
+        var house = $("#house").val();
+        var comping = $("#comping").val();
+        var age = $("#age").val();
+        var changes = $("#changes").val();
+        var status = $("#status").val();
+        var unemployment = $("#unemployment").val();
+        var isInsured = $("#isInsured").val();
+        var communityId = $("#communityId").val();
         var columns = [];
         var a = {
             field: 'name',
@@ -546,7 +559,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.ffbj;
+//                return row.examine == null ? "" : row.examine.ffbj;
+                return row.ffbj == null ? "" : row.ffbj;
             }
         };
         var m = {
@@ -556,7 +570,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : fmtDate(row.examine.startTime);
+//                return row.examine == null ? "" : fmtDate(row.examine.startTime);
+                return row.startTime == null ? "" : fmtDate(row.startTime);
             }
         };
         var n = {
@@ -566,7 +581,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
+//                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
+                return row.stopTime == null ? "" : fmtDate(row.stopTime);
             }
         };
         var o = {
@@ -576,7 +592,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+//                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+                return row.dtxsny == null ? "" : row.dtxsny;
             }
         };
         var p = {
@@ -586,7 +603,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.batch;
+//                return row.examine == null ? "" : row.examine.batch;
+                return row.batch == null ? "" : row.batch;
             }
         };
         var q = {
@@ -596,7 +614,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
+//                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
+                return row.changes == null ? "" : row.changes == 1 ? "迁出" : row.changes == 2 ? "新增" : row.changes == 3 ? "死亡" : "";
             }
         };
         var r = {
@@ -606,7 +625,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
+//                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
+                return row.isInsured == null ? "" : row.isInsured == 1 ? "已参保" : row.isInsured == 2 ? "未参保" : "";
             }
         };
         var s = {
@@ -616,7 +636,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
+//                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
+                return row.unemployment == null ? "" : row.unemployment == 1 ? "领取失业金" : row.unemployment == 2 ? "未领取失业金" : "";
             }
         };
         var t = {
@@ -626,7 +647,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
+//                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
+                return row.comping == null ? "" : row.comping == 1 ? "是" : "否";
             }
         };
         var u = {
@@ -636,7 +658,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
+//                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
+                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
             }
         };
         var v = {
@@ -656,7 +679,7 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff'><span class='fa fa-edit'></span> 编辑</a>&nbsp;<a class='btn btn-info' style='color: #fff'>进行审核</a>";
+                return "<a class='btn btn-info' style='color: #fff' onclick='examineById(" + row.id + ")'><span class='fa fa-edit'></span> 进行审核</a>";
             }
         };
         columns.push(a);
@@ -683,7 +706,20 @@
         columns.push(v);
         columns.push(w);
 
-        $.post("<%=basePath%>roster/selectStartWarning", {"pageNum": pageNum, "pageSize": pageSize}, function (data) {
+        $.post("<%=basePath%>examine/getExamineWillStart", {
+            "name": name,
+            "idCard": idCard,
+            "house": house,
+            "comping": comping,
+            "age": age,
+            "changes": changes,
+            "status": status,
+            "unemployment": unemployment,
+            "isInsured": isInsured,
+            "communityId": communityId,
+            "pageNum": pageNum,
+            "pageSize": pageSize
+        }, function (data) {
             var list = data.data.list;
             var count = data.data.count;
             $('#table').bootstrapTable('destroy').bootstrapTable({
@@ -722,6 +758,10 @@
         var nowTime = new Date().getTime();
         //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
+    }
+
+    function examineById(examineId) {
+        window.location.href="<%=basePath%>examine/auditExaminePager?loginId="+$("#loginId").val()+"&examineId="+examineId;
     }
 </script>
 </body>

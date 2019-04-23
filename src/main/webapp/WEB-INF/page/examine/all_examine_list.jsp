@@ -318,7 +318,7 @@
                     <div class="card">
                         <div class="card-block">
                             <button type="button" class="btn btn-info">批量导入</button>
-                            <button type="button" class="btn btn-info" id="addRoster"><span
+                            <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
                             <div class="table-responsive">
@@ -430,7 +430,7 @@
         selectRosterExamine(1, 10);
     })
 
-    $("#addRoster").on("click",function () {
+    $("#addExamine").on("click",function () {
         window.location.href="<%=basePath%>roster/addExaminePage?loginId="+$("#loginId").val();
     })
     
@@ -564,7 +564,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.ffbj;
+//                return row.examine == null ? "" : row.examine.ffbj;
+                return row.ffbj == null ? "" : row.ffbj;
             }
         };
         var m = {
@@ -574,7 +575,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : fmtDate(row.examine.startTime);
+//                return row.examine == null ? "" : fmtDate(row.examine.startTime);
+                return row.startTime == null ? "" : fmtDate(row.startTime);
             }
         };
         var n = {
@@ -584,7 +586,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
+//                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
+                return row.stopTime == null ? "" : fmtDate(row.stopTime);
             }
         };
         var o = {
@@ -594,7 +597,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+//                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+                return row.dtxsny == null ? "" : row.dtxsny;
             }
         };
         var p = {
@@ -604,7 +608,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.batch;
+//                return row.examine == null ? "" : row.examine.batch;
+                return row.batch == null ? "" : row.batch;
             }
         };
         var q = {
@@ -614,7 +619,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
+//                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
+                return row.changes == null ? "" : row.changes == 1 ? "迁出" : row.changes == 2 ? "新增" : row.changes == 3 ? "死亡" : "";
             }
         };
         var r = {
@@ -624,7 +630,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
+//                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
+                return row.isInsured == null ? "" : row.isInsured == 1 ? "已参保" : row.isInsured == 2 ? "未参保" : "";
             }
         };
         var s = {
@@ -634,7 +641,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
+//                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
+                return row.unemployment == null ? "" : row.unemployment == 1 ? "领取失业金" : row.unemployment == 2 ? "未领取失业金" : "";
             }
         };
         var t = {
@@ -644,7 +652,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
+//                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
+                return row.comping == null ? "" : row.comping == 1 ? "是" : "否";
             }
         };
         var u = {
@@ -654,7 +663,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
+//                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
+                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" :"未审核";
             }
         };
         var v = {
@@ -700,7 +710,7 @@
         columns.push(u);
         columns.push(v);
         columns.push(w);
-        $.post("<%=basePath%>roster/selectRosterExamine", {
+        $.post("<%=basePath%>examine/findAllExamine", {
             "name": name,
             "idCard": idCard,
             "house": house,
@@ -754,8 +764,8 @@
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
     
-    function updateExamineById(rosterId) {
-        alert(rosterId);
+    function updateExamineById(examineId) {
+        window.location.href="<%=basePath%>examine/updateExaminePager?loginId="+$("#loginId").val()+"&examineId="+examineId;
     }
 </script>
 </body>

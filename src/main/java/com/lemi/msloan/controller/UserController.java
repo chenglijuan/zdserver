@@ -1,7 +1,9 @@
 package com.lemi.msloan.controller;
 
+import com.lemi.msloan.entity.Community;
 import com.lemi.msloan.entity.User;
 import com.lemi.msloan.response.ApiResult;
+import com.lemi.msloan.service.CommunityService;
 import com.lemi.msloan.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommunityService communityService;
 
     /**
      * 登录
@@ -64,6 +69,32 @@ public class UserController {
         }
         user.setPassword(null);
         return new ApiResult(true, "登录成功", 0, user);
+    }
+
+    /**
+     * 根据用户ID获取社区信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "getCommunityByUserId")
+    @ResponseBody
+    public ApiResult getCommunityByUserId(Integer userId){
+
+        if (userId == null){
+            return new ApiResult(false, "请传入登录用户ID", -1);
+        }
+        User user = userService.get(userId);
+        if (user == null) {
+            return new ApiResult(false, "登录信息不存在", -1);
+        }
+        if (user.getType().intValue() != 2){
+            return new ApiResult(false, "该用户类型非社区用户", -1);
+        }
+        Community community = communityService.selectByUserId(userId);
+        if (community == null){
+            return new ApiResult(false, "社区不存在", -1);
+        }
+        return new ApiResult(true, "查询成功", 0,community);
     }
 
 }

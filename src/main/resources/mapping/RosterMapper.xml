@@ -42,7 +42,8 @@
     delete from zd_roster
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.lemi.msloan.entity.Roster">
+    <insert id="insert" parameterType="com.lemi.msloan.entity.Roster"  keyProperty="id"
+            useGeneratedKeys="true">
     insert into zd_roster (id, id_card, name, 
       gender, birthday, address, 
       village, is_move, community_id, 
@@ -54,14 +55,12 @@
       #{communityName,jdbcType=VARCHAR}, #{house,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{remark,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{examineId,jdbcType=INTEGER}, #{villageTime,jdbcType=DATE}, #{villageAge,jdbcType=INTEGER}, #{cdState,jdbcType=INTEGER})
   </insert>
-    <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Roster">
+    <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Roster"  keyProperty="id"
+            useGeneratedKeys="true">
         insert into zd_roster
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 id,
-            </if>
-            <if test="examineId != null">
-                examine_id,
             </if>
             <if test="idCard != null">
                 id_card,
@@ -118,9 +117,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id,jdbcType=INTEGER},
-            </if>
-            <if test="examineId != null">
-                #{examineId,jdbcType=INTEGER},
             </if>
             <if test="idCard != null">
                 #{idCard,jdbcType=VARCHAR},
@@ -328,193 +324,12 @@
         </where>
     </select>
 
-    <select id="selectRosterExamine" parameterType="com.lemi.msloan.request.RosterRequest"
-            resultMap="BaseResultMapWithExamine">
-
-        SELECT
-        T1.*
-        , TIMESTAMPDIFF(YEAR,T1.birthday,CURDATE()) as age
-        FROM zd_roster T1 LEFT JOIN zd_examine T2 ON T1.examine_id=T2.id
-        <where>
-            <if test="house != null">
-                AND T1.house LIKE '%${house}%'
-            </if>
-            <if test="name != null">
-                AND T1.name LIKE '%${name}%'
-            </if>
-            <if test="idCard != null">
-                AND T1.id_card LIKE '%${idCard}%'
-            </if>
-            <if test="comping != null">
-                AND T2.comping = #{comping}
-            </if>
-            <if test="age != null">
-                AND TIMESTAMPDIFF(YEAR,T1.birthday,CURDATE()) = #{age}
-            </if>
-            <if test="changes != null">
-                AND T2.changes = #{changes}
-            </if>
-            <if test="status != null">
-                AND T1.status = #{status}
-            </if>
-            <if test="unemployment != null">
-                AND T2.unemployment = #{unemployment}
-            </if>
-            <if test="isInsured != null">
-                AND T2.is_Insured = #{isInsured}
-            </if>
-            <if test="communityId != null">
-                AND T1.community_id = #{communityId}
-            </if>
-        </where>
-        ORDER BY time DESC
-        <if test="start != null and end != null">
-            LIMIT #{start},#{end}
-        </if>
-    </select>
-    <select id="selectRosterExamineCount" parameterType="com.lemi.msloan.request.RosterRequest" resultType="int">
-        SELECT
-        count(*)
-        FROM zd_roster T1 LEFT JOIN zd_examine T2 ON T1.examine_id=T2.id
-        <where>
-            <if test="house != null">
-                AND T1.house LIKE '%${house}%'
-            </if>
-            <if test="name != null">
-                AND T1.name LIKE '%${name}%'
-            </if>
-            <if test="idCard != null">
-                AND T1.id_card LIKE '%${idCard}%'
-            </if>
-            <if test="comping != null">
-                AND T2.comping = #{comping}
-            </if>
-            <if test="age != null">
-                AND TIMESTAMPDIFF(YEAR,T1.birthday,CURDATE()) = #{age}
-            </if>
-            <if test="changes != null">
-                AND T2.changes = #{changes}
-            </if>
-            <if test="status != null">
-                AND T1.status = #{status}
-            </if>
-            <if test="unemployment != null">
-                AND T2.unemployment = #{unemployment}
-            </if>
-            <if test="isInsured != null">
-                AND T2.is_Insured = #{isInsured}
-            </if>
-            <if test="communityId != null">
-                AND T1.community_id = #{communityId}
-            </if>
-        </where>
-    </select>
-    <select id="selectStartWarning" parameterType="com.lemi.msloan.request.RosterRequest"
-            resultMap="BaseResultMapWithAge">
+    <select id="getByExamineId" parameterType="com.lemi.msloan.request.RosterRequest" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) AS age
         FROM zd_roster
         WHERE
-        examine_id IS NULL
-        AND
-        (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 50)
-        OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 40)
-        )
-        ORDER BY time DESC
-        <if test="start != null and end != null">
-            limit #{start},#{end}
-        </if>
-    </select>
-    <select id="selectStartWarningCount" resultType="int">
-        SELECT
-        count(*)
-        FROM zd_roster
-        WHERE
-        examine_id IS NULL
-        AND
-        (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
-        OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
-        )
-    </select>
-    <select id="selectEndWarning" parameterType="com.lemi.msloan.request.RosterRequest"
-            resultMap="BaseResultMapWithAge">
-        SELECT
-        <include refid="Base_Column_List"/>
-        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) AS age
-        FROM zd_roster
-        WHERE
-        status != 4
-        AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 70
-        ORDER BY time DESC
-        <if test="start != null and end != null">
-            limit #{start},#{end}
-        </if>
-    </select>
-    <select id="selectEndWarningCount" resultType="int">
-        SELECT
-        count(*)
-        FROM zd_roster
-        WHERE
-        status != 4
-        AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 70
-    </select>
-    <select id="selectExamine" parameterType="com.lemi.msloan.request.RosterRequest" resultMap="BaseResultMapWithAge">
-        SELECT
-        <include refid="Base_Column_List"/>
-        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) AS age
-        FROM zd_roster
-        WHERE
-        examine_id IS NULL
-        AND
-        (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) >= 50)
-        OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) >= 40)
-        )
-        AND <![CDATA[ TIMESTAMPDIFF(YEAR,birthday,CURDATE()) < 70]]>
-        ORDER BY time DESC
-        <if test="start != null and end != null">
-            limit #{start},#{end}
-        </if>
-    </select>
-    <select id="selectExamineCount" resultType="int">
-        SELECT
-        count(*)
-        FROM zd_roster
-        WHERE
-        examine_id IS NULL
-        AND
-        (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) >= 50)
-        OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) >= 40)
-        )
-        AND <![CDATA[ TIMESTAMPDIFF(YEAR,birthday,CURDATE()) < 70
-        ]]>
-    </select>
-    <select id="selectUndetermined" parameterType="com.lemi.msloan.request.RosterRequest"
-            resultMap="BaseResultMapWithExamine">
-        SELECT
-        <include refid="Base_Column_List"/>
-        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) AS age
-        FROM zd_roster
-        WHERE
-        examine_id IN (SELECT id FROM zd_examine WHERE state = 3 )
-        ORDER BY time DESC
-        <if test="start != null and end != null">
-            limit #{start},#{end}
-        </if>
-    </select>
-    <select id="selectUndeterminedCount" resultType="int">
-        SELECT
-        count(*)
-        FROM zd_roster
-        WHERE
-        examine_id IN (SELECT id FROM zd_examine WHERE state = 3 )
+        examine_id = #{examineId}
+        limit 1
     </select>
 </mapper>

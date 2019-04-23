@@ -9,7 +9,7 @@
        
     <base href="<%=basePath%>">
         
-        <title>新增征地人员社会救济金</title>
+        <title>编辑征地人员社会救济金</title>
         
         
     <meta http-equiv="pragma" content="no-cache">
@@ -207,7 +207,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}">列表</a>
                         </li>
-                        <li class="breadcrumb-item active">新增</li>
+                        <li class="breadcrumb-item active">编辑</li>
                     </ol>
                 </div>
             </div>
@@ -224,7 +224,7 @@
                     <div class="card">
                         <div class="card-block">
                             <div style="height: 60px;background-color: #efefef;font-size: 16px; font-weight: bold; line-height: 60px; vertical-align: middle;">
-                                <span class="fa fa-database" style="padding-left: 20px"></span> 新增居民信息
+                                <span class="fa fa-database" style="padding-left: 20px"></span> 编辑居民信息
                             </div>
                             <form class="form-horizontal form-material">
                                 <div class="form-group">
@@ -551,6 +551,7 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="examineId" value="${examineId}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -585,6 +586,7 @@
             });
         });
         findAllCommunity();
+        getExamineById();
         var loginId = $("#loginId").val();
         verification(loginId);
     })
@@ -661,7 +663,9 @@
         var stopType = $("#stopType").val();
         var stopReason = $("#stopReason").val();
         var isMove = $("#isMove").val();
-        $.post("<%=basePath%>examine/addExamine",{
+        var examineId = $("#examineId").val();
+        $.post("<%=basePath%>examine/updateExamineById",{
+            "examineId":examineId,
             "name":name,
             "gender":gender,
             "birthday":birthday,
@@ -693,6 +697,62 @@
             alert(data.message);
         });
     })
+    
+    function getExamineById() {
+        var examineId = $("#examineId").val();
+        $.post("<%=basePath%>examine/getExamineById",{"examineId":examineId},function (data) {
+            var object = data.data;
+            $("#name").val(object.name);
+            $("#gender").val(object.gender);
+            $("#birthday").val(fmtDate(object.birthday));
+            $("#idCard").val(object.idCard);
+            $("#phone").val(object.phone);
+            $("#house").val(object.house);
+            $("#address").val(object.address);
+            $("#community").val(object.communityId);
+            $("#villageTime").val(fmtDate(object.villageTime));
+            $("#villageAge").val(object.villageAge);
+            $("#village").val(object.village);
+            $("#cdState").val(object.cdState);
+            $("#startTime").val(fmtDate(object.startTime));
+            $("#stopTime").val(fmtDate(object.stopTime));
+            $("#dtxsny").val(object.dtxsny);
+            $("#ffbj").val(object.ffbj);
+            $("#batch").val(object.batch);
+            $("#isInsured").val(object.isInsured);
+            $("#unemployment").val(object.unemployment);
+            $("#unStart").val(fmtDate(object.unStart));
+            $("#unEnd").val(fmtDate(object.unEnd));
+            $("#comping").val(object.comping);
+            $("#changes").val(object.changes);
+            $("#status").val(object.status);
+            $("#stopType").val(object.stopType);
+            $("#stopReason").val(object.stopReason);
+            $("#isMove").val(object.isMove);
+            if (object.unemployment == 1) {
+                $("#unStartDom").css("display", "block");
+                $("#unEndDom").css("display", "block");
+            } else {
+                $("#unStartDom").css("display", "none");
+                $("#unEndDom").css("display", "none");
+            }
+            if (object.status == 3) {
+                $("#stopTypeDom").css("display", "block");
+                $("#stopReasonDom").css("display", "block");
+            } else {
+                $("#stopTypeDom").css("display", "none");
+                $("#stopReasonDom").css("display", "none");
+            }
+        })
+    }
+
+    function fmtDate(date) {
+        var date = new Date(date);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+    }
 </script>
 </body>
 </html>

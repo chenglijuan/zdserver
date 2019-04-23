@@ -1,6 +1,6 @@
 package com.lemi.msloan.request;
 
-public class RosterRequest extends BaseRequest {
+public class ExamineRequest extends BaseRequest {
 
     private String idCard;
 
@@ -26,14 +26,14 @@ public class RosterRequest extends BaseRequest {
 
     private String house;
 
-    private Integer examineId;
+    private Integer state;
 
-    public Integer getExamineId() {
-        return examineId;
+    public Integer getState() {
+        return state;
     }
 
-    public void setExamineId(Integer examineId) {
-        this.examineId = examineId;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getHouse() {
