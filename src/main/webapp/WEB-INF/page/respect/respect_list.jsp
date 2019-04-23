@@ -229,11 +229,14 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
-            <div class="row page-titles">
+            <%--<div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">尊老金</h3>
                 </div>
-            </div>
+            </div>--%>
+            <fieldset class="layui-elem-field layui-field-title" >
+                <legend>尊老金</legend>
+            </fieldset>
             <div class="row">
                 <form class="form-inline">
                     <div class="form-group col-md-3" style="margin-top: 20px">
@@ -246,18 +249,30 @@
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="house">联系电话：</label>
-                        <input type="text" class="form-control" id="house" placeholder="联系电话">
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="house">变动情况：</label>
-                        <input type="text" class="form-control" id="remark" placeholder="变动情况">
+                        <label for="phone">联系电话：</label>
+                        <input type="text" class="form-control" id="phone" placeholder="联系电话">
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="comping">年龄段选择：</label>
-                        <select class="form-control" id="comping">
-                            <option selected value="">请选择</option>
+                        <label for="grantTimes">起始发放时间：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" class="form-control" id="grantTimes" placeholder=" - ">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="changeState">变动情况：</label>
+                        <select class="form-control" id="changeState">
+                            <option selected value="">==请选择==</option>
+                            <option value="1">迁出</option>
+                            <option value="2">死亡</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="ageRange">年龄段选择：</label>
+                        <select class="form-control" id="ageRange">
+                            <option selected value="">==请选择==</option>
                             <option value="1">50-59</option>
                             <option value="2">60-69</option>
                         </select>
@@ -265,30 +280,16 @@
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="communityId">所属小区：</label>
                         <select class="form-control" id="communityId">
-                            <option selected value="">请选择</option>
-                            <option value="1">迁出</option>
-                            <option value="2">新增</option>
-                            <option value="2">死亡</option>
+                            <option selected value="">==请选择==</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="grantTime">起始发放时间：</label>
-                        <select class="form-control" id="grantTime">
-                            <option selected value="">请选择</option>
-                            <option value="1">迁出</option>
-                            <option value="2">新增</option>
-                            <option value="2">死亡</option>
-                        </select>
-                    </div>
-
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <button type="button" class="btn btn-info" id="search">搜索</button>
                         <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
                     </div>
-
-
                 </form>
             </div>
+
             <div class="row">
                 <!-- column -->
                 <div class="col-sm-12">
@@ -297,6 +298,7 @@
                             <button type="button" class="btn btn-info">批量导入</button>
                             <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增
                             </button>
+                            <br/>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -305,6 +307,7 @@
                     </div>
                 </div>
             </div>
+            <input type="text" id="totalPage">
             <div style="text-align: center">
                 <ul id="pageLimit"></ul>
             </div>
@@ -360,9 +363,18 @@
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 <script src="<%=basePath%>js/bootstrap-table.js"></script>
 <script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
+<script src="<%=basePath%>js/util.js"></script>
+<script src="<%=basePath%>laydate/laydate.js"></script>
 <script>
+    var pageSize = 2;
     $(function () {
-        selectExamine(1, 10);
+
+        laydate.render({
+            elem: '#grantTimes'
+            ,range: true
+        });
+
+        selectExamine(1, pageSize);
         findAllCommunity();
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -377,11 +389,11 @@
     }
     $('#pageLimit').bootstrapPaginator({
         currentPage: 1,//当前的请求页面。
-        totalPages: 20,//一共多少页。
+        totalPages: 5,//一共多少页。
         size: "normal",//应该是页眉的大小。
         bootstrapMajorVersion: 3,//bootstrap的版本要求。
         alignment: "right",
-        numberOfPages: 5,//一页列出多少数据。
+        numberOfPages: pageSize,//一页列出多少数据。
         itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
             switch (type) {
                 case "first":
@@ -397,10 +409,36 @@
             }
         },
         onPageClicked: function (event, originalEvent, type, page) {
-            selectExamine(page, 10);
+            selectExamine(page, pageSize);
         }
 
     });
+
+    var options = {
+        currentPage: 1,//当前的请求页面。
+        totalPages: $("#totalPage").val(),//一共多少页。
+        size: "normal",//应该是页眉的大小。
+        bootstrapMajorVersion: 3,//bootstrap的版本要求。
+        alignment: "right",
+        numberOfPages: pageSize,//一页列出多少数据。
+        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+            switch (type) {
+                case "first":
+                    return "首页";
+                case "prev":
+                    return "上一页";
+                case "next":
+                    return "下一页";
+                case "last":
+                    return "末页";
+                case "page":
+                    return page;
+            }
+        },
+        onPageClicked: function (event, originalEvent, type, page) {
+            selectExamine(page, pageSize);
+        }
+    }
 
     $("#search").on("click", function () {
         selectExamine(1, 10);
@@ -435,7 +473,8 @@
             valign: 'middle',
             width: 60,
             formatter: function (value, row, index) {
-                return row.age;
+                var age = jsGetAge(row.birthday);
+                return isEmpty(age) ? "-" : age;
             }
         };
         var d = {
@@ -445,7 +484,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return fmtDate(row.birthday);
+                return isEmpty(row.birthday) ? "-" : fmtDate(row.birthday);
             }
         };
         var e = {
@@ -455,7 +494,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.idCard;
+                return isEmpty(row.idCard) ? "-" : row.idCard;
             }
         };
         var f = {
@@ -469,175 +508,86 @@
             }
         };
         var g = {
-            field: 'address',
-            title: '现住地',
+            field: 'communityName',
+            title: '所属小区',
             align: 'center',
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
-                return row.address;
+                return row.communityId == null ? "-" : row.communityName;
             }
         };
         var h = {
-            field: 'villageTime',
-            title: '征地时间',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return fmtDate(row.villageTime);
-            }
-        };
-        var i = {
-            field: 'villageAge',
-            title: '征地时年龄',
-            align: 'center',
-            valign: 'middle',
-            width: 150,
-            formatter: function (value, row, index) {
-                return row.villageAge;
-            }
-        };
-        var j = {
-            field: 'village',
-            title: '征地时所在村（组）',
-            align: 'center',
-            valign: 'middle',
-            width: 240,
-            formatter: function (value, row, index) {
-                return row.village;
-            }
-        };
-        var k = {
-            field: 'cdState',
-            title: '撤队安置情况',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.cdState == 1 ? "未撤队先安置" : row.cdState == 2 ? "撤队时安置" : row.cdState == 3 ? "领取征地待业" : row.cdState == 4 ? "领取一次性补偿金" : "";
-            }
-        };
-        var l = {
-            field: 'ffbj',
-            title: '发放标准',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.ffbj;
-            }
-        };
-        var m = {
-            field: 'startTime',
-            title: '开始发放时间',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : fmtDate(row.examine.startTime);
-            }
-        };
-        var n = {
-            field: 'stopTime',
-            title: '停止发放时间',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
-            }
-        };
-        var o = {
-            field: 'dtxsny',
+            field: 'dynamicYearMonth',
             title: '动态享受年月',
             align: 'center',
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+                return row.dynamicYearMonth;
             }
         };
-        var p = {
-            field: 'batch',
-            title: '新增批次',
+        var i = {
+            field: 'grantTime',
+            title: '起始发放时间',
             align: 'center',
             valign: 'middle',
-            width: 120,
+            width: 150,
             formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.batch;
+                return row.grantTime == null ? "-" : fmtDate(row.grantTime);
             }
         };
-        var q = {
-            field: 'changes',
-            title: '变动情况',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
-            }
-        };
-        var r = {
-            field: 'isInsured',
-            title: '参保状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
-            }
-        };
-        var s = {
-            field: 'unemployment',
-            title: '失业状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
-            }
-        };
-        var t = {
-            field: 'comping',
-            title: '是否并轨',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
-            }
-        };
-        var u = {
-            field: 'state',
-            title: '审核状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
-            }
-        };
-        var v = {
-            field: 'status',
-            title: '发放状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : "";
-            }
-        };
-        var w = {
-            field: 'cz',
-            title: '操作',
+        var j = {
+            field: 'phone',
+            title: '联系电话',
             align: 'center',
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff'><span class='fa fa-edit'></span> 编辑</a>&nbsp;<a class='btn btn-info' style='color: #fff'>进行审核</a>";
+                return row.phone;
             }
         };
+        var k = {
+            field: 'changeState',
+            title: '变动情况说明',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.changeState == 1 ? "迁出" : row.changeState == 2 ? "死亡" : "-";
+            }
+        };
+        var l = {
+            field: 'issuStandard',
+            title: '发放标准',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return row.issuStandard == null ? "-" : row.issuStandard;
+            }
+        };
+        var m = {
+            field: 'auditState',
+            title: '审核状态',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
+            }
+        };
+        var n = {
+            field: 'grantState',
+            title: '发放状态',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.auditState == 2 ? "发放中" : "-";
+            }
+        };
+
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -652,20 +602,28 @@
         columns.push(l);
         columns.push(m);
         columns.push(n);
-        columns.push(o);
-        columns.push(p);
-        columns.push(q);
-        columns.push(r);
-        columns.push(s);
-        columns.push(t);
-        columns.push(u);
-        columns.push(v);
-        columns.push(w);
-        $.post("<%=basePath%>roster/selectExamine", {
+        var name = $("#name").val();
+        var changeState  = $("#changeState").val();
+        var idCard = $("#idCard").val();
+        var phone = $("#phone").val();
+        var grantTimes  = $("#grantTimes").val();
+        var ageRange  = $("#ageRange").val();
+        var communityId  = $("#communityId").val();
+
+        $.post("<%=basePath%>respect/selectRespect", {
             "pageNum": pageNum,
-            "pageSize": pageSize
+            "pageSize": pageSize,
+            "name":name,
+            "changeState":changeState,
+            "idCard":idCard,
+            "phone":phone,
+            "grantTimes":grantTimes,
+            "ageRange":ageRange,
+            "communityId":communityId
         }, function (data) {
             var list = data.data.list;
+            $("#totalPage").val(data.data.totalPage);
+
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
                 cache: false,
@@ -674,6 +632,7 @@
                 fixedNumber: 3,
                 columns: columns
             })
+            $("#pageLimit").bootstrapPaginator(options);
         })
     }
 
@@ -700,14 +659,7 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
-    function getAge(birthday) {
-        //出生时间 毫秒
-        var birthDayTime = new Date(birthday).getTime();
-        //当前时间 毫秒
-        var nowTime = new Date().getTime();
-        //一年毫秒数(365 * 86400000 = 31536000000)
-        return Math.ceil((nowTime - birthDayTime) / 31536000000);
-    }
+
 </script>
 </body>
 </html>

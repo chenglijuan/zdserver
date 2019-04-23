@@ -17,6 +17,7 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="issu_standard" property="issuStandard" jdbcType="INTEGER" />
     <result column="audit_state" property="auditState" jdbcType="INTEGER" />
+    <result column="change_state" property="changeState" jdbcType="INTEGER" />
     <result column="grant_state" property="grantState" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -25,7 +26,7 @@
   <sql id="Base_Column_List" >
     id, name, gender, id_card, birthday, type, house, community_id, community_name, dynamic_year_month, 
     grant_time, phone, remark, issu_standard, audit_state, grant_state, update_time, 
-    create_time, operator
+    create_time, operator,change_state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -44,14 +45,14 @@
       dynamic_year_month, grant_time, phone, 
       remark, issu_standard, audit_state, 
       grant_state, update_time, create_time, 
-      operator)
+      operator,change_state)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
       #{idCard,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER},
       #{house,jdbcType=VARCHAR}, #{communityId,jdbcType=INTEGER}, #{communityName,jdbcType=VARCHAR}, 
       #{dynamicYearMonth,jdbcType=VARCHAR}, #{grantTime,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR}, #{issuStandard,jdbcType=INTEGER}, #{auditState,jdbcType=INTEGER}, 
       #{grantState,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{operator,jdbcType=INTEGER})
+      #{operator,jdbcType=INTEGER},#{changeState,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Respect" >
     insert into zd_respect
@@ -113,6 +114,9 @@
       <if test="operator != null" >
         operator,
       </if>
+      <if test="changeState != null" >
+        change_state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -171,6 +175,9 @@
       </if>
       <if test="operator != null" >
         #{operator,jdbcType=INTEGER},
+      </if>
+      <if test="changeState != null" >
+        #{changeState,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -231,6 +238,9 @@
       <if test="operator != null" >
         operator = #{operator,jdbcType=INTEGER},
       </if>
+      <if test="changeState != null" >
+        change_state = #{changeState,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -251,9 +261,56 @@
       issu_standard = #{issuStandard,jdbcType=INTEGER},
       audit_state = #{auditState,jdbcType=INTEGER},
       grant_state = #{grantState,jdbcType=INTEGER},
+      change_state = #{changeState,jdbcType=INTEGER},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       operator = #{operator,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  =============================================================================-->
+
+  <select id="selectRespectPager" parameterType="com.lemi.msloan.request.RespectRequest" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from zd_respect
+    <where>
+      <if test="idCard != null">
+        and id_card like '%${idCard}%'
+      </if>
+      <if test="changeState != null">
+        and change_state = #{changeState}
+      </if>
+      <if test="name != null">
+        and name like '%${name}%'
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="phone != null">
+        and phone = #{phone}
+      </if>
+    </where>
+    order by create_time desc
+    <if test="start != null and end != null">
+      limit #{start},#{end}
+    </if>
+  </select>
+  <select id="selectRespectCount" parameterType="com.lemi.msloan.request.RespectRequest" resultType="int">
+    select count(*) from zd_roster
+    <where>
+      <if test="idCard != null">
+        and id_card like '%${idCard}%'
+      </if>
+      <if test="name != null">
+        and name like '%${name}%'
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="phone != null">
+        and phone = #{phone}
+      </if>
+    </where>
+  </select>
+
+
 </mapper>

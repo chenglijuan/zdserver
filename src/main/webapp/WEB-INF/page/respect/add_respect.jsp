@@ -7,7 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
        
-    <base href="<%=basePath%>">   
+    <base href="<%=basePath%>">
+       
      <title>新增尊老金</title>
     <meta http-equiv="pragma" content="no-cache">
         
@@ -129,15 +130,18 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
                             <li>
@@ -145,7 +149,8 @@
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
                             </li>
                         </ul>
@@ -156,10 +161,13 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -207,7 +215,8 @@
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">尊老金新增</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<%=basePath%>respect/respectPager?loginId=${loginId}">列表</a></li>
+                        <li class="breadcrumb-item"><a
+                                href="<%=basePath%>respect/respectPager?loginId=${loginId}">列表</a></li>
                         <li class="breadcrumb-item active">新增</li>
                     </ol>
                 </div>
@@ -225,83 +234,90 @@
                     <div class="card">
                         <div class="card-block">
                             <form class="form-horizontal form-material">
-                                <div class="form-group">
-                                    <label for="name" class="col-md-12"><span style="color: red">*</span>姓名</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入姓名" class="form-control form-control-line"
-                                               name="name"
-                                               id="name">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="name" class="col-md-3"><span style="color: red">*</span>姓名</label>
+                                    <input type="text" placeholder="请输入姓名" class="form-control col-md-8" name="name"
+                                           id="name">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12"><span style="color: red">*</span>性别</label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control form-control-line" id="gender">
-                                            <option value="">请选择</option>
-                                            <option value="1">男</option>
-                                            <option value="2">女</option>
-                                        </select>
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="gender" class="col-md-3"><span style="color: red">*</span>性别</label>
+                                    <select class="form-control col-md-8" id="gender">
+                                        <option value="">请选择</option>
+                                        <option value="1">男</option>
+                                        <option value="2">女</option>
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-12"><span style="color: red">*</span>身份证号</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入身份证号码"
-                                               class="form-control form-control-line" id="idCard">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label class="col-md-3"><span style="color: red">*</span>身份证号</label>
+                                    <input type="text" placeholder="请输入身份证号码"
+                                           class="form-control col-md-8" id="idCard">
                                 </div>
-                                <div class="form-group">
-                                    <label for="birthday" class="col-md-12"><span
-                                            style="color: red">*</span>出生年月</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请选择出生年月"
-                                               class="form-control form-control-line date_picker"
-                                               name="birthday" id="birthday" readonly="readonly">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="birthday" class="col-md-3"><span style="color: red">*</span>出生年月</label>
+                                    <input type="text" placeholder="请选择出生年月"
+                                           class="form-control col-md-8 date_picker"
+                                           name="birthday" id="birthday" readonly="readonly">
                                 </div>
-                                <div class="form-group">
-                                    <label for="birthday" class="col-md-12"><span
-                                            style="color: red"></span>年龄周岁</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder=""
-                                               class="form-control form-control-line"
-                                               name="age" id="age" readonly="readonly">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="birthday" class="col-md-3"><span style="color: red"></span>年龄周岁</label>
+                                    <input type="text" placeholder="" class="form-control col-md-8"
+                                           name="age" id="age" readonly="readonly">
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="phone" class="col-md-12"><span
-                                            style="color: red">*</span>联系电话</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="联系电话"
-                                               class="form-control form-control-line" name="phone"
-                                               id="phone">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="phone" class="col-md-3"><span style="color: red">*</span>联系电话</label>
+                                    <input type="text" placeholder="联系电话"
+                                           class="form-control col-md-8" name="phone"
+                                           id="phone">
                                 </div>
-                                <div class="form-group">
-                                    <label for="house" class="col-md-12"><span style="color: red">*</span>现户籍所在地</label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入现户籍所在地"
-                                               class="form-control form-control-line" name="house"
-                                               id="house">
-                                    </div>
+                                <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
+                                    <input type="text" placeholder="请输入现户籍所在地"
+                                           class="form-control col-md-8" name="house" id="house">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">备注</label>
-                                    <div class="col-md-12">
-                                        <textarea rows="1" placeholder="请填写内容" class="form-control form-control-line"
-                                                  id="remark"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3" style="margin-top: 20px">
-                                    <label for="communityId">所属社区：</label>
-                                    <select class="form-control" id="communityId">
+                                <div class="form-group form-control-line">
+                                    <label for="communityId" class="col-md-3"><span
+                                            style="color: red">*</span>所属社区：</label>
+                                    <select class="form-control col-md-8" id="communityId">
                                         <option selected value="">请选择</option>
                                         <option value="1">迁出</option>
                                         <option value="2">新增</option>
                                         <option value="2">死亡</option>
                                     </select>
                                 </div>
+                                <div class="form-group form-control-line">
+                                    <label for="grantTimeStr" class="col-md-3"><span
+                                            style="color: red">*</span>起始发放时间</label>
+                                    <input type="text" placeholder="请选择出生年月"
+                                           class="form-control col-md-8 date_picker"
+                                           name="grantTimeStr" id="grantTimeStr" readonly="readonly">
+                                </div>
+                                <div class="form-group form-control-line">
+                                    <label for="phone" class="col-md-3"><span
+                                            style="color: red">*</span>动态享受年月</label>
+                                    <input type="text" placeholder="动态享受年月"
+                                           class="form-control col-md-8" name="dynamicYearMonth"
+                                           id="dynamicYearMonth">
+                                </div>
+                                <div class="form-group form-control-line">
+                                    <label for="changeState" class="col-md-3">变动情况说明：</label>
+                                    <select class="form-control col-md-8" id="changeState">
+                                        <option selected value="">请选择</option>
+                                        <option value="1">迁出</option>
+                                        <option value="2">死亡</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
+                                    <input type="text" placeholder="发放标准"
+                                           class="form-control col-md-8" name="issuStandard" id="issuStandard">
+                                </div>
+                                <div class="form-group" rows="3">
+                                    <label class="col-md-3">备注</label>
+                                    <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
+                                              id="remark"></textarea>
+                                </div>
+
 
                                 <div class="form-group">
                                     <div class="col-sm-12">
@@ -367,25 +383,36 @@
 <script src="<%=basePath%>laydate/laydate.js"></script>
 
 <script src="<%=basePath%>myjs/zepto.min.js"></script>
+<script src="<%=basePath%>js/util.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
     $(function () {
         laydate.render({
-            elem: '.date_picker'
+            elem: '#grantTimeStr'
         });
         findAllCommunity();
 
         var loginId = $("#loginId").val();
         verification(loginId);
+
+        laydate.render({
+            elem: '#birthday' //指定元素
+            //控件选择完毕后的回调,点击日期、清空、现在、确定均会触发。
+            , done: function (value, date, endDate) {
+                $("#age").val(jsGetAge(value));
+            }
+        });
+
     })
+
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == -1) {
-                alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             }
         });
     }
+
     function findAllCommunity() {
         $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
 
@@ -395,7 +422,7 @@
                 for (var i = 0; i < list.length; i++) {
                     code += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
                 }
-                $("#community").html(code);
+                $("#communityId").html(code);
             }
 
         });
@@ -404,90 +431,67 @@
     $("#submit").on("click", function () {
 
         var idCard = $("#idCard").val();
-
         var name = $("#name").val();
-
         var gender = $("#gender").val();
-
         var birthday = $("#birthday").val();
-
-        var address = $("#address").val();
-
-        var village = $("#village").val();
-
-        var isMove = $("#isMove").val();
-
-        var communityId = $("#community").val();
-
+        var phone = $("#phone").val();
         var house = $("#house").val();
-
+        var communityId = $("#communityId").val();
+        var grantTimeStr = $("#grantTimeStr").val();
+        var dynamicYearMonth = $("#dynamicYearMonth").val();
+        var changeState = $("#changeState").val();
+        var issuStandard = $("#issuStandard").val();
         var remark = $("#remark").val();
 
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
         if (name == null || name == "") {
             popup({type: 'error', msg: "请输入姓名", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
         if (gender == null || gender == "") {
             popup({type: 'error', msg: "请选择性别", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
         if (birthday == null || birthday == "") {
             popup({type: 'error', msg: "请选择出生年月", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
-        if (address == null || address == "") {
+        if (phone == null || phone == "") {
             popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
-        if (village == null || village == "") {
-            popup({type: 'error', msg: "请输入征地时所在村（组）", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (isMove == null || isMove == "") {
-            popup({type: 'error', msg: "请选择是否迁出", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
         if (communityId == null || communityId == "") {
             popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
-        if (house == null || house == "") {
-            popup({type: 'error', msg: "请输入现户籍所在地", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        $.post("<%=basePath%>roster/insertRoster", {
+        $.post("<%=basePath%>respect/insertRespect", {
             "idCard": idCard,
             "name": name,
             "gender": gender,
             "birthday": birthday,
-            "address": address,
-            "village": village,
-            "isMove": isMove,
-            "communityId": communityId,
+            "type": 1,
+            "phone": phone,
             "house": house,
-            "status": 1,
+            "communityId": communityId,
+            "grantTimeStr": grantTimeStr,
+            "dynamicYearMonth": dynamicYearMonth,
+            "changeState": changeState,
+            "issuStandard": issuStandard,
             "remark": remark
         }, function (data) {
             if (data.code == 0) {
                 popup({type: "success", msg: "提交成功", delay: 1000});
+                window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}";
             } else {
                 popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
             }
         })
     })
+
+
 </script>
 </body>
 </html>

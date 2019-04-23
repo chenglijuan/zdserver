@@ -35,6 +35,8 @@ public class Respect {
 
     private Integer grantState;
 
+    private Integer changeState;
+
     private Date updateTime;
 
     private Date createTime;
@@ -191,5 +193,13 @@ public class Respect {
 
     public void setOperator(Integer operator) {
         this.operator = operator;
+    }
+
+    public Integer getChangeState() {
+        return changeState;
+    }
+
+    public void setChangeState(Integer changeState) {
+        this.changeState = changeState;
     }
 }
