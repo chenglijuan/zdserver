@@ -113,4 +113,11 @@
     WHERE user_id = #{userId}
     LIMIT 1
   </select>
+  <select id="getByName" parameterType="com.lemi.msloan.request.CommunityRequest" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM zd_community
+    WHERE name = #{name}
+    LIMIT 1
+  </select>
 </mapper>

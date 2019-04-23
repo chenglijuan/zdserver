@@ -23,6 +23,8 @@ public class Roster {
 
     private Integer communityId;
 
+    private Community community;
+
     private String communityName;
 
     private String house;
@@ -42,6 +44,14 @@ public class Roster {
     private Integer villageAge;
 
     private Integer cdState;
+
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
+    }
 
     public Date getVillageTime() {
         return villageTime;

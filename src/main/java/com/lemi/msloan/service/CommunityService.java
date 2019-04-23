@@ -8,4 +8,6 @@ public interface CommunityService extends BaseService<Community> {
     List<Community> findAll();
 
     Community selectByUserId(Integer userId);
+
+    Community getByName(String communityName);
 }

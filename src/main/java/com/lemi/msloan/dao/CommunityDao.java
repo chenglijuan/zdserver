@@ -9,4 +9,6 @@ public interface CommunityDao extends BaseDao<Community> {
     List<Community> findAll();
 
     Community selectByUserId(CommunityRequest communityRequest);
+
+    Community getByName(CommunityRequest communityRequest);
 }

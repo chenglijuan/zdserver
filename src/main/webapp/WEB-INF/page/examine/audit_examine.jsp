@@ -9,7 +9,7 @@
        
     <base href="<%=basePath%>">
         
-        <title>征地人员社会救济金审核</title>
+        <title>编辑征地人员社会救济金</title>
         
         
     <meta http-equiv="pragma" content="no-cache">
@@ -146,14 +146,17 @@
                                    class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
+                            <li id="tab_1" style="display: none">
                                 <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
+                            <li id="tab_2" style="display: none">
                                 <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -203,11 +206,11 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">征地人员社会救济金审核</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">新增征地人员社会救济金</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}">列表</a>
                         </li>
-                        <li class="breadcrumb-item active">审核</li>
+                        <li class="breadcrumb-item active">编辑</li>
                     </ol>
                 </div>
             </div>
@@ -224,110 +227,118 @@
                     <div class="card">
                         <div class="card-block">
                             <div style="height: 60px;background-color: #efefef;font-size: 16px; font-weight: bold; line-height: 60px; vertical-align: middle;">
-                                <span class="fa fa-database" style="padding-left: 20px"></span> 居民信息
+                                <span class="fa fa-database" style="padding-left: 20px"></span> 编辑居民信息
                             </div>
-                            <%--<form class="form-horizontal form-material">--%>
-                            <form class="">
+                            <form class="form-horizontal form-material">
                                 <div class="form-group">
-                                    <label class="col-md-12">身份证号</label>
+                                    <label for="name" class="col-md-12"><span style="color: red">*</span>姓名</label>
                                     <div class="col-md-12">
-                                        <input type="text"
-                                               class="form-control form-control-line" id="idCard" readonly="readonly">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-12">姓名</label>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line"
+                                        <input type="text" placeholder="请输入姓名" class="form-control form-control-line"
                                                name="name"
-                                               id="name" readonly>
+                                               id="name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-12">性别</label>
+                                    <label class="col-sm-12"><span style="color: red">*</span>性别</label>
                                     <div class="col-sm-12">
-                                        <input type="text" class="form-control form-control-line"
-                                               name="name"
-                                               id="gender" readonly>
+                                        <select class="form-control form-control-line" id="gender">
+                                            <option value="">请选择</option>
+                                            <option value="1">男</option>
+                                            <option value="2">女</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="birthday" class="col-md-12">出生年月</label>
+                                    <label for="birthday" class="col-md-12"><span
+                                            style="color: red">*</span>出生年月</label>
                                     <div class="col-md-12">
-                                        <input type="text"
-                                               class="form-control form-control-line"
+                                        <input type="text" placeholder="请选择出生年月"
+                                               class="form-control form-control-line date_picker"
                                                name="birthday" id="birthday" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address" class="col-md-12">常住地址</label>
+                                    <label class="col-md-12"><span style="color: red">*</span>身份证号</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line"
+                                        <input type="text" placeholder="请输入身份证号码"
+                                               class="form-control form-control-line" id="idCard">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-12">联系电话</label>
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="请输入联系电话"
+                                               class="form-control form-control-line" id="phone">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="house" class="col-md-12"><span style="color: red">*</span>户籍所在地</label>
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="请输入户籍所在地"
+                                               class="form-control form-control-line" name="house"
+                                               id="house">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address" class="col-md-12"><span style="color: red">*</span>现住地</label>
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="请输入现住地" class="form-control form-control-line"
                                                name="address"
-                                               id="address" readonly="readonly">
+                                               id="address">
+                                    </div>
+                                </div>
+                                <div class="form-group" id="tab_4" style="display: none">
+                                    <label class="col-sm-12"><span style="color: red">*</span>所属社区</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" id="community"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address" class="col-md-12">年龄</label>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line"
-                                               name="age"
-                                               id="age" readonly="readonly">
+                                    <label class="col-sm-12"><span style="color: red">*</span>是否迁出</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" id="isMove">
+                                            <option value="">请选择</option>
+                                            <option value="1">未迁出</option>
+                                            <option value="2">已迁出</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address" class="col-md-12">联系电话</label>
+                                    <label for="villageTime" class="col-md-12"><span
+                                            style="color: red">*</span>征地时间</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line"
-                                               name="phone"
-                                               id="phone" readonly="readonly">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address" class="col-md-12">是否迁出</label>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line"
-                                               name="isMove"
-                                               id="isMove" readonly="readonly">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="village" class="col-md-12">征地时所在村组</label>
-                                    <div class="col-md-12">
-                                        <input type="text"
-                                               class="form-control form-control-line" name="village"
-                                               id="village" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="villageTime" class="col-md-12">征地时间</label>
-                                    <div class="col-md-12">
-                                        <input type="text"
-                                               class="form-control form-control-line"
+                                        <input type="text" placeholder="请选择征地时间"
+                                               class="form-control form-control-line date_picker"
                                                name="villageTime" id="villageTime" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12">征地时年龄</label>
                                     <div class="col-md-12">
-                                        <input type="number"
-                                               class="form-control form-control-line" id="villageAge" readonly="readonly">
+                                        <input type="number" placeholder="请输入征地时年龄"
+                                               class="form-control form-control-line" id="villageAge">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label class="col-sm-12">所属社区</label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control form-control-line" id="community" readonly="readonly"></select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="house" class="col-md-12">户籍所在地</label>
+                                    <label for="village" class="col-md-12"><span
+                                            style="color: red">*</span>征地时所在村组</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="请输入户籍所在地"
-                                               class="form-control form-control-line" name="house"
-                                               id="house" readonly="readonly">
+                                        <input type="text" placeholder="请输入征地时所在村组"
+                                               class="form-control form-control-line" name="village"
+                                               id="village">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-12"><span style="color: red">*</span>撤队时安置情况分类</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" id="cdState">
+                                            <option value="">请选择</option>
+                                            <option value="1">未撤队先安置</option>
+                                            <option value="2">撤队时安置</option>
+                                            <option value="2">领取征地待业</option>
+                                            <option value="2">领取一次性补偿金</option>
+                                        </select>
                                     </div>
                                 </div>
                             </form>
@@ -506,9 +517,7 @@
                             <form class="form-horizontal form-material">
                                 <div class="form-group">
                                     <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit1">审核通过</button>
-                                        <button type="button" class="btn btn-info" id="submit2">审核不通过</button>
-                                        <button type="button" class="btn btn-warning" id="submit3">待定</button>
+                                        <button type="button" class="btn btn-success" id="submit">确定</button>
                                     </div>
                                 </div>
                             </form>
@@ -589,6 +598,18 @@
             if (data.code == -1) {
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                    $("#tab_4").css("display", "block");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                    $("#tab_4").css("display", "none");
+                }
             }
         });
     }
@@ -658,7 +679,9 @@
         var stopReason = $("#stopReason").val();
         var isMove = $("#isMove").val();
         var examineId = $("#examineId").val();
+        var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/updateExamineById", {
+            "loginId":loginId,
             "examineId": examineId,
             "name": name,
             "gender": gender,
@@ -697,14 +720,8 @@
         $.post("<%=basePath%>examine/getExamineById", {"examineId": examineId}, function (data) {
             var object = data.data;
             $("#name").val(object.name);
-            if(object.gender == 1){
-                $("#gender").val("男");
-            }else if(object.gender == 2){
-                $("#gender").val("女");
-            }
+            $("#gender").val(object.gender);
             $("#birthday").val(fmtDate(object.birthday));
-            $("#age").val(object.age);
-            $("#phone").val(object.phone);
             $("#idCard").val(object.idCard);
             $("#phone").val(object.phone);
             $("#house").val(object.house);
@@ -728,12 +745,7 @@
             $("#status").val(object.status);
             $("#stopType").val(object.stopType);
             $("#stopReason").val(object.stopReason);
-
-            if (object.isMove == 1){
-                $("#isMove").val("否");
-            }else if (object.isMove == 2){
-                $("#isMove").val("是");
-            }
+            $("#isMove").val(object.isMove);
             if (object.unemployment == 1) {
                 $("#unStartDom").css("display", "block");
                 $("#unEndDom").css("display", "block");
@@ -757,14 +769,6 @@
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
-    }
-    function getAge(birthday) {
-        //出生时间 毫秒
-        var birthDayTime = new Date(birthday).getTime();
-        //当前时间 毫秒
-        var nowTime = new Date().getTime();
-        //一年毫秒数(365 * 86400000 = 31536000000)
-        return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
 </script>
 </body>

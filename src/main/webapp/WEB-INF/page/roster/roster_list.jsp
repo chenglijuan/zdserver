@@ -143,19 +143,28 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
+                            <li id="tab_1" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            <li id="tab_2" style="display: none">
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -225,7 +234,7 @@
                         <input type="text" class="form-control" id="idCard" placeholder="请输姓名身份证号">
                     </div>
 
-                    <div class="form-group col-md-3" style="margin-top: 20px">
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
                         <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId"></select>
                     </div>
@@ -274,7 +283,10 @@
                     <div class="card">
                         <div class="card-block">
                             <button type="button" class="btn btn-info">批量导入</button>
-                            <button type="button" class="btn btn-info" id="addRoster"><span class=" fa fa-plus-square"></span> 新增
+                            <input type="hidden" style="display: none">
+                            <button type="button" class="btn btn-info">模板导出</button>
+                            <button type="button" class="btn btn-info" id="addRoster"><span
+                                    class=" fa fa-plus-square"></span> 新增
                             </button>
                             <div class="table-responsive">
                                 <table class="table">
@@ -366,44 +378,28 @@
 
     })
     function verification(loginId) {
-        $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
-            if (data.code == -1){
+        $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
+            if (data.code == -1) {
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                    $("#tab_4").css("display", "none");
+                }
             }
         });
     }
-    $('#pageLimit').bootstrapPaginator({
-        currentPage: 1,//当前的请求页面。
-        totalPages: 20,//一共多少页。
-        size: "normal",//应该是页眉的大小。
-        bootstrapMajorVersion: 3,//bootstrap的版本要求。
-        alignment: "right",
-        numberOfPages: 5,//一页列出多少数据。
-        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-            switch (type) {
-                case "first":
-                    return "首页";
-                case "prev":
-                    return "上一页";
-                case "next":
-                    return "下一页";
-                case "last":
-                    return "末页";
-                case "page":
-                    return page;
-            }
-        },
-        onPageClicked: function (event, originalEvent, type, page) {
-            selectRoster(page, 10);
-        }
-
-    });
-
-    $("#search").on("click",function () {
+    $("#search").on("click", function () {
         selectRoster(1, 10);
     })
-    
+
     function selectRoster(pageNum, pageSize) {
 
         var name = $("#name").val();
@@ -418,7 +414,10 @@
 
         var age = $("#age").val();
 
+        var loginId = $("#loginId").val();
+
         $.post("<%=basePath%>roster/selectRoster", {
+            "loginId": loginId,
             "name": name,
             "idCard": idCard,
             "communityId": communityId,
@@ -429,6 +428,7 @@
             "pageSize": pageSize
         }, function (data) {
             var count = data.data.count;
+            $("#totalpage").val(count);
             var list = data.data.list;
             var code = "";
             for (var i = 0, j = list.length; i < j; i++) {
@@ -461,7 +461,7 @@
                     code += "<td></td>";
                 }
 
-                code += "<td></td>";
+                code += "<td>" + list[i].community.name + "</td>";
 
                 code += "<td>" + list[i].house + "</td>";
 
@@ -479,26 +479,55 @@
 
                 code += "<td>" + list[i].remark + "</td>";
 
-                code += "<td><a class='' onclick='updateRoster("+list[i].id+")'><span class='fa fa-edit'></span> 查看</a></td>";
+                code += "<td><a class='' onclick='updateRoster(" + list[i].id + ")'><span class='fa fa-edit'></span> 查看</a></td>";
                 code += "</tr>";
             }
             $("#tbody").html(code);
+            limitPage(pageNum,10);
         })
-
     }
 
-   $("#addRoster").on("click",function () {
-       window.location.href="<%=basePath%>roster/addRosterPage?loginId="+$("#loginId").val();
-   })
+    function limitPage(pageNum,totalPage) {
+        $('#pageLimit').bootstrapPaginator({
+            currentPage: pageNum,//当前的请求页面。
+            totalPages: totalPage,//一共多少页。
+            size: "normal",//应该是页眉的大小。
+            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            alignment: "right",
+            numberOfPages: 5,//一页列出多少数据。
+            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked: function (event, originalEvent, type, page) {
+                selectRoster(page, 10);
+            }
+
+        });
+    }
+
+    $("#addRoster").on("click", function () {
+        window.location.href = "<%=basePath%>roster/addRosterPage?loginId=" + $("#loginId").val();
+    })
 
     function findAllCommunity() {
-        $.post("<%=basePath%>roster/findAllCommunity",{},function (data) {
+        $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
 
-            if (data.code == 0){
+            if (data.code == 0) {
                 var list = data.data;
                 var code = "<option value=''>请选择</option>";
-                for (var i=0;i<list.length;i++){
-                    code += "<option value='"+list[i].id+"'>"+list[i].name+"</option>";
+                for (var i = 0; i < list.length; i++) {
+                    code += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
                 }
                 $("#communityId").html(code);
             }
@@ -507,7 +536,7 @@
     }
 
     function updateRoster(id) {
-        window.location.href="<%=basePath%>roster/updateRosterPager?rosterId="+id+"&loginId="+$("#loginId").val();
+        window.location.href = "<%=basePath%>roster/updateRosterPager?rosterId=" + id + "&loginId=" + $("#loginId").val();
     }
 
     function fmtDate(birthday) {

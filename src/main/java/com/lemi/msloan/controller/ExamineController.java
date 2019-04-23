@@ -1,9 +1,11 @@
 package com.lemi.msloan.controller;
 
+import com.lemi.msloan.entity.Community;
 import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.entity.User;
 import com.lemi.msloan.response.ApiResult;
+import com.lemi.msloan.service.CommunityService;
 import com.lemi.msloan.service.ExamineService;
 import com.lemi.msloan.service.RosterService;
 import com.lemi.msloan.service.UserService;
@@ -35,6 +37,9 @@ public class ExamineController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommunityService communityService;
 
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
@@ -74,7 +79,17 @@ public class ExamineController {
      */
     @RequestMapping(value = "findAllExamine")
     @ResponseBody
-    public ApiResult findAllExamine(Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult findAllExamine(Integer loginId, Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+
+        User user = userService.get(loginId);
+        if (user != null){
+            if (user.getType().intValue() == 2){
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null){
+                    communityId = community.getId();
+                }
+            }
+        }
 
         List<Examine> list = examineService.findAllExamine(state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
@@ -312,8 +327,17 @@ public class ExamineController {
      */
     @RequestMapping(value = "updateExamineById")
     @ResponseBody
-    public ApiResult updateExamineById(String phone, String unStart, String unEnd, Integer stopType, String stopReason, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
+    public ApiResult updateExamineById(Integer loginId, String phone, String unStart, String unEnd, Integer stopType, String stopReason, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
                                        String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState) {
+        User user = userService.get(loginId);
+        if (user != null){
+            if (user.getType().intValue() == 2){
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null){
+                    communityId = community.getId();
+                }
+            }
+        }
         if (isInsured == null) {
             return new ApiResult(false, "请选择是否参保", -1);
         }
@@ -503,7 +527,17 @@ public class ExamineController {
      */
     @RequestMapping(value = "getExamineWillStart")
     @ResponseBody
-    public ApiResult getExamineWillStart(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult getExamineWillStart(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+
+        User user = userService.get(loginId);
+        if (user != null){
+            if (user.getType().intValue() == 2){
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null){
+                    communityId = community.getId();
+                }
+            }
+        }
 
         List<Examine> list = examineService.getExamineWillStart(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
@@ -538,7 +572,16 @@ public class ExamineController {
      */
     @RequestMapping(value = "getExamineWillStop")
     @ResponseBody
-    public ApiResult getExamineWillStop(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult getExamineWillStop(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+        User user = userService.get(loginId);
+        if (user != null){
+            if (user.getType().intValue() == 2){
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null){
+                    communityId = community.getId();
+                }
+            }
+        }
         List<Examine> list = examineService.getExamineWillStop(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
         Integer count = examineService.getExamineWillStopCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
