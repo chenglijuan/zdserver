@@ -447,12 +447,12 @@ public class RosterController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "importRoster")
+    @RequestMapping(value = "importRoster",produces="text/html;charset=UTF-8")
     @ResponseBody
-    public ApiResult importRoster(Integer loginId, @RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session) {
+    public String importRoster(Integer loginId, @RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session) {
         try {
             if (file == null) {
-                return new ApiResult(false, "请上传文件", -1, null);
+                return "请上传文件";
             }
             String fileOriginalFilename = UUID.randomUUID() + file.getOriginalFilename().replace(",", "");
             String rootPath = session.getServletContext().getRealPath("/");
@@ -460,7 +460,7 @@ public class RosterController {
             File source = new File(uploadPath + fileOriginalFilename);
             file.transferTo(source);
             if (!FileUtil.checkExcelVaild(source)) {
-                return new ApiResult(false, "文件格式不正确", null);
+                return "文件格式不正确";
             }
             List<Roster> rosters = new ArrayList<Roster>();
             Workbook wb = null;
@@ -478,20 +478,20 @@ public class RosterController {
                     row = sheet.getRow(i);
                     if (row != null) {
                         Roster temp = new Roster();
-                        for (int j = 0; j < 12; j++) {
+                        for (int j = 0; j < 10; j++) {
                             cellData = (String) PoiTest.getCellFormatValue(row.getCell(j));
                             if ("身份证号".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
                                     temp.setIdCard(cellData.trim());
                                 } else {
-                                    return new ApiResult(false, i + "行" + (j + 1) + "列数据，身份证号不能为空。", -1);
+                                    return i + "行" + (j + 1) + "列数据，身份证号不能为空。";
                                 }
                             }
                             if ("姓名".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
                                     temp.setName(cellData.trim());
                                 } else {
-                                    return new ApiResult(false, i + "行" + (j + 1) + "列数据，姓名不能为空。", -1);
+                                    return i + "行" + (j + 1) + "列数据，姓名不能为空。";
                                 }
                             }
                             if ("性别".equals(cloumns[j])) {
@@ -535,34 +535,28 @@ public class RosterController {
                                         if (user != null) {
                                             if (user.getType().intValue() == 2) {
                                                 Community community = communityService.selectByUserId(loginId);
-                                                if (community == null) {
+                                                if (community != null) {
                                                     temp.setCommunityId(community.getId());
                                                 }
                                             } else {
                                                 String communityName = cellData.trim();
                                                 Community community = communityService.getByName(communityName);
-                                                if (community == null) {
-                                                    if (community == null) {
-                                                        temp.setCommunityId(community.getId());
-                                                    }
+                                                if (community != null) {
+                                                    temp.setCommunityId(community.getId());
                                                 }
                                             }
                                         } else {
                                             String communityName = cellData.trim();
                                             Community community = communityService.getByName(communityName);
-                                            if (community == null) {
-                                                if (community == null) {
-                                                    temp.setCommunityId(community.getId());
-                                                }
+                                            if (community != null) {
+                                                temp.setCommunityId(community.getId());
                                             }
                                         }
                                     } else {
                                         String communityName = cellData.trim();
                                         Community community = communityService.getByName(communityName);
-                                        if (community == null) {
-                                            if (community == null) {
-                                                temp.setCommunityId(community.getId());
-                                            }
+                                        if (community != null) {
+                                            temp.setCommunityId(community.getId());
                                         }
                                     }
                                 }
@@ -593,7 +587,7 @@ public class RosterController {
                         }
                         rosters.add(temp);
                     } else {
-                        return new ApiResult(false, "文件格式有误", -1, null);
+                        return "文件格式有误";
                     }
                 }
             }
@@ -651,11 +645,11 @@ public class RosterController {
                     updateCount++;
                 }
             }
-            return new ApiResult(true, "共导入"+rosters.size()+"跳数据，新增"+insertCount+"条，更新"+updateCount+"条", 0);
+            return "共导入"+rosters.size()+"条数据，新增"+insertCount+"条，更新"+updateCount+"条";
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new ApiResult(false, "操作失败", -1);
+        return "操作失败";
     }
 
     /**

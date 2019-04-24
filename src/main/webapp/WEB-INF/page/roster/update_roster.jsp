@@ -205,7 +205,7 @@
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">编辑花名册</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList">列表</a></li>
+                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList?loginId=${loginId}">列表</a></li>
                         <li class="breadcrumb-item active">编辑</li>
                     </ol>
                 </div>

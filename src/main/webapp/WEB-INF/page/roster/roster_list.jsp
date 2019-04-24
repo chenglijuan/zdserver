@@ -282,9 +282,9 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info">批量导入</button>
-                            <input type="hidden" style="display: none">
-                            <button type="button" class="btn btn-info">模板导出</button>
+                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
+                            <a class="btn btn-info" href="<%=basePath%>/temp/model1.xlsx" style="color: #fff">模板导出</a>
                             <button type="button" class="btn btn-info" id="addRoster"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
@@ -348,7 +348,8 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>
+<%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
+<script src="<%=basePath%>myjs/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
 <script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -367,7 +368,7 @@
 <!-- Style switcher -->
 <!-- ============================================================== -->
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
-
+<script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
     $(function () {
         selectRoster(1, 10);
@@ -554,6 +555,30 @@
         var nowTime = new Date().getTime();
         //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
+    }
+    
+    function uploadData(fileObj) {
+        var allowExtention = ".xlsx,.xls";
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        if(allowExtention.indexOf(extention) > -1){
+            $.ajaxFileUpload({
+                url: '<%=basePath%>roster/importRoster',
+                type: 'post',
+                data : {
+                    "loginId":$("#loginId").val()
+                },
+                secureuri: false,
+                fileElementId: "file",
+                dataType: 'json',
+                success: function(data, status){
+                    console.log(data);
+                    alert(data);
+                }
+            });
+        }else{
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = "";
+        }
     }
 </script>
 
