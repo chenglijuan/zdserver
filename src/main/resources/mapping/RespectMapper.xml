@@ -286,8 +286,14 @@
         and community_id = #{communityId}
       </if>
       <if test="phone != null">
-        and phone = #{phone}
+        and phone like '%${phone}%'
       </if>
+        <if test="grantBeginTime != null">
+            <![CDATA[  AND grant_time >= #{grantBeginTime}]]>
+        </if>
+        <if test="grantEndTime != null">
+            <![CDATA[  AND grant_time <= #{grantEndTime}]]>
+        </if>
     </where>
     order by create_time desc
     <if test="start != null and end != null">
@@ -295,7 +301,7 @@
     </if>
   </select>
   <select id="selectRespectCount" parameterType="com.lemi.msloan.request.RespectRequest" resultType="int">
-    select count(*) from zd_roster
+    select count(*) from zd_respect
     <where>
       <if test="idCard != null">
         and id_card like '%${idCard}%'
@@ -307,8 +313,14 @@
         and community_id = #{communityId}
       </if>
       <if test="phone != null">
-        and phone = #{phone}
+        and phone like '%${phone}%'
       </if>
+        <if test="grantBeginTime != null">
+            <![CDATA[  AND grant_time >= #{grantBeginTime}]]>
+        </if>
+        <if test="grantEndTime != null">
+            <![CDATA[  AND grant_time <= #{grantEndTime}]]>
+        </if>
     </where>
   </select>
 

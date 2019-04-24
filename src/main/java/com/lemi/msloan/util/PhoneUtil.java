@@ -26,7 +26,7 @@ public class PhoneUtil {
      * @return
      */
     public static int getOperator(String phone) {
-        if (TextUtils.isEmpty(phone)) {
+        if (StringUtils.isEmpty(phone)) {
             return 0;
         }
 

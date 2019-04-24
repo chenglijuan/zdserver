@@ -177,8 +177,17 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="pages-profile.html" class="waves-effect"><i class="fa fa-user m-r-10"
-                                                                             aria-hidden="true"></i>Profile</a>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>尊老金</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="table-basic.html" class="waves-effect"><i class="fa fa-table m-r-10"

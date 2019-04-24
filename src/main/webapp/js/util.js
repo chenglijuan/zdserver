@@ -1,5 +1,5 @@
 /*根据出生日期算出年龄*/
-function jsGetAge(strBirthday){
+function jsMyGetAge(strBirthday){
     if(isEmpty(strBirthday)){
         return "";
     }

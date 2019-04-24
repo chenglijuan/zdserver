@@ -1,10 +1,13 @@
 package com.lemi.msloan.controller;
 
 import com.lemi.msloan.entity.Respect;
+import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.service.RespectService;
+import com.lemi.msloan.service.RosterService;
 import com.lemi.msloan.util.FileUtil;
+import com.lemi.msloan.util.PhoneUtil;
 import com.lemi.msloan.util.PoiTest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
@@ -40,8 +43,11 @@ public class RespectController {
     @Autowired
     private RespectService respectService;
 
+    @Autowired
+    private RosterService rosterService;
+
     @RequestMapping(value = "respectPager")
-    public ModelAndView respectPager(Integer rosterId, Integer loginId) {
+    public ModelAndView respectPager( Integer loginId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/respect_list");
         modelAndView.addObject("loginId", loginId);
@@ -49,10 +55,19 @@ public class RespectController {
     }
 
     @RequestMapping(value = "addRespect")
-    public ModelAndView addRespect(Integer rosterId, Integer loginId) {
+    public ModelAndView addRespect( Integer loginId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/add_respect");
         modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "updateRespect")
+    public ModelAndView updateRespect(Integer respectId, Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/respect/update_respect");
+        modelAndView.addObject("loginId", loginId);
+        modelAndView.addObject("respectId",respectId);
         return modelAndView;
     }
 
@@ -72,7 +87,7 @@ public class RespectController {
      * @param remark 变动情况说明
      * @param issuStandard 发放标准
      * @param auditState  审核状态
-     * @param grantState 发放状态
+     * @param grantState 发放状态 1.已暂停  2. 发放
      * @param loginId  当前登录用户
      * @return
      */
@@ -94,9 +109,6 @@ public class RespectController {
         if (StringUtils.isBlank(birthday)) {
             return new ApiResult(false, "请输入出生年月", -1);
         }
-        if (StringUtils.isBlank(house)) {
-            return new ApiResult(false, "请输入现户籍所在地", -1);
-        }
         if ( null == communityId) {
             return new ApiResult(false, "请输入社区", -1);
         }
@@ -106,6 +118,9 @@ public class RespectController {
             respect.setName(name);
             respect.setType(type);
             respect.setGender(gender);
+            respect.setHouse(house);
+            respect.setBirthday(birthday);
+            respect.setCommunityId(communityId);
             respect.setCommunityName(communityName);
             respect.setDynamicYearMonth(dynamicYearMonth);
             respect.setGrantTime(grantTime);
@@ -115,7 +130,84 @@ public class RespectController {
             respect.setAuditState(auditState);
             respect.setGrantState(grantState);
             respect.setChangeState(changeState);
+            respect.setAuditState(1);
+            respect.setOperator(loginId);
+            respect.setCreateTime(new Date());
             respectService.save(respect);
+            return new ApiResult(true, "操作成功", 0,null);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1,null);
+        }
+    }
+
+    /**
+     *
+     * @param idCard
+     * @param name
+     * @param gender
+     * @param birthday
+     * @param type
+     * @param house
+     * @param communityId
+     * @param communityName
+     * @param dynamicYearMonth
+     * @param grantTime
+     * @param phone
+     * @param remark
+     * @param issuStandard
+     * @param auditState
+     * @param grantState
+     * @param loginId
+     * @param changeState
+     * @return
+     */
+    @RequestMapping(value = "updateRespectData")
+    @ResponseBody
+    public ApiResult updateRespectData(Integer respectId,String idCard, String name, Integer gender, String birthday,Integer type, String house,
+                                       Integer communityId, String communityName,String dynamicYearMonth,String grantTime,String phone,
+                                       String remark,Integer issuStandard, Integer auditState,Integer grantState,Integer loginId,Integer changeState)
+    {
+        if (StringUtils.isBlank(idCard)) {
+            return new ApiResult(false, "请输入身份证号码", -1);
+        }
+        if (StringUtils.isBlank(name)) {
+            return new ApiResult(false, "请输入姓名", -1);
+        }
+        if (gender == null ) {
+            return new ApiResult(false, "请输入性别", -1);
+        }
+        if (StringUtils.isBlank(birthday)) {
+            return new ApiResult(false, "请输入出生年月", -1);
+        }
+        if ( null == communityId) {
+            return new ApiResult(false, "请输入社区", -1);
+        }
+        try{
+            Respect respect = respectService.get(respectId);
+            if(respect == null){
+                return new ApiResult(false, "记录不存在", -1);
+            }
+            respect.setIdCard(idCard);
+            respect.setName(name);
+            respect.setType(type);
+            respect.setGender(gender);
+            respect.setHouse(house);
+            respect.setBirthday(birthday);
+            respect.setCommunityId(communityId);
+            respect.setCommunityName(communityName);
+            respect.setDynamicYearMonth(dynamicYearMonth);
+            respect.setGrantTime(grantTime);
+            respect.setPhone(phone);
+            respect.setRemark(remark);
+            respect.setIssuStandard(issuStandard);
+            respect.setAuditState(auditState);
+            respect.setGrantState(grantState);
+            respect.setChangeState(changeState);
+            respect.setAuditState(1);
+            respect.setOperator(loginId);
+            respect.setUpdateTime(new Date());
+            respectService.update(respect);
             return new ApiResult(true, "操作成功", 0,null);
         } catch (Exception e){
             e.printStackTrace();
@@ -151,17 +243,20 @@ public class RespectController {
             if(!StringUtils.isBlank(phone)){
                 respectRequest.setPhone(phone);
             }
+            if(!StringUtils.isBlank(grantTimes)){
+                grantTimes = grantTimes.replaceAll(" ","");
+                String beginTimes = grantTimes.substring(0,10);
+                String endTimes = grantTimes.substring(11,grantTimes.length());
+                respectRequest.setGrantBeginTime(beginTimes);
+                respectRequest.setGrantEndTime(endTimes);
+            }
             respectRequest.setChangeState(changeState);
             respectRequest.setCommunityId(communityId);
             respectRequest.setPager(pageNum,pageSize);
             List<Respect> list = respectService.selectRespectPager(respectRequest);
-
             Integer count = respectService.selectRespectCount(respectRequest);
-
             Map<String, Object> map = new HashMap<>();
-
             map.put("list", list);
-
             map.put("count", count);
             if(count != null && count.intValue() > 0){
                 Float totalPage = count * 1.0f / pageSize;
@@ -170,6 +265,26 @@ public class RespectController {
                 map.put("totalPage",1);
             }
             return new ApiResult(true, "操作成功", 0,map);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1,null);
+        }
+    }
+
+    /**
+     * 根据id获取数据
+     * @param respectId
+     * @return
+     */
+    @RequestMapping(value = "getRespectById")
+    @ResponseBody
+    public ApiResult getRespectById(Integer respectId) {
+        try{
+            if(respectId == null){
+                return new ApiResult(false, "参数不能为空", -1,null);
+            }
+            Respect respect = respectService.get(respectId);
+            return new ApiResult(true, "操作成功", 0,respect);
         }catch (Exception e){
             e.printStackTrace();
             return new ApiResult(false, "操作失败", -1,null);
@@ -198,12 +313,12 @@ public class RespectController {
             if (!FileUtil.checkExcelVaild(source)) {
                 return new ApiResult(false, "文件格式不正确", null);
             }
-            List<Respect> orders = new ArrayList<Respect>();
+            List<Respect> respects = new ArrayList<Respect>();
             Workbook wb = null;
             Sheet sheet = null;
             Row row = null;
             String cellData = null;
-            String cloumns[] = {"订单ID", "客户姓名", "手机号码", "身份证号", "产品类型", "审核状态"};
+            String cloumns[] = {"姓名","性别", "出生年月", "身份证号", "户籍所在地", "联系电话"};
             wb = PoiTest.readExcel(source.getPath());
             int successCount = 0;
             int errorCount = 0;
@@ -213,44 +328,59 @@ public class RespectController {
                 //获取最大行数
                 int rownum = sheet.getPhysicalNumberOfRows();
                 //获取第一行
-                /*for (int i = 2; i < rownum; i++) {
+               labe: for (int i = 2; i < rownum; i++) {
                     row = sheet.getRow(i);
                     if (row != null) {
-                        Order temp = new Order();
+                        Respect temp = new Respect();
                         for (int j = 0; j < 6; j++) {
                             cellData = (String) PoiTest.getCellFormatValue(row.getCell(j));
-                            if ("订单ID".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())){
-                                    temp.setId(Integer.parseInt(cellData.trim()));
+                            if ("姓名".equals(cloumns[j])) {
+                                if (!StringUtils.isBlank(cellData.trim()))
+                                {
+                                    temp.setName(cellData.trim());
+                                } else{
+                                    continue labe;
                                 }
                             }
-                            if ("审核状态".equals(cloumns[j])) {
-
+                            if ("性别".equals(cloumns[j])) {
                                 String cellDataStr = cellData.trim();
                                 if (!StringUtils.isBlank(cellDataStr)){
-                                    cellDataStr = MsState.getOrderState(cellDataStr);
-                                    System.out.println("cellDataStr="+cellDataStr);
-                                    if ("资料审核中".equals(cellDataStr)){
-                                        temp.setState(1);
-                                    }else if ("审批通过".equals(cellDataStr)){
-                                        temp.setState(2);
-                                    }else if ("审批未通过".equals(cellDataStr)){
-                                        temp.setState(3);
-                                    }else{
-                                        temp.setState(4);
+                                    if ("男".equals(cellDataStr)){
+                                        temp.setGender(1);
+                                    }else {
+                                        temp.setGender(2);
                                     }
-                                }else {
-                                    temp.setState(4);
+                                }
+                            }
+                            if("出生年月".equals(cloumns[j])){
+                                if (!StringUtils.isBlank(cellData.trim()))
+                                    temp.setBirthday(cellData.trim());
+                            }
+                            if("身份证号".equals(cloumns[j])){
+                                if (!StringUtils.isBlank(cellData.trim()))
+                                {
+                                    temp.setIdCard(cellData.trim());
+                                } else{
+                                    continue labe;
+                                }
+                            }
+                            if("户籍所在地".equals(cloumns[j])){
+                                if (!StringUtils.isBlank(cellData.trim()))
+                                    temp.setHouse(cellData.trim());
+                            }
+                            if("联系电话".equals(cloumns[j])){
+                                if (PhoneUtil.isMobileNO(cellData) || PhoneUtil.isPhone(cellData)) {
+                                    temp.setPhone(cellData.trim());
                                 }
                             }
                         }
-                        orders.add(temp);
+                        respects.add(temp);
                     } else {
                         return new ApiResult(false, "文件格式有误", -1, null);
                     }
                 }
             }
-            for (Order item:orders){
+           /* for (Order item:orders){
                 if (item.getId() != null){
                     Order order = orderService.get(item.getId());
                     if (order != null){
@@ -283,7 +413,7 @@ public class RespectController {
                 }
             }
             successCount = orders.size()-errorCount;*/
-            }
+            //}
             return new ApiResult(true, "共"+orders.size()+"条记录，成功" + successCount + "条,失败" + errorCount + "条", 0, null);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -296,13 +426,13 @@ public class RespectController {
      * @param response
      * @param session
      */
-    @RequestMapping(value = "downExcel")
+    @RequestMapping(value = "downRespectExcel")
     @ResponseBody
     public void downExcel(HttpServletResponse response, HttpSession session) {
         try {
             String rootPath = session.getServletContext().getRealPath("/");
             String uploadPath = rootPath + "temp/";
-            String name = "account.xls";
+            String name = "respectUpload.xlsx";
             String path = uploadPath + name;
             File file = new File(path);
             // 取得文件名。

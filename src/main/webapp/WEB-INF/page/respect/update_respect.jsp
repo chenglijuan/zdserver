@@ -9,7 +9,7 @@
        
     <base href="<%=basePath%>">
        
-     <title>新增尊老金</title>
+     <title>修改尊老金</title>
     <meta http-equiv="pragma" content="no-cache">
         
     <meta http-equiv="cache-control" content="no-cache">
@@ -217,7 +217,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/respectPager?loginId=${loginId}">列表</a></li>
-                        <li class="breadcrumb-item active">新增</li>
+                        <li class="breadcrumb-item active">修改</li>
                     </ol>
                 </div>
             </div>
@@ -228,6 +228,7 @@
             <!-- Start Page Content -->
             <!-- ============================================================== -->
             <!-- Row -->
+            <input type="hidden" id="respectId" value="${respectId}"/>
             <div class="row">
                 <!-- Column -->
                 <div class="col-lg-8 col-xlg-9 col-md-7">
@@ -242,7 +243,7 @@
                                 <div class="form-group form-control-line">
                                     <label for="gender" class="col-md-3"><span style="color: red">*</span>性别</label>
                                     <select class="form-control col-md-8" id="gender">
-                                        <option value="1" selected>男</option>
+                                        <option value="1">男</option>
                                         <option value="2">女</option>
                                     </select>
                                 </div>
@@ -407,11 +408,6 @@
         laydate.render({
             elem: '#grantTimeStr'
         });
-        findAllCommunity();
-
-        var loginId = $("#loginId").val();
-        verification(loginId);
-
         laydate.render({
             elem: '#birthday' //指定元素
             //控件选择完毕后的回调,点击日期、清空、现在、确定均会触发。
@@ -421,7 +417,11 @@
                 setIssuStandard(age);
             }
         });
+        findAllCommunity();
+        getRespectById();
 
+        var loginId = $("#loginId").val();
+        verification(loginId);
     })
 
     function verification(loginId) {
@@ -456,13 +456,14 @@
         var phone = $("#phone").val();
         var house = $("#house").val();
         var communityId = $("#communityId").val();
-        var communityName = $("#communityId option:selected").text();
         var grantTimeStr = $("#grantTimeStr").val();
         var dynamicYearMonth = $("#dynamicYearMonth").val();
         var changeState = $("#changeState").val();
         var issuStandard = $("#issuStandard").val();
         var remark = $("#remark").val();
         var grantState = $("#grantState").val();
+        var respectId = $("#respectId").val();
+        var communityName = $("#communityId option:selected").text();
 
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
@@ -488,7 +489,8 @@
             popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-        $.post("<%=basePath%>respect/insertRespect", {
+        $.post("<%=basePath%>respect/updateRespectData", {
+            "respectId":respectId,
             "idCard": idCard,
             "name": name,
             "gender": gender,
@@ -496,8 +498,8 @@
             "type": 1,
             "phone": phone,
             "house": house,
+            "communityName":communityName,
             "communityId": communityId,
-            "communityName": communityName,
             "grantTime": grantTimeStr,
             "dynamicYearMonth": dynamicYearMonth,
             "changeState": changeState,
@@ -514,7 +516,31 @@
         })
     })
 
-    
+    function getRespectById() {
+        var respectId = $("#respectId").val();
+        $.post("<%=basePath%>respect/getRespectById",{"respectId":respectId},function (data) {
+            var object = data.data;
+            $("#name").val(object.name);
+            $("#gender").val(object.gender);
+            $("#idCard").val(object.idCard);
+            $("#birthday").val(object.birthday);
+            if(object.birthday){
+                var age = jsGetAge(object.birthday);
+                $("#age").val(age);
+                setIssuStandard(age);
+            }
+            $("#phone").val(object.phone);
+            $("#house").val(object.house);
+            $("#communityId").val(object.communityId);
+            $("#grantTimeStr").val(object.grantTime);
+            $("#dynamicYearMonth").val(object.dynamicYearMonth);
+            $("#changeState").val(object.changeState);
+            $("#grantState").val(object.grantState);
+            $("#remark").val(object.remark);
+        })
+    }
+
+
     function setIssuStandard(age) {
         if(age < 70){
             $("#issuStandard").val(0);
@@ -528,6 +554,7 @@
             $("#issuStandard").val(1000);
         }
     }
+
 
 </script>
 </body>

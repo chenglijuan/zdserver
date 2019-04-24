@@ -256,25 +256,15 @@
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="grantTimes">起始发放时间：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="form-control" id="grantTimes" placeholder=" - ">
+                            <input type="text" class="form-control" id="grantTimes" placeholder="--">
                         </div>
                     </div>
-
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="changeState">变动情况：</label>
                         <select class="form-control" id="changeState">
                             <option selected value="">==请选择==</option>
                             <option value="1">迁出</option>
                             <option value="2">死亡</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="ageRange">年龄段选择：</label>
-                        <select class="form-control" id="ageRange">
-                            <option selected value="">==请选择==</option>
-                            <option value="1">50-59</option>
-                            <option value="2">60-69</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
@@ -295,6 +285,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
+                            <a href="<%=basePath%>respect/downRespectExcel" class="btn btn-info">模板下载</a>
                             <button type="button" class="btn btn-info">批量导入</button>
                             <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增
                             </button>
@@ -307,7 +298,6 @@
                     </div>
                 </div>
             </div>
-            <input type="text" id="totalPage">
             <div style="text-align: center">
                 <ul id="pageLimit"></ul>
             </div>
@@ -366,7 +356,7 @@
 <script src="<%=basePath%>js/util.js"></script>
 <script src="<%=basePath%>laydate/laydate.js"></script>
 <script>
-    var pageSize = 2;
+    var pageSize = 10;
     $(function () {
 
         laydate.render({
@@ -381,64 +371,14 @@
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
+
             if (data.code == -1){
                 alert(data.message);
                 window.location.href="<%=basePath%>/login.jsp";
             }
         });
     }
-    $('#pageLimit').bootstrapPaginator({
-        currentPage: 1,//当前的请求页面。
-        totalPages: 5,//一共多少页。
-        size: "normal",//应该是页眉的大小。
-        bootstrapMajorVersion: 3,//bootstrap的版本要求。
-        alignment: "right",
-        numberOfPages: pageSize,//一页列出多少数据。
-        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-            switch (type) {
-                case "first":
-                    return "首页";
-                case "prev":
-                    return "上一页";
-                case "next":
-                    return "下一页";
-                case "last":
-                    return "末页";
-                case "page":
-                    return page;
-            }
-        },
-        onPageClicked: function (event, originalEvent, type, page) {
-            selectExamine(page, pageSize);
-        }
 
-    });
-
-    var options = {
-        currentPage: 1,//当前的请求页面。
-        totalPages: $("#totalPage").val(),//一共多少页。
-        size: "normal",//应该是页眉的大小。
-        bootstrapMajorVersion: 3,//bootstrap的版本要求。
-        alignment: "right",
-        numberOfPages: pageSize,//一页列出多少数据。
-        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-            switch (type) {
-                case "first":
-                    return "首页";
-                case "prev":
-                    return "上一页";
-                case "next":
-                    return "下一页";
-                case "last":
-                    return "末页";
-                case "page":
-                    return page;
-            }
-        },
-        onPageClicked: function (event, originalEvent, type, page) {
-            selectExamine(page, pageSize);
-        }
-    }
 
     $("#search").on("click", function () {
         selectExamine(1, 10);
@@ -473,7 +413,7 @@
             valign: 'middle',
             width: 60,
             formatter: function (value, row, index) {
-                var age = jsGetAge(row.birthday);
+                var age = jsMyGetAge(row.birthday);
                 return isEmpty(age) ? "-" : age;
             }
         };
@@ -587,6 +527,16 @@
                 return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.auditState == 2 ? "发放中" : "-";
             }
         };
+        var o = {
+            field: 'cz',
+            title: '操作',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>";
+            }
+        };
 
         columns.push(a);
         columns.push(b);
@@ -602,6 +552,7 @@
         columns.push(l);
         columns.push(m);
         columns.push(n);
+        columns.push(o);
         var name = $("#name").val();
         var changeState  = $("#changeState").val();
         var idCard = $("#idCard").val();
@@ -622,7 +573,7 @@
             "communityId":communityId
         }, function (data) {
             var list = data.data.list;
-            $("#totalPage").val(data.data.totalPage);
+            var totalPage = data.data.totalPage;
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
@@ -632,8 +583,38 @@
                 fixedNumber: 3,
                 columns: columns
             })
-            $("#pageLimit").bootstrapPaginator(options);
+
+            selectByPager(pageNum,totalPage);
         })
+    }
+
+    function selectByPager(pageNum,totalPage){
+        $('#pageLimit').bootstrapPaginator({
+            currentPage: pageNum,//当前的请求页面。
+            totalPages: totalPage,//一共多少页。
+            size: "normal",//应该是页眉的大小。
+            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            alignment: "right",
+            numberOfPages: pageSize,//一页列出多少数据。
+            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked: function (event, originalEvent, type, page) {
+                selectExamine(page, pageSize);
+            }
+
+        });
     }
 
     $("#addRespect").on("click",function () {
@@ -660,6 +641,9 @@
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
 
+    function updateExamineById(respectId) {
+        window.location.href="<%=basePath%>respect/updateRespect?loginId="+$("#loginId").val()+"&respectId="+respectId;
+    }
 </script>
 </body>
 </html>

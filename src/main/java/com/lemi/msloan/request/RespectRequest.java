@@ -12,6 +12,10 @@ public class RespectRequest extends BaseRequest {
 
     private Integer changeState;
 
+    private String grantBeginTime;
+
+    private String grantEndTime;
+
     public String getIdCard() {
         return idCard;
     }
@@ -50,5 +54,21 @@ public class RespectRequest extends BaseRequest {
 
     public void setChangeState(Integer changeState) {
         this.changeState = changeState;
+    }
+
+    public String getGrantBeginTime() {
+        return grantBeginTime;
+    }
+
+    public void setGrantBeginTime(String grantBeginTime) {
+        this.grantBeginTime = grantBeginTime;
+    }
+
+    public String getGrantEndTime() {
+        return grantEndTime;
+    }
+
+    public void setGrantEndTime(String grantEndTime) {
+        this.grantEndTime = grantEndTime;
     }
 }
