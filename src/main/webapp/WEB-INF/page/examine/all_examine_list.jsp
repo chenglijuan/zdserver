@@ -155,24 +155,31 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
+                            <li id="tab_1" style="display: none">
                                 <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            <li id="tab_2" style="display: none">
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -304,7 +311,7 @@
                             <option value="2">否</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
                         <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId"></select>
                     </div>
@@ -326,7 +333,9 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info">批量导入</button>
+                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
+                            <a class="btn btn-info" href="<%=basePath%>/temp/model2.xlsx" style="color: #fff">模板导出</a>
                             <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
@@ -371,7 +380,8 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>
+<%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
+<script src="<%=basePath%>myjs/jquery.min.js"></script>
 
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
@@ -393,6 +403,7 @@
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 <script src="<%=basePath%>js/bootstrap-table.js"></script>
 <script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
     $(function () {
         selectRosterExamine(1, 10);
@@ -401,10 +412,21 @@
         verification(loginId);
     })
     function verification(loginId) {
-        $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
-            if (data.code == -1){
+        $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
+            if (data.code == -1) {
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                    $("#tab_4").css("display", "none");
+                }
             }
         });
     }
@@ -439,10 +461,10 @@
         selectRosterExamine(1, 10);
     })
 
-    $("#addExamine").on("click",function () {
-        window.location.href="<%=basePath%>roster/addExaminePage?loginId="+$("#loginId").val();
+    $("#addExamine").on("click", function () {
+        window.location.href = "<%=basePath%>roster/addExaminePage?loginId=" + $("#loginId").val();
     })
-    
+
     function selectRosterExamine(pageNum, pageSize) {
         var name = $("#name").val();
         var idCard = $("#idCard").val();
@@ -673,7 +695,7 @@
             width: 120,
             formatter: function (value, row, index) {
 //                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
-                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" :"未审核";
+                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
             }
         };
         var v = {
@@ -693,7 +715,7 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>";
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
             }
         };
         columns.push(a);
@@ -719,7 +741,9 @@
         columns.push(u);
         columns.push(v);
         columns.push(w);
+        var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/findAllExamine", {
+            "loginId":loginId,
             "name": name,
             "idCard": idCard,
             "house": house,
@@ -772,9 +796,33 @@
         //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
-    
+
     function updateExamineById(examineId) {
-        window.location.href="<%=basePath%>examine/updateExaminePager?loginId="+$("#loginId").val()+"&examineId="+examineId;
+        window.location.href = "<%=basePath%>examine/updateExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
+    }
+
+    function uploadData(fileObj) {
+        var allowExtention = ".xlsx,.xls";
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        if(allowExtention.indexOf(extention) > -1){
+            $.ajaxFileUpload({
+                url: '<%=basePath%>examine/importExamine',
+                type: 'post',
+                data : {
+                    "loginId":$("#loginId").val()
+                },
+                secureuri: false,
+                fileElementId: "file",
+                dataType: 'json',
+                success: function(data, status){
+                    console.log(data);
+                    alert(data);
+                }
+            });
+        }else{
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = "";
+        }
     }
 </script>
 </body>

@@ -142,11 +142,17 @@
                             <li>
                                 <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
+                            <li id="tab_1" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            <li id="tab_2" style="display: none">
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -254,6 +260,16 @@
             if (data.code == -1){
                 alert(data.message);
                 window.location.href="<%=basePath%>/login.jsp";
+            }else {
+                if (data.data.type == 1){
+                    $("#tab_1").css("display","block");
+                    $("#tab_2").css("display","block");
+                    $("#tab_3").css("display","none");
+                }else if (data.data.type == 2){
+                    $("#tab_1").css("display","none");
+                    $("#tab_2").css("display","none");
+                    $("#tab_3").css("display","block");
+                }
             }
         });
     }

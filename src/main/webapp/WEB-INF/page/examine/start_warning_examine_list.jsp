@@ -169,14 +169,17 @@
                                    class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
+                            <li id="tab_1" style="display: none">
                                 <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
+                            <li id="tab_2" style="display: none">
                                 <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -299,7 +302,7 @@
                             <option value="2">否</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
                         <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId"></select>
                     </div>
@@ -396,6 +399,17 @@
             if (data.code == -1) {
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                    $("#tab_4").css("display", "none");
+                }
             }
         });
     }
@@ -705,8 +719,9 @@
         columns.push(u);
         columns.push(v);
         columns.push(w);
-
+        var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/getExamineWillStart", {
+            "loginId":loginId,
             "name": name,
             "idCard": idCard,
             "house": house,
@@ -761,7 +776,7 @@
     }
 
     function examineById(examineId) {
-        window.location.href="<%=basePath%>examine/auditExaminePager?loginId="+$("#loginId").val()+"&examineId="+examineId;
+        window.location.href = "<%=basePath%>examine/auditExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
     }
 </script>
 </body>

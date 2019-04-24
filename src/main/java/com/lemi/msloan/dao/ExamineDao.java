@@ -19,4 +19,6 @@ public interface ExamineDao extends BaseDao<Examine> {
     List<Examine> getExamineWillStop(ExamineRequest examineRequest);
 
     Integer getExamineWillStopCount(ExamineRequest examineRequest);
+
+    Examine getBeanByIdCard(ExamineRequest examineRequest);
 }

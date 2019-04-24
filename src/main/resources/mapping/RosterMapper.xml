@@ -24,9 +24,9 @@
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Roster" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
     </resultMap>
-    <resultMap id="BaseResultMapWithExamine" type="com.lemi.msloan.entity.Roster" extends="BaseResultMapWithAge">
-        <association property="examine" column="examine_id" javaType="com.lemi.msloan.entity.Examine"
-                     select="tbl_examine.selectByPrimaryKey"></association>
+    <resultMap id="BaseResultMapWithCommunity" type="com.lemi.msloan.entity.Roster" extends="BaseResultMapWithAge">
+        <association property="community" column="community_id" javaType="com.lemi.msloan.entity.Community"
+                     select="tbl_community.selectByPrimaryKey"></association>
     </resultMap>
     <sql id="Base_Column_List">
     id, id_card, name, gender, birthday, address, village, is_move, community_id, community_name, 
@@ -261,7 +261,7 @@
         limit 1
     </select>
 
-    <select id="selectRoster" parameterType="com.lemi.msloan.request.RosterRequest" resultMap="BaseResultMapWithAge">
+    <select id="selectRoster" parameterType="com.lemi.msloan.request.RosterRequest" resultMap="BaseResultMapWithCommunity">
         select
         <include refid="Base_Column_List"/>
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age

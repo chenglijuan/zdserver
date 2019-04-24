@@ -132,24 +132,31 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
-                            <li>
+                            <li id="tab_1" style="display: none">
                                 <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            <li id="tab_2" style="display: none">
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
+                            </li>
+                            <li id="tab_3" style="display: none">
+                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -201,7 +208,8 @@
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">新增花名册</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList?loginId=${loginId}">列表</a></li>
+                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList?loginId=${loginId}">列表</a>
+                        </li>
                         <li class="breadcrumb-item active">新增</li>
                     </ol>
                 </div>
@@ -280,7 +288,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="tab_4" style="display: none">
                                     <label class="col-sm-12"><span style="color: red">*</span>现所属社区</label>
                                     <div class="col-sm-12">
                                         <select class="form-control form-control-line" id="community"></select>
@@ -381,6 +389,18 @@
             if (data.code == -1) {
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                    $("#tab_4").css("display", "block");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                    $("#tab_4").css("display", "none");
+                }
             }
         });
     }
@@ -420,6 +440,8 @@
         var house = $("#house").val();
 
         var remark = $("#remark").val();
+
+        var loginId = $("#loginId").val();
 
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
@@ -467,6 +489,7 @@
         }
 
         $.post("<%=basePath%>roster/insertRoster", {
+            "loginId":loginId,
             "idCard": idCard,
             "name": name,
             "gender": gender,

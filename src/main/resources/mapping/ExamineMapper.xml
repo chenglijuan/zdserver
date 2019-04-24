@@ -514,9 +514,9 @@
         state = 5
         AND
         (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 50)
+        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
         OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 40)
+        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
         )
         <if test="house != null">
             AND house LIKE '%${house}%'
@@ -644,5 +644,57 @@
         <if test="start != null and end != null">
             LIMIT #{start},#{end}
         </if>
+    </select>
+    <select id="getExamineWillStopCount" parameterType="com.lemi.msloan.request.ExamineRequest" resultType="int">
+        SELECT
+        count(*)
+        FROM zd_examine
+        WHERE
+        state != 5
+        AND
+        (
+        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 60)
+        OR
+        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
+        )
+        <if test="house != null">
+            AND house LIKE '%${house}%'
+        </if>
+        <if test="name != null">
+            AND name LIKE '%${name}%'
+        </if>
+        <if test="idCard != null">
+            AND id_card LIKE '%${idCard}%'
+        </if>
+        <if test="comping != null">
+            AND comping = #{comping}
+        </if>
+        <if test="age != null">
+            AND TIMESTAMPDIFF(YEAR,birthday,CURDATE()) = #{age}
+        </if>
+        <if test="changes != null">
+            AND changes = #{changes}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="unemployment != null">
+            AND unemployment = #{unemployment}
+        </if>
+        <if test="isInsured != null">
+            AND is_Insured = #{isInsured}
+        </if>
+        <if test="communityId != null">
+            AND community_id = #{communityId}
+        </if>
+    </select>
+    <select id="getBeanByIdCard" parameterType="com.lemi.msloan.request.ExamineRequest" resultMap="BaseResultMapWithAge">
+        SELECT
+        <include refid="Base_Column_List"/>
+        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
+        FROM
+        zd_examine
+        WHERE id_card = #{idCard}
+        limit 1
     </select>
 </mapper>

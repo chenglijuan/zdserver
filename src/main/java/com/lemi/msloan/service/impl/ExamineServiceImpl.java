@@ -116,6 +116,14 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
+    public Examine getBeanByIdCard(String idCard) {
+        ExamineRequest examineRequest = new ExamineRequest();
+        examineRequest.setIdCard(idCard);
+
+        return examineDao.getBeanByIdCard(examineRequest);
+    }
+
+    @Override
     public List<Examine> getExamineWillStart(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){

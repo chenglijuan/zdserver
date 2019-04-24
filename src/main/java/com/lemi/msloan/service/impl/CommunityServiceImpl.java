@@ -35,4 +35,11 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community> implements 
         communityRequest.setUserId(userId);
         return communityDao.selectByUserId(communityRequest);
     }
+
+    @Override
+    public Community getByName(String communityName) {
+        CommunityRequest communityRequest = new CommunityRequest();
+        communityRequest.setName(communityName);
+        return communityDao.getByName(communityRequest);
+    }
 }

@@ -43,4 +43,9 @@ public class ExamineDaoImpl extends BaseDaoImpl<Examine> implements ExamineDao {
     public Integer getExamineWillStopCount(ExamineRequest examineRequest) {
         return sqlSessionTemplate.selectOne("tbl_examine.getExamineWillStopCount",examineRequest);
     }
+
+    @Override
+    public Examine getBeanByIdCard(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectOne("tbl_examine.getBeanByIdCard",examineRequest);
+    }
 }
