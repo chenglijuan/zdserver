@@ -514,9 +514,9 @@
         state = 5
         AND
         (
-        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 50)
+        (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
         OR
-        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) = 40)
+        (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
         )
         <if test="house != null">
             AND house LIKE '%${house}%'
@@ -687,5 +687,14 @@
         <if test="communityId != null">
             AND community_id = #{communityId}
         </if>
+    </select>
+    <select id="getBeanByIdCard" parameterType="com.lemi.msloan.request.ExamineRequest" resultMap="BaseResultMapWithAge">
+        SELECT
+        <include refid="Base_Column_List"/>
+        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
+        FROM
+        zd_examine
+        WHERE id_card = #{idCard}
+        limit 1
     </select>
 </mapper>

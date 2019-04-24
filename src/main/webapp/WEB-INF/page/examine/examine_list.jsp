@@ -775,6 +775,10 @@
         //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
+
+    function examineById(examineId) {
+        window.location.href = "<%=basePath%>examine/auditExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
+    }
 </script>
 </body>
 </html>

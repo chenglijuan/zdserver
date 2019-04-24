@@ -9,7 +9,7 @@
        
     <base href="<%=basePath%>">
         
-        <title>编辑征地人员社会救济金</title>
+        <title>审核征地人员社会救济金</title>
         
         
     <meta http-equiv="pragma" content="no-cache">
@@ -210,7 +210,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}">列表</a>
                         </li>
-                        <li class="breadcrumb-item active">编辑</li>
+                        <li class="breadcrumb-item active">审核</li>
                     </ol>
                 </div>
             </div>
@@ -516,8 +516,10 @@
                         <div class="card-block">
                             <form class="form-horizontal form-material">
                                 <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">确定</button>
+                                    <div class="col-sm-12" style="text-align: center">
+                                        <button type="button" class="btn btn-info" onclick="examineSH(1)">审核通过</button>
+                                        <button type="button" class="btn btn-success" onclick="examineSH(2)">审核不通过</button>
+                                        <button type="button" class="btn btn-warning" onclick="examineSH(3)">待定</button>
                                     </div>
                                 </div>
                             </form>
@@ -650,71 +652,6 @@
         }
     })
 
-    $("#submit").on("click", function () {
-        var name = $("#name").val();
-        var gender = $("#gender").val();
-        var birthday = $("#birthday").val();
-        var idCard = $("#idCard").val();
-        var phone = $("#phone").val();
-        var house = $("#house").val();
-        var address = $("#address").val();
-        var communityId = $("#community").val();
-        var villageTime = $("#villageTime").val();
-        var villageAge = $("#villageAge").val();
-        var village = $("#village").val();
-        var cdState = $("#cdState").val();
-        var startTime = $("#startTime").val();
-        var stopTime = $("#stopTime").val();
-        var dtxsny = $("#dtxsny").val();
-        var ffbj = $("#ffbj").val();
-        var batch = $("#batch").val();
-        var isInsured = $("#isInsured").val();
-        var unemployment = $("#unemployment").val();
-        var unStart = $("#unStart").val();
-        var unEnd = $("#unEnd").val();
-        var comping = $("#comping").val();
-        var changes = $("#changes").val();
-        var status = $("#status").val();
-        var stopType = $("#stopType").val();
-        var stopReason = $("#stopReason").val();
-        var isMove = $("#isMove").val();
-        var examineId = $("#examineId").val();
-        var loginId = $("#loginId").val();
-        $.post("<%=basePath%>examine/updateExamineById", {
-            "loginId":loginId,
-            "examineId": examineId,
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "idCard": idCard,
-            "phone": phone,
-            "house": house,
-            "address": address,
-            "communityId": communityId,
-            "villageTime": villageTime,
-            "villageAge": villageAge,
-            "village": village,
-            "cdState": cdState,
-            "startTime": startTime,
-            "stopTime": stopTime,
-            "dtxsny": dtxsny,
-            "ffbj": ffbj,
-            "batch": batch,
-            "isInsured": isInsured,
-            "unemployment": unemployment,
-            "unStart": unStart,
-            "unEnd": unEnd,
-            "comping": comping,
-            "changes": changes,
-            "status": status,
-            "stopType": stopType,
-            "stopReason": stopReason,
-            "isMove": isMove
-        }, function (data) {
-            alert(data.message);
-        });
-    })
-
     function getExamineById() {
         var examineId = $("#examineId").val();
         $.post("<%=basePath%>examine/getExamineById", {"examineId": examineId}, function (data) {
@@ -769,6 +706,36 @@
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+    }
+    function examineSH(state) {
+
+        var isInsured = $("#isInsured").val();
+        var unemployment = $("#unemployment").val();
+        var unStart = $("#unStart").val();
+        var unEnd = $("#unEnd").val();
+        var comping = $("#comping").val();
+        var changes = $("#changes").val();
+        var status = $("#status").val();
+        var stopType = $("#stopType").val();
+        var stopReason = $("#stopReason").val();
+        var examineId = $("#examineId").val();
+        var loginId = $("#loginId").val();
+        $.post("<%=basePath%>examine/examineSH", {
+            "loginId": loginId,
+            "examineId": examineId,
+            "state":state,
+            "isInsured": isInsured,
+            "unemployment": unemployment,
+            "unStart": unStart,
+            "unEnd": unEnd,
+            "comping": comping,
+            "changes": changes,
+            "status": status,
+            "stopType": stopType,
+            "stopReason": stopReason
+        }, function (data) {
+            alert(data.message);
+        })
     }
 </script>
 </body>

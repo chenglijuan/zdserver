@@ -324,7 +324,9 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info">批量导入</button>
+                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
+                            <a class="btn btn-info" href="<%=basePath%>/temp/model2.xlsx" style="color: #fff">模板导出</a>
                             <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
@@ -369,7 +371,8 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>
+<%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
+<script src="<%=basePath%>myjs/jquery.min.js"></script>
 
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
@@ -391,6 +394,7 @@
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 <script src="<%=basePath%>js/bootstrap-table.js"></script>
 <script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
     $(function () {
         selectRosterExamine(1, 10);
@@ -786,6 +790,30 @@
 
     function updateExamineById(examineId) {
         window.location.href = "<%=basePath%>examine/updateExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
+    }
+
+    function uploadData(fileObj) {
+        var allowExtention = ".xlsx,.xls";
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        if(allowExtention.indexOf(extention) > -1){
+            $.ajaxFileUpload({
+                url: '<%=basePath%>examine/importExamine',
+                type: 'post',
+                data : {
+                    "loginId":$("#loginId").val()
+                },
+                secureuri: false,
+                fileElementId: "file",
+                dataType: 'json',
+                success: function(data, status){
+                    console.log(data);
+                    alert(data);
+                }
+            });
+        }else{
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = "";
+        }
     }
 </script>
 </body>

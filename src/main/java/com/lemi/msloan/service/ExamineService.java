@@ -11,6 +11,8 @@ public interface ExamineService extends BaseService<Examine> {
 
     Integer getByIdCard(String idCard);
 
+    Examine getBeanByIdCard(String idCard);
+
     List<Examine> getExamineWillStart(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum);
 
     Integer getExamineWillStartCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId);
