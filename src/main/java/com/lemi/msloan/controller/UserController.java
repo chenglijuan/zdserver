@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by Administrator on 2019/4/18.
  */
@@ -33,7 +35,7 @@ public class UserController {
      */
     @RequestMapping(value = "login")
     @ResponseBody
-    public ApiResult login(String username, String password) {
+    public ApiResult login(String username, String password, HttpSession session) {
         if (StringUtils.isBlank(username)) {
             return new ApiResult(false, "请输入用户名", -1);
         }
@@ -48,6 +50,7 @@ public class UserController {
             return new ApiResult(false, "用户名或密码错误", -1);
         }
         Integer userId = user.getId();
+        session.setAttribute("loginId",userId);
         return new ApiResult(true, "登录成功", 0, userId);
     }
 
