@@ -20,4 +20,9 @@ public class RespectDaoImpl extends BaseDaoImpl<Respect> implements RespectDao {
     public Integer selectRespectCount(RespectRequest request) {
         return sqlSessionTemplate.selectOne("tbl_respect.selectRespectCount",request);
     }
+
+    @Override
+    public int insertBatchData(List<Respect> list) {
+        return sqlSessionTemplate.insert("tbl_respect.insertBatchData",list);
+    }
 }

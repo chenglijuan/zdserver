@@ -28,4 +28,9 @@ public class RosterDaoImpl extends BaseDaoImpl<Roster> implements RosterDao {
     public Roster getByExamineId(RosterRequest rosterRequest) {
         return sqlSessionTemplate.selectOne("tbl_roster.getByExamineId",rosterRequest);
     }
+
+    @Override
+    public List<String> getAllIdCards() {
+        return sqlSessionTemplate.selectList("tbl_roster.getAllIdCards");
+    }
 }

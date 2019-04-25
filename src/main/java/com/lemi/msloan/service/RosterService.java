@@ -12,4 +12,7 @@ public interface RosterService extends BaseService<Roster> {
     Integer selectRoster(String name, String idCard, Integer communityId, Integer isMove, Integer status, Integer age);
 
     Roster getByExamineId(Integer examineId);
+
+    //获取所有的身份证号码
+    List<String> getAllIdCards();
 }

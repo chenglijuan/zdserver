@@ -71,6 +71,32 @@ public class RespectController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "countryPager")
+    public ModelAndView countryPager( Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/respect/country_list");
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "addConntryRespect")
+    public ModelAndView addConntryRespect( Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/respect/add_country_respect");
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "updateCountryRespect")
+    public ModelAndView updateCountryRespect(Integer respectId, Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/respect/update_country_respect");
+        modelAndView.addObject("loginId", loginId);
+        modelAndView.addObject("respectId",respectId);
+        return modelAndView;
+    }
+
+
     /**
      * 新增数据
      * @param idCard 身份证号码
@@ -226,12 +252,12 @@ public class RespectController {
      * @param pageSize
      * @param changeState 变动情况说明1.迁出 2.死亡
      * @param grantTimes  起始发放时间
-     * @param ageRange  年龄段
      * @return
      */
     @RequestMapping(value = "selectRespect")
     @ResponseBody
-    public ApiResult selectRoster(String name, String idCard, Integer communityId, String phone, Integer pageNum, Integer pageSize,Integer changeState,String grantTimes,String ageRange) {
+    public ApiResult selectRoster(String name, String idCard, Integer communityId, String phone, Integer pageNum, Integer pageSize,
+                                  Integer changeState,String grantTimes,Integer type) {
         try{
             RespectRequest respectRequest = new RespectRequest();
             if(!StringUtils.isBlank(name)){
@@ -250,6 +276,7 @@ public class RespectController {
                 respectRequest.setGrantBeginTime(beginTimes);
                 respectRequest.setGrantEndTime(endTimes);
             }
+            respectRequest.setType(type);
             respectRequest.setChangeState(changeState);
             respectRequest.setCommunityId(communityId);
             respectRequest.setPager(pageNum,pageSize);
@@ -380,41 +407,19 @@ public class RespectController {
                     }
                 }
             }
-           /* for (Order item:orders){
-                if (item.getId() != null){
-                    Order order = orderService.get(item.getId());
-                    if (order != null){
-                        //该订单积分未添加  给这个人添加积分
-                        if(item.getState() != null && item.getState().intValue() !=4){
-                            //该订单积分未添加  给这个人的推荐人添加积分
-                            if(order.getIntegral() == null  || order.getIntegral().intValue() == 0){
-                                Account account = accountService.get(order.getAccountId());
-                                //获取上推荐人
-                                Integer superId = account.getParent();
-                                if(superId != null && superId.intValue() != 0){
-                                    Account superAccount = accountService.get(superId);
-                                    Integer remain = superAccount.getIntegral() == null ? 0 : superAccount.getIntegral();
-                                    Integer confIntegral = getConfIntegral();
-                                    order.setIntegral(getConfIntegral());
-                                    superAccount.setIntegral(confIntegral+remain);
-                                    accountService.update(superAccount);
-                                }
-                            }
-                        }
-                        order.setState(item.getState());
-                        orderService.update(order);
-                    }else {
-                        errorCount ++;
-                        continue;
-                    }
-                }else {
-                    errorCount ++;
-                    continue;
+            for (Respect respect:respects ) {
+                List<String> rosterIdCards = rosterService.getAllIdCards();
+                //如果身份证号码存在  设置为农村
+                if(rosterIdCards.contains(respect.getIdCard())){
+                    respect.setType(2);
+                }else{
+                    respect.setType(1);
                 }
             }
-            successCount = orders.size()-errorCount;*/
-            //}
-            return new ApiResult(true, "共"+orders.size()+"条记录，成功" + successCount + "条,失败" + errorCount + "条", 0, null);
+            if(respects != null && respects.size() > 0){
+                respectService.insertBatchData(respects);
+            }
+            return new ApiResult(false, "操作失败", -1, null);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

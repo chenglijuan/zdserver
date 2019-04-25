@@ -96,5 +96,10 @@ public class RosterServiceImpl extends BaseServiceImpl<Roster> implements Roster
         rosterRequest.setExamineId(examineId);
         return rosterDao.getByExamineId(rosterRequest);
     }
+
+    @Override
+    public List<String> getAllIdCards() {
+        return rosterDao.getAllIdCards();
+    }
 }
 

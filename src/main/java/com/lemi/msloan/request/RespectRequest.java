@@ -16,6 +16,8 @@ public class RespectRequest extends BaseRequest {
 
     private String grantEndTime;
 
+    private Integer type;
+
     public String getIdCard() {
         return idCard;
     }
@@ -70,5 +72,13 @@ public class RespectRequest extends BaseRequest {
 
     public void setGrantEndTime(String grantEndTime) {
         this.grantEndTime = grantEndTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

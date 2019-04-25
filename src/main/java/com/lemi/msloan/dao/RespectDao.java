@@ -11,4 +11,7 @@ public interface RespectDao extends BaseDao<Respect> {
 
     Integer selectRespectCount(RespectRequest request);
 
+
+    int insertBatchData(List<Respect> list);
+
 }

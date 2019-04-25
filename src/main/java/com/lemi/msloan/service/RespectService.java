@@ -13,4 +13,6 @@ public interface RespectService extends BaseService<Respect> {
 
     Integer selectRespectCount(RespectRequest request);
 
+    int insertBatchData(List<Respect> list);
+
 }

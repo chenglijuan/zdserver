@@ -13,4 +13,6 @@ public interface RosterDao extends BaseDao<Roster> {
     Integer selectRosterCount(RosterRequest rosterRequest);
 
     Roster getByExamineId(RosterRequest rosterRequest);
+
+    List<String> getAllIdCards();
 }

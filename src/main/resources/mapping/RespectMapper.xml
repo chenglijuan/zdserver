@@ -279,6 +279,9 @@
       <if test="changeState != null">
         and change_state = #{changeState}
       </if>
+      <if test="type != null">
+        and type = #{type}
+      </if>
       <if test="name != null">
         and name like '%${name}%'
       </if>
@@ -306,6 +309,9 @@
       <if test="idCard != null">
         and id_card like '%${idCard}%'
       </if>
+      <if test="type != null">
+        and type = #{type}
+      </if>
       <if test="name != null">
         and name like '%${name}%'
       </if>
@@ -323,6 +329,26 @@
         </if>
     </where>
   </select>
+
+  <insert id="insertBatchData" parameterType="java.util.List">
+    insert into zd_respect ( name, gender,
+    id_card, birthday, type,
+    house, community_id, community_name,
+    dynamic_year_month, grant_time, phone,
+    remark, issu_standard, audit_state,
+    grant_state, create_time,
+    operator,change_state)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.name,jdbcType=VARCHAR}, #{item.gender,jdbcType=INTEGER},
+      #{item.idCard,jdbcType=VARCHAR}, #{item.birthday,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER},
+      #{item.house,jdbcType=VARCHAR}, #{item.communityId,jdbcType=INTEGER}, #{item.communityName,jdbcType=VARCHAR},
+      #{item.dynamicYearMonth,jdbcType=VARCHAR}, #{item.grantTime,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR},
+      #{item.remark,jdbcType=VARCHAR}, #{item.issuStandard,jdbcType=INTEGER}, #{item.auditState,jdbcType=INTEGER},
+      #{item.grantState,jdbcType=INTEGER}, #{item.createTime,jdbcType=TIMESTAMP},
+      #{item.operator,jdbcType=INTEGER},#{item.changeState,jdbcType=INTEGER})
+    </foreach>
+  </insert>
 
 
 </mapper>

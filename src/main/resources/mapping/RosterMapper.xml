@@ -332,4 +332,9 @@
         examine_id = #{examineId}
         limit 1
     </select>
+
+    <select id="getAllIdCards" resultType="java.lang.String">
+        select DISTINCT(id_card) from zd_roster where id_card is not null
+    </select>
+
 </mapper>
