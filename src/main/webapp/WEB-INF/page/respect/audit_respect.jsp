@@ -161,13 +161,17 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
                                    class="waves-effect"><i class="fa fa-user m-r-10"
                                                            aria-hidden="true"></i>农村征地人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -212,12 +216,22 @@
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="row page-titles">
-                <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金新增</h3>
+                <div class="col-md-6 col-8 align-self-center" id="respect" style="display: none">
+                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金审核</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
-                                href="<%=basePath%>respect/respectPager?loginId=${loginId}">列表</a></li>
-                        <li class="breadcrumb-item active">修改</li>
+                                href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a>
+                        </li>
+                        <li class="breadcrumb-item active">审核</li>
+                    </ol>
+                </div>
+                <div class="col-md-6 col-8 align-self-center" id="longevity" style="display: none">
+                    <h3 class="text-themecolor m-b-0 m-t-0">长寿金审核</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a
+                                href="<%=basePath%>respect/longevityPager?loginId=${loginId}&pageType=${pageType}">列表</a>
+                        </li>
+                        <li class="breadcrumb-item active">审核</li>
                     </ol>
                 </div>
             </div>
@@ -228,7 +242,7 @@
             <!-- Start Page Content -->
             <!-- ============================================================== -->
             <!-- Row -->
-            <input type="hidden" id="respectId" value="${respectId}"/>
+
             <div class="row">
                 <!-- Column -->
                 <div class="col-lg-8 col-xlg-9 col-md-7">
@@ -249,7 +263,7 @@
                                 </div>
                                 <div class="form-group form-control-line">
                                     <label class="col-md-3"><span style="color: red">*</span>身份证号</label>
-                                    <input type="text" placeholder="请输入身份证号码"
+                                    <input type="text"  placeholder="请输入身份证号码"
                                            class="form-control col-md-8" id="idCard">
                                 </div>
                                 <div class="form-group form-control-line">
@@ -274,7 +288,7 @@
                                     <input type="text" placeholder="请输入现户籍所在地"
                                            class="form-control col-md-8" name="house" id="house">
                                 </div>
-                                <div class="form-group form-control-line">
+                                <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
                                     <label for="communityId" class="col-md-3"><span
                                             style="color: red">*</span>所属社区：</label>
                                     <select class="form-control col-md-8" id="communityId">
@@ -335,18 +349,31 @@
                                     <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
                                               id="remark"></textarea>
                                 </div>
-
-
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">提交审核</button>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
                 <!-- Column -->
+            </div>
+
+
+            <div class="row">
+                <!-- Column -->
+                <div class="col-lg-8 col-xlg-9 col-md-7">
+                    <div class="card">
+                        <div class="card-block">
+                            <form class="form-horizontal form-material" style="text-align: center">
+                                <div class="form-group" rows="3">
+                                    <label class="col-md-3">备注</label>
+                                    <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
+                                              id="auditRemark"></textarea>
+                                </div>
+                                <button type="button" style="display: none" id="button1"  class="btn btn-success" onclick="examineSH(2)">审核通过</button>
+                                <button type="button" style="display: none" id="button2" class="btn btn-warning" onclick="examineSH(3)">审核不通过</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Row -->
             <!-- ============================================================== -->
@@ -376,6 +403,8 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="respectId" value="${respectId}"/>
+<input type="hidden" id="pageType" value="${pageType}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -404,8 +433,9 @@
 <script src="<%=basePath%>js/util.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
+    var roleType = 2;
     $(function () {
-        laydate.render({
+        /*laydate.render({
             elem: '#grantTimeStr'
         });
         laydate.render({
@@ -416,9 +446,7 @@
                 $("#age").val(age);
                 setIssuStandard(age);
             }
-        });
-        findAllCommunity();
-        getRespectById();
+        });*/
 
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -426,7 +454,22 @@
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
-            if (data.code == -1) {
+            if (data.code == 0) {
+                roleType = data.data.type;
+                //如果是社区管理员默认
+                if (roleType == 1) {
+                    $("#communityIdDiv").show();
+                    findAllCommunity();
+                }
+                getRespectById();
+
+                var pageType = $("#pageType").val();
+                if(pageType == 3){
+                    $("#longevity").show();
+                }else{
+                    $("#respect").show();
+                }
+            } else if (data.code == -1) {
                 window.location.href = "<%=basePath%>/login.jsp";
             }
         });
@@ -434,7 +477,6 @@
 
     function findAllCommunity() {
         $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
-
             if (data.code == 0) {
                 var list = data.data;
                 var code = "<option value=''>请选择</option>";
@@ -443,89 +485,19 @@
                 }
                 $("#communityId").html(code);
             }
-
         });
     }
 
-    $("#submit").on("click", function () {
-
-        var idCard = $("#idCard").val();
-        var name = $("#name").val();
-        var gender = $("#gender").val();
-        var birthday = $("#birthday").val();
-        var phone = $("#phone").val();
-        var house = $("#house").val();
-        var communityId = $("#communityId").val();
-        var grantTimeStr = $("#grantTimeStr").val();
-        var dynamicYearMonth = $("#dynamicYearMonth").val();
-        var changeState = $("#changeState").val();
-        var issuStandard = $("#issuStandard").val();
-        var remark = $("#remark").val();
-        var grantState = $("#grantState").val();
-        var respectId = $("#respectId").val();
-        var communityName = $("#communityId option:selected").text();
-
-        if (idCard == null || idCard == "") {
-            popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (name == null || name == "") {
-            popup({type: 'error', msg: "请输入姓名", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (gender == null || gender == "") {
-            popup({type: 'error', msg: "请选择性别", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (birthday == null || birthday == "") {
-            popup({type: 'error', msg: "请选择出生年月", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (phone == null || phone == "") {
-            popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (communityId == null || communityId == "") {
-            popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        $.post("<%=basePath%>respect/updateRespectData", {
-            "respectId":respectId,
-            "idCard": idCard,
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "type": 1,
-            "phone": phone,
-            "house": house,
-            "communityName":communityName,
-            "communityId": communityId,
-            "grantTime": grantTimeStr,
-            "dynamicYearMonth": dynamicYearMonth,
-            "changeState": changeState,
-            "issuStandard": issuStandard,
-            "remark": remark,
-            "grantState":grantState
-        }, function (data) {
-            if (data.code == 0) {
-                popup({type: "success", msg: "提交成功", delay: 1000});
-                window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}";
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        })
-    })
-
     function getRespectById() {
         var respectId = $("#respectId").val();
-        $.post("<%=basePath%>respect/getRespectById",{"respectId":respectId},function (data) {
+        $.post("<%=basePath%>respect/getRespectById", {"respectId": respectId}, function (data) {
             var object = data.data;
             $("#name").val(object.name);
             $("#gender").val(object.gender);
             $("#idCard").val(object.idCard);
             $("#birthday").val(object.birthday);
-            if(object.birthday){
-                var age = jsGetAge(object.birthday);
+            if (object.birthday) {
+                var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
                 setIssuStandard(age);
             }
@@ -537,9 +509,43 @@
             $("#changeState").val(object.changeState);
             $("#grantState").val(object.grantState);
             $("#remark").val(object.remark);
+
+            var auditState = object.auditState;
+            if(auditState == 1){
+                $("#button1").show();
+                $("#button2").show();
+            } else if(auditState == 2){
+                $("#button2").show();
+            } else if(auditState == 3){
+                $("#button1").show();
+            }
         })
     }
 
+
+    function examineSH(state) {
+        var auditRemark = $("#auditRemark").val();
+        var respectId = $("#respectId").val();
+        var pageType = $("#pageType").val();
+        $.post("<%=basePath%>respect/auditReaspectById", {
+            "loginId": $("#loginId").val(),
+            "respectId": respectId,
+            "remark":auditRemark,
+            "state": state,
+            "pageType":pageType
+        }, function (data) {
+            if (data.code == 0) {
+                console.log(data.data);
+                if(data.data == 3){
+                    window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
+                }else{
+                    window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}&pageType="+pageType;
+                }
+            } else {
+                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+            }
+        });
+    }
 
     function setIssuStandard(age) {
         if(age < 70){
@@ -554,7 +560,6 @@
             $("#issuStandard").val(1000);
         }
     }
-
 
 </script>
 </body>

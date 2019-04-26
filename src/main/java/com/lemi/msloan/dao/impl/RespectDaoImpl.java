@@ -25,4 +25,9 @@ public class RespectDaoImpl extends BaseDaoImpl<Respect> implements RespectDao {
     public int insertBatchData(List<Respect> list) {
         return sqlSessionTemplate.insert("tbl_respect.insertBatchData",list);
     }
+
+    @Override
+    public List<String> getAllIdCards() {
+        return sqlSessionTemplate.selectList("tbl_respect.getAllIdCards");
+    }
 }

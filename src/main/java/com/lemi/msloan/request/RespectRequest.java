@@ -1,5 +1,7 @@
 package com.lemi.msloan.request;
 
+import com.lemi.msloan.util.DateUtil;
+
 public class RespectRequest extends BaseRequest {
 
     private String idCard;
@@ -12,11 +14,17 @@ public class RespectRequest extends BaseRequest {
 
     private Integer changeState;
 
+    private Integer auditState;
+
     private String grantBeginTime;
 
     private String grantEndTime;
 
     private Integer type;
+
+    private  String birthdayBegin;
+
+    private String birthdayEnd;
 
     public String getIdCard() {
         return idCard;
@@ -80,5 +88,29 @@ public class RespectRequest extends BaseRequest {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getBirthdayBegin() {
+        return birthdayBegin;
+    }
+
+    public void setBirthdayBegin(String birthdayBegin) {
+        this.birthdayBegin = birthdayBegin;
+    }
+
+    public String getBirthdayEnd() {
+        return birthdayEnd;
+    }
+
+    public void setBirthdayEnd(String birthdayEnd) {
+        this.birthdayEnd = birthdayEnd;
+    }
+
+    public Integer getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(Integer auditState) {
+        this.auditState = auditState;
     }
 }

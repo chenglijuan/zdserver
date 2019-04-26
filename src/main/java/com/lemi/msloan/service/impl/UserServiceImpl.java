@@ -32,4 +32,9 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
         userRequest.setUsername(username);
         return userDao.getByUsername(userRequest);
     }
+
+    @Override
+    public User getByUserId(Integer userId) {
+        return userDao.getByUserId(userId);
+    }
 }

@@ -14,4 +14,9 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao {
     public User getByUsername(UserRequest userRequest) {
         return sqlSessionTemplate.selectOne("tbl_user.getByUsername",userRequest);
     }
+
+    @Override
+    public User getByUserId(Integer userId) {
+        return sqlSessionTemplate.selectOne("tbl_user.getByUserId",userId);
+    }
 }

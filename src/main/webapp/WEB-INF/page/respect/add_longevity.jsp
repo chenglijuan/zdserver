@@ -161,13 +161,13 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i class="fa fa-user m-r-10"
-                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -213,10 +213,10 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金新增</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">长寿金新增</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
-                                href="<%=basePath%>respect/respectPager?loginId=${loginId}">列表</a></li>
+                                href="<%=basePath%>respect/longevityPager?loginId=${loginId}&pageType=${pageType}">列表</a></li>
                         <li class="breadcrumb-item active">新增</li>
                     </ol>
                 </div>
@@ -273,7 +273,7 @@
                                     <input type="text" placeholder="请输入现户籍所在地"
                                            class="form-control col-md-8" name="house" id="house">
                                 </div>
-                                <div class="form-group form-control-line">
+                                <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
                                     <label for="communityId" class="col-md-3"><span
                                             style="color: red">*</span>所属社区：</label>
                                     <select class="form-control col-md-8" id="communityId">
@@ -375,6 +375,7 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="pageType" value="${pageType}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -403,15 +404,11 @@
 <script src="<%=basePath%>js/util.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
+    var roleType = 2;
     $(function () {
         laydate.render({
             elem: '#grantTimeStr'
         });
-        findAllCommunity();
-
-        var loginId = $("#loginId").val();
-        verification(loginId);
-
         laydate.render({
             elem: '#birthday' //指定元素
             //控件选择完毕后的回调,点击日期、清空、现在、确定均会触发。
@@ -421,13 +418,23 @@
                 setIssuStandard(age);
             }
         });
-
+        var loginId = $("#loginId").val();
+        verification(loginId);
     })
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
-            if (data.code == -1) {
-                window.location.href = "<%=basePath%>/login.jsp";
+            if (data.code == 0){
+                //console.log(data.data);
+                roleType = data.data.type;
+                //如果是社区管理员默认
+                if(roleType == 1){
+                    $("#communityIdDiv").show();
+                    findAllCommunity();
+                }
+            }else{
+                alert(data.message);
+                window.location.href="<%=basePath%>/login.jsp";
             }
         });
     }
@@ -463,6 +470,7 @@
         var issuStandard = $("#issuStandard").val();
         var remark = $("#remark").val();
         var grantState = $("#grantState").val();
+        var type = $("#pageType").val();
 
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
@@ -484,16 +492,16 @@
             popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-        if (communityId == null || communityId == "") {
+        /*if (communityId == null || communityId == "") {
             popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
             return;
-        }
+        }*/
         $.post("<%=basePath%>respect/insertRespect", {
             "idCard": idCard,
             "name": name,
             "gender": gender,
             "birthday": birthday,
-            "type": 1,
+            "type": type,
             "phone": phone,
             "house": house,
             "communityId": communityId,
@@ -503,11 +511,12 @@
             "changeState": changeState,
             "issuStandard": issuStandard,
             "remark": remark,
-            "grantState":grantState
+            "grantState":grantState,
+            "loginId":$("#loginId").val()
         }, function (data) {
             if (data.code == 0) {
                 popup({type: "success", msg: "提交成功", delay: 1000});
-                window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}";
+                window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
             } else {
                 popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
             }

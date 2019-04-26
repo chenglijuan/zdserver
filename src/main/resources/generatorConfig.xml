@@ -39,7 +39,7 @@
         <!-- 这里是数据库的表名table_user 以及 POJO类的名字User -->
 
 
-        <table tableName="zd_respect" domainObjectName="Respect"
+        <table tableName="zd_audit_remark" domainObjectName="AuditRemark"
                enableCountByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false">
         </table>

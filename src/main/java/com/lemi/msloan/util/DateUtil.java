@@ -411,21 +411,19 @@ import java.util.*;
          }
      }
 
-     /*public static void main(String[] args) throws Exception{
-         *//* 175 *//*     *//*Date date1 = getDateToString(getDateStringBeforeOrAfterToday(Integer.valueOf(0)), "yyyy-MM-dd");
-          *//**//* 176 *//**//*     Date date2 = getDateToString(getDateStringBeforeOrAfterToday(Integer.valueOf(1), "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
-          *//**//*     *//**//*
-          *//**//* 180 *//**//*     Calendar calendar1 = Calendar.getInstance();
-          *//**//* 181 *//**//*     SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:MM:ss");
-          *//**//* 182 *//**//*     calendar1.add(5, -3);
-          *//**//* 183 *//**//*     String three_days_ago = sdf1.format(calendar1.getTime());
-          *//**//* 184 *//**//*     System.out.println(three_days_ago);*//*
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-         Date bdate = new Date();
-         String ss = "2018-06-16";
-         System.out.println(DateUtil.isValidDate("1991-10-10"));
+     public static String getYearsbefore(Date date,Integer before){
+         SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
+         Calendar calendar = Calendar.getInstance();
+         calendar.setTime(date);
+         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR)-before);
+         Date updateDate2 = calendar.getTime();
+         //System.out.println("往前推1个月的时间"+sdf.format(updateDate2));
+         return sdf.format(updateDate2);
+     }
 
-         *//*     *//*   }*/
+     public static void main(String[] args) {
+        //getYearsbefore(new Date(),70);
+     }
 
 
 }

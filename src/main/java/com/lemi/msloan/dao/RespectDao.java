@@ -14,4 +14,5 @@ public interface RespectDao extends BaseDao<Respect> {
 
     int insertBatchData(List<Respect> list);
 
+    List<String> getAllIdCards();
 }

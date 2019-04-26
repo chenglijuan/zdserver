@@ -182,10 +182,13 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -235,7 +238,7 @@
                 </div>
             </div>--%>
             <fieldset class="layui-elem-field layui-field-title" >
-                <legend>尊老金</legend>
+                <legend>长寿金</legend>
             </fieldset>
             <div class="row">
                 <form class="form-inline">
@@ -256,7 +259,7 @@
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="grantTimes">起始发放时间：</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="form-control" id="grantTimes" placeholder="--">
+                            <input type="text" class="form-control" id="grantTimes" placeholder="-">
                         </div>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
@@ -268,6 +271,15 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="auditState">审核状态：</label>
+                        <select class="form-control" id="auditState">
+                            <option selected value="">==请选择==</option>
+                            <option value="1">待审核</option>
+                            <option value="2">通过</option>
+                            <option value="3">未通过</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 20px;display: none" id="communityIdDiv">
                         <label for="communityId">所属小区：</label>
                         <select class="form-control" id="communityId">
                             <option selected value="">==请选择==</option>
@@ -285,11 +297,10 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <a href="<%=basePath%>respect/downRespectExcel" class="btn btn-info">模板下载</a>
-                            <button type="button" class="btn btn-info">批量导入</button>
-                            <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增
-                            </button>
-                            <br/>
+                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
+                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">模板导出</a>
+                            <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -304,6 +315,32 @@
             <!-- ============================================================== -->
             <!-- End PAge Content -->
             <!-- ============================================================== -->
+        </div>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">审核详情</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>审核备注</th>
+                                <th>审核状态</th>
+                                <th>审核人</th>
+                                <th>审核时间</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
@@ -331,8 +368,8 @@
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>
-
+<%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
+<script src="<%=basePath%>myjs/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
 <script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -350,29 +387,36 @@
 <!-- ============================================================== -->
 <!-- Style switcher -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 <script src="<%=basePath%>js/bootstrap-table.js"></script>
 <script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
 <script src="<%=basePath%>js/util.js"></script>
 <script src="<%=basePath%>laydate/laydate.js"></script>
+<script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
+
 <script>
     var pageSize = 10;
+    var roleType = 2;
     $(function () {
-
         laydate.render({
             elem: '#grantTimes'
             ,range: true
         });
-
-        selectExamine(1, pageSize);
-        findAllCommunity();
         var loginId = $("#loginId").val();
         verification(loginId);
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
-
-            if (data.code == -1){
+            if (data.code == 0){
+                //console.log(data.data);
+                roleType = data.data.type;
+                //如果是社区管理员默认
+                if(roleType == 1){
+                    $("#communityIdDiv").show();
+                    findAllCommunity();
+                }
+                selectExamine(1, pageSize);
+            }else{
                 alert(data.message);
                 window.location.href="<%=basePath%>/login.jsp";
             }
@@ -514,7 +558,10 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
+               // return row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
+                var htmlRow = row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
+                htmlRow = htmlRow + "<br/><span style='color: red'><a onclick='remarkDetail("+row.id+")'>审核详情</a></span>";
+                return htmlRow;
             }
         };
         var n = {
@@ -534,7 +581,8 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>";
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
+                    "<a class='btn btn-info' style='color: #fff' onclick='auditById("+row.id+")'><span class='fa fa-edit'></span>审核</a>";
             }
         };
 
@@ -560,6 +608,7 @@
         var grantTimes  = $("#grantTimes").val();
         var ageRange  = $("#ageRange").val();
         var communityId  = $("#communityId").val();
+        var auditState =$("#auditState").val();
 
         $.post("<%=basePath%>respect/selectRespect", {
             "pageNum": pageNum,
@@ -571,7 +620,9 @@
             "grantTimes":grantTimes,
             "ageRange":ageRange,
             "communityId":communityId,
-            "type":1
+            "type":3,
+            "auditState":auditState,
+            "loginId":$("#loginId").val()
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;
@@ -619,7 +670,7 @@
     }
 
     $("#addRespect").on("click",function () {
-        window.location.href="<%=basePath%>respect/addRespect?loginId="+$("#loginId").val();
+        window.location.href="<%=basePath%>respect/addLongevity?loginId="+$("#loginId").val();
     })
 
     function findAllCommunity() {
@@ -643,7 +694,74 @@
     }
 
     function updateExamineById(respectId) {
-        window.location.href="<%=basePath%>respect/updateRespect?loginId="+$("#loginId").val()+"&respectId="+respectId;
+        window.location.href="<%=basePath%>respect/updateLongevity?loginId="+$("#loginId").val()+"&respectId="+respectId;
+    }
+
+    function auditById(respectId) {
+        window.location.href="<%=basePath%>respect/auditRespect?pageType=3&loginId="+$("#loginId").val()+"&respectId="+respectId;
+    }
+
+    function uploadData(fileObj) {
+        var allowExtention = ".xlsx,.xls";
+        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
+        if(allowExtention.indexOf(extention) > -1){
+            $.ajaxFileUpload({
+                url: '<%=basePath%>respect/importRespect',
+                type: 'post',
+                data : {
+                    "loginId":$("#loginId").val(),
+                    "pageType":$("#pageType").val()
+                },
+                secureuri: false,
+                fileElementId: "file",
+                dataType: 'json',
+                success: function(data, status){
+                    console.log(data);
+                    if(status){
+                        alert("操作成功");
+                        selectExamine(1, pageSize);
+                    }
+
+                }
+            });
+        }else{
+            alert("仅支持" + allowExtention + "为后缀名的文件!");
+            fileObj.value = "";
+        }
+    }
+
+    function remarkDetail(respectId) {
+        $.post("<%=basePath%>respect/getRemarksByRespectId", {
+            "respectId":respectId,
+            "loginId":$("#loginId").val()
+        }, function (data) {
+            if(data.success){
+                var list = data.data;
+                if(list == null || list.length > 0){
+                    var code = "";
+                    for (var i = 0, j = list.length; i < j; i++) {
+                        code += "<tr>";
+                        code += "<td>" + list[i].remark + "</td>";
+                        if (list[i].auditState === 2) {
+                            code += "<td>审核通过</td>";
+                        } else if (list[i].auditState === 3) {
+                            code += "<td>审核未通过</td>";
+                        } else {
+                            code += "<td>-</td>";
+                        }
+                        code += "<td>" + list[i].operatorName + "</td>";
+                        code += "<td>" + fmtDate(list[i].createTime) + "</td>";
+
+                        code += "</tr>";
+                    }
+                    $("#tbody").html(code);
+
+                    $('#myModal').modal('show');
+                }else{
+                    alert("暂无数据");
+                }
+            }
+        })
     }
 </script>
 </body>

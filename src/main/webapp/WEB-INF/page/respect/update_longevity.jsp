@@ -213,10 +213,10 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金修改</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">长寿金金修改</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
-                                href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a></li>
+                                href="<%=basePath%>respect/longevityPager?loginId=${loginId}">列表</a></li>
                         <li class="breadcrumb-item active">修改</li>
                     </ol>
                 </div>

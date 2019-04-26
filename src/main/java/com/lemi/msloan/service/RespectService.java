@@ -15,4 +15,5 @@ public interface RespectService extends BaseService<Respect> {
 
     int insertBatchData(List<Respect> list);
 
+    List<String> getAllIdCards();
 }

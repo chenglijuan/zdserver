@@ -279,6 +279,9 @@
       <if test="changeState != null">
         and change_state = #{changeState}
       </if>
+      <if test="auditState != null">
+        and audit_state = #{auditState}
+      </if>
       <if test="type != null">
         and type = #{type}
       </if>
@@ -297,6 +300,12 @@
         <if test="grantEndTime != null">
             <![CDATA[  AND grant_time <= #{grantEndTime}]]>
         </if>
+      <if test="birthdayBegin != null">
+        AND birthday >= #{birthdayBegin}
+      </if>
+      <if test="birthdayEnd != null">
+        AND birthday &lt;= #{birthdayEnd}
+      </if>
     </where>
     order by create_time desc
     <if test="start != null and end != null">
@@ -312,6 +321,9 @@
       <if test="type != null">
         and type = #{type}
       </if>
+      <if test="auditState != null">
+        and audit_state = #{auditState}
+      </if>
       <if test="name != null">
         and name like '%${name}%'
       </if>
@@ -327,6 +339,12 @@
         <if test="grantEndTime != null">
             <![CDATA[  AND grant_time <= #{grantEndTime}]]>
         </if>
+      <if test="birthdayBegin != null">
+        AND birthday >= #{birthdayBegin}
+      </if>
+      <if test="birthdayEnd != null">
+        AND birthday &lt;= #{birthdayEnd}
+      </if>
     </where>
   </select>
 
@@ -350,5 +368,7 @@
     </foreach>
   </insert>
 
-
+  <select id="getAllIdCards" resultType="java.lang.String">
+        select DISTINCT(id_card) from zd_respect where id_card is not null
+    </select>
 </mapper>

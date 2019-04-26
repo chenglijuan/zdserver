@@ -8,4 +8,7 @@ import com.lemi.msloan.request.UserRequest;
  */
 public interface UserDao extends BaseDao<User> {
     User getByUsername(UserRequest userRequest);
+
+    User getByUserId(Integer userId);
+
 }

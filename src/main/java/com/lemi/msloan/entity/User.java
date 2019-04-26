@@ -15,6 +15,10 @@ public class User {
 
     private Date createTime;
 
+    private Integer communityId;
+
+    private String communityName;
+
     public Integer getId() {
         return id;
     }
@@ -61,5 +65,21 @@ public class User {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getCommunityId() {
+        return communityId;
+    }
+
+    public void setCommunityId(Integer communityId) {
+        this.communityId = communityId;
+    }
+
+    public String getCommunityName() {
+        return communityName;
+    }
+
+    public void setCommunityName(String communityName) {
+        this.communityName = communityName;
     }
 }

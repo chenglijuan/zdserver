@@ -110,4 +110,22 @@
     WHERE username = #{username}
     LIMIT 1
   </select>
+
+
+  <resultMap id="MyRoleTypeMap" type="com.lemi.msloan.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="community_name" property="communityName" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getByUserId" resultMap="MyRoleTypeMap">
+    select a.id,a.nickname,a.username,a.type,b.id as community_id,b.name as community_name
+  from (select * from zd_user where id = #{0} )a LEFT JOIN zd_community b on a.id = b.user_id
+  </select>
+
+
 </mapper>

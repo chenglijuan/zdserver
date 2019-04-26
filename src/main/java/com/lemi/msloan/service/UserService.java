@@ -7,4 +7,6 @@ import com.lemi.msloan.entity.User;
  */
 public interface UserService extends BaseService<User> {
     User getByUsername(String username);
+
+    User getByUserId(Integer userId);
 }

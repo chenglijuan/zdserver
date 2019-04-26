@@ -39,5 +39,10 @@ public class RespectServiceImpl extends BaseServiceImpl<Respect> implements Resp
     public int insertBatchData(List<Respect> list) {
         return respectDao.insertBatchData(list);
     }
+
+    @Override
+    public List<String> getAllIdCards() {
+        return respectDao.getAllIdCards();
+    }
 }
 
