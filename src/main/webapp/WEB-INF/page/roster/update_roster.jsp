@@ -89,12 +89,12 @@
                     <!-- This is  -->
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                        <%--<form class="app-search p-l-20">--%>
+                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                                <%--class="ti-search"></i></a>--%>
+                        <%--</form>--%>
+                    <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -102,8 +102,11 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >账户：<span id="username"></span> </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >退出</a>
                     </li>
                 </ul>
             </div>
@@ -163,13 +166,17 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -195,9 +202,10 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">编辑花名册</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">编辑征地人员花名册</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList?loginId=${loginId}">列表</a></li>
+                        <li class="breadcrumb-item"><a href="<%=basePath%>roster/rosterList?loginId=${loginId}">列表</a>
+                        </li>
                         <li class="breadcrumb-item active">编辑</li>
                     </ol>
                 </div>
@@ -215,15 +223,18 @@
                     <div class="card">
                         <div class="card-block">
                             <form class="form-horizontal form-material">
+
+                                <fieldset>
+
                                 <div class="form-group">
-                                    <label class="col-md-12"><span style="color: red">*</span>身份证号</label>
+                                    <label class="col-md-12"><span style="color: red">*</span><span style="color: #000">身份证号</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入身份证号码"
                                                class="form-control form-control-line" id="idCard">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="name" class="col-md-12"><span style="color: red">*</span>姓名</label>
+                                    <label for="name" class="col-md-12"><span style="color: red">*</span><span style="color: #000">姓名</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入姓名" class="form-control form-control-line"
                                                name="name"
@@ -231,7 +242,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-12"><span style="color: red">*</span>性别</label>
+                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">性别</span></label>
                                     <div class="col-sm-12">
                                         <select class="form-control form-control-line" id="gender">
                                             <option value="">请选择</option>
@@ -242,7 +253,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="birthday" class="col-md-12"><span
-                                            style="color: red">*</span>出生年月</label>
+                                            style="color: red">*</span><span style="color: #000">出生年月</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请选择出生年月"
                                                class="form-control form-control-line date_picker"
@@ -250,7 +261,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address" class="col-md-12"><span style="color: red">*</span>常住地址</label>
+                                    <label for="address" class="col-md-12"><span style="color: red">*</span><span style="color: #000">常住地址</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入常住地址" class="form-control form-control-line"
                                                name="address"
@@ -259,7 +270,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="village" class="col-md-12"><span
-                                            style="color: red">*</span>征地时所在村（组）</label>
+                                            style="color: red">*</span><span style="color: #000">征地时所在村（组）</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入征地时所在村（组）"
                                                class="form-control form-control-line" name="village"
@@ -267,7 +278,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-12"><span style="color: red">*</span>是否迁出</label>
+                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">是否迁出</span></label>
                                     <div class="col-sm-12">
                                         <select class="form-control form-control-line" id="isMove">
                                             <option value="">请选择</option>
@@ -277,13 +288,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group" id="tab_4" style="display: none">
-                                    <label class="col-sm-12"><span style="color: red">*</span>现所属社区</label>
+                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">所属社区</span></label>
                                     <div class="col-sm-12">
                                         <select class="form-control form-control-line" id="community"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="house" class="col-md-12"><span style="color: red">*</span>现户籍所在地</label>
+                                    <label for="house" class="col-md-12"><span style="color: red">*</span><span style="color: #000">户籍所在地</span></label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入现户籍所在地"
                                                class="form-control form-control-line" name="house"
@@ -291,17 +302,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12">备注</label>
+                                    <label class="col-md-12"><span style="color: #000">备注</span></label>
                                     <div class="col-md-12">
                                         <textarea rows="1" placeholder="请填写内容" class="form-control form-control-line"
                                                   id="remark"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">提交</button>
+                                    <div class="col-sm-12" style="text-align: center">
+                                        <button type="button" class="btn btn-info" id="submit">确认编辑</button>
                                     </div>
                                 </div>
+                                </fieldset>
                             </form>
                         </div>
                     </div>
@@ -315,17 +327,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
@@ -378,6 +379,7 @@
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             } else {
+                $("#username").html(data.data.username);
                 if (data.data.type == 1) {
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");

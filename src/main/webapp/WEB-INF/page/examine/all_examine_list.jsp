@@ -414,13 +414,13 @@
         });
     }
     $('#pageLimit').bootstrapPaginator({
-        currentPage: 1,//当前的请求页面。
-        totalPages: 20,//一共多少页。
-        size: "normal",//应该是页眉的大小。
-        bootstrapMajorVersion: 3,//bootstrap的版本要求。
+        currentPage: 1,
+        totalPages: 20,
+        size: "normal",
+        bootstrapMajorVersion: 3,
         alignment: "right",
-        numberOfPages: 5,//一页列出多少数据。
-        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+        numberOfPages: 5,
+        itemTexts: function (type, page, current) {
             switch (type) {
                 case "first":
                     return "首页";
@@ -459,7 +459,6 @@
         var unemployment = $("#unemployment").val();
         var isInsured = $("#isInsured").val();
         var communityId = $("#communityId").val();
-        var h = $(window).height() - 100;
         var columns = [];
         var a = {
             field: 'name',
