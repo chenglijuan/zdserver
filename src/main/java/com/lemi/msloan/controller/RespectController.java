@@ -325,20 +325,24 @@ public class RespectController {
                 respectRequest.setGrantEndTime(endTimes);
             }
             Date nowDate = new Date();
-            if(type != null && type.intValue() == 3){
-                //String birthdayBegin = DateUtil.getYearsbefore(nowDate, 80);
+
+            if(type != null && type.intValue() == 3){ //String birthdayBegin = DateUtil.getYearsbefore(nowDate, 80);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 80);
-                //respectRequest.setBirthdayBegin(birthdayBegin);
                 respectRequest.setType(null);
                 respectRequest.setBirthdayEnd(birthdayEnd);
-            }else{
+                respectRequest.setChangeState(changeState);
+            }if (type != null && type.intValue() == 4){
+                //已故人员名单   变更情况说明是死亡
+                respectRequest.setChangeState(2);
+            } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
                 String birthdayBegin = DateUtil.getYearsbefore(nowDate, 79);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
                 respectRequest.setBirthdayBegin(birthdayBegin);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setType(type);
+                respectRequest.setChangeState(changeState);
             }
-            respectRequest.setChangeState(changeState);
+
             //如果是社区管理员  只能查看 该社区的数据
             if(user.getType().intValue() == 1){
                 respectRequest.setCommunityId(communityId);

@@ -1047,4 +1047,22 @@ public class ExamineController {
         }
         return "操作失败";
     }
+
+
+    /**
+     * 征地人员已故名单
+     * @param examineId
+     * @param loginId
+     * @return
+     */
+    @RequestMapping(value = "deceasedPage")
+    public ModelAndView deceasedPage(Integer examineId, Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/examine/deceased_list");
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
 }
+
+

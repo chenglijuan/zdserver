@@ -192,6 +192,19 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>已故人员花名册</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <!-- End Sidebar navigation -->
@@ -242,7 +255,7 @@
                             <input type="text" class="form-control" id="grantTimes" placeholder="-">
                         </div>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="changeStateDiv">
                         <label for="changeState">变动情况：</label>
                         <select class="form-control" id="changeState">
                             <option selected value="">==请选择==</option>
@@ -250,7 +263,7 @@
                             <option value="2">死亡</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="auditStateDiv">
                         <label for="auditState">审核状态：</label>
                         <select class="form-control" id="auditState">
                             <option selected value="">==请选择==</option>
@@ -276,15 +289,15 @@
                 <!-- column -->
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-block">
+                        <div class="card-block" id="operatorBtn">
                             <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">模板导出</a>
                             <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>
-                            <div class="table-responsive">
-                                <table class="table" id="table">
-                                </table>
-                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table" id="table">
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -379,18 +392,25 @@
 <script>
     var pageSize = 10;
     var roleType = 2;
+    var pageType = 1;
     $(function () {
         laydate.render({
             elem: '#grantTimes'
             ,range: true
         });
+        pageType = $("#pageType").val();
+        if(pageType == 4){
+            $("#operatorBtn").hide();
+            $("#changeStateDiv").hide();
+            $("#auditStateDiv").hide();
+        }
+
         var loginId = $("#loginId").val();
         verification(loginId);
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
             if (data.code == 0){
-                //console.log(data.data);
                 roleType = data.data.type;
                 //如果是社区管理员默认
                 if(roleType == 1){
@@ -555,17 +575,6 @@
                 return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.auditState == 2 ? "发放中" : "-";
             }
         };
-        var o = {
-            field: 'cz',
-            title: '操作',
-            align: 'center',
-            valign: 'middle',
-            width: 240,
-            formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
-                    "<a class='btn btn-info' style='color: #fff' onclick='auditById("+row.id+")'><span class='fa fa-edit'></span>审核</a>";
-            }
-        };
 
         columns.push(a);
         columns.push(b);
@@ -581,7 +590,20 @@
         columns.push(l);
         columns.push(m);
         columns.push(n);
-        columns.push(o);
+        if(pageType != 4){
+            var o = {
+                field: 'cz',
+                title: '操作',
+                align: 'center',
+                valign: 'middle',
+                width: 240,
+                formatter: function (value, row, index) {
+                    return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
+                        "<a class='btn btn-info' style='color: #fff' onclick='auditById("+row.id+")'><span class='fa fa-edit'></span>审核</a>";
+                }
+            };
+            columns.push(o);
+        }
         var name = $("#name").val();
         var changeState  = $("#changeState").val();
         var idCard = $("#idCard").val();

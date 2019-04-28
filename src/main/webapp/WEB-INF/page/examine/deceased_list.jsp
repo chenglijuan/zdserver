@@ -28,6 +28,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <!-- Bootstrap Core CSS -->
     <link href="<%=basePath%>assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table-fixed-columns.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<%=basePath%>css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
@@ -48,6 +50,16 @@
         #pageLimit li {
             height: 50px;
             width: 50px;
+        }
+
+        #table {
+            table-layout: fixed;
+        }
+
+        .bootstrap-table .fixed-table-container .fixed-table-body {
+            overflow-x: auto;
+            overflow-y: auto;
+            height: 55%;
         }
     </style>
 </head>
@@ -144,15 +156,18 @@
                         <ul>
                             <li>
                                 <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                                   class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
                                 <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
+                                   class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
                                 <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
+                                   class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
                             <li id="tab_1" style="display: none">
                                 <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
@@ -161,10 +176,6 @@
                             <li id="tab_2" style="display: none">
                                 <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
-                            </li>
-                            <li id="tab_3" style="display: none">
-                                <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" class="waves-effect"><i
-                                        class="fa fa-user m-r-10" aria-hidden="true"></i>待复审</a>
                             </li>
                         </ul>
                     </li>
@@ -178,9 +189,6 @@
                             </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
-                            </li>
-                            <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -219,7 +227,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">征地人员花名册</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">征地人员已故名单</h3>
                 </div>
             </div>
             <!-- ============================================================== -->
@@ -239,35 +247,43 @@
                         <input type="text" class="form-control" id="idCard" placeholder="请输姓名身份证号">
                     </div>
 
-                    <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
-                        <label for="communityId">所属社区：</label>
-                        <select class="form-control" id="communityId"></select>
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="house">户籍所在地：</label>
+                        <input type="text" class="form-control" id="house" placeholder="请输户籍所在地">
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="isMove">是否迁出：</label>
-                        <select class="form-control" id="isMove">
+                        <label for="comping">是否并轨：</label>
+                        <select class="form-control" id="comping">
                             <option selected value="">请选择</option>
-                            <option value="1">未迁出</option>
-                            <option value="2">已迁出</option>
+                            <option value="1">是</option>
+                            <option value="2">否</option>
                         </select>
                     </div>
-
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="status">发放状态：</label>
-                        <select class="form-control" id="status">
-                            <option selected value="">请选择</option>
-                            <option value="1">未开始</option>
-                            <option value="2">发放中</option>
-                            <option value="3">已暂停</option>
-                            <option value="4">已退出</option>
-                        </select>
-                    </div>
-
-
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="age">人员年龄：</label>
                         <input type="number" class="form-control" id="age" placeholder="请输年龄">
+                    </div>
+
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="unemployment">失业状态：</label>
+                        <select class="form-control" id="unemployment">
+                            <option selected value="">请选择</option>
+                            <option value="1">领取失业金</option>
+                            <option value="2">未领取失业金</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="isInsured">参保状态：</label>
+                        <select class="form-control" id="isInsured">
+                            <option selected value="">请选择</option>
+                            <option value="1">是</option>
+                            <option value="2">否</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
+                        <label for="communityId">所属社区：</label>
+                        <select class="form-control" id="communityId"></select>
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
@@ -287,40 +303,21 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <%--<button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
-                            <a class="btn btn-info" href="<%=basePath%>/temp/model1.xlsx" style="color: #fff">模板导出</a>
-                            <button type="button" class="btn btn-info" id="addRoster"><span
+                            <a class="btn btn-info" href="<%=basePath%>/temp/model2.xlsx" style="color: #fff">模板导出</a>
+                            <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
-                            </button>
+                            </button>--%>
                             <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>身份证号</th>
-                                        <th>姓名</th>
-                                        <th>性别</th>
-                                        <th>出生年月</th>
-                                        <th>常住地址</th>
-                                        <th>年龄</th>
-                                        <th>征地时所在村（组）</th>
-                                        <th>是否迁出</th>
-                                        <th>现所属社区</th>
-                                        <th>现户籍所在地</th>
-                                        <th>发放状态</th>
-                                        <th>备注信息</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                    </tbody>
+                                <table class="table" id="table">
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="example" style="text-align: center">
+            <div style="text-align: center">
                 <ul id="pageLimit"></ul>
             </div>
             <!-- ============================================================== -->
@@ -346,15 +343,16 @@
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
 </div>
-<input type="hidden" id="loginId" value="${loginId}">
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
+<input type="hidden" id="loginId" value="${loginId}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
 <%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
 <script src="<%=basePath%>myjs/jquery.min.js"></script>
+
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
 <script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -373,15 +371,15 @@
 <!-- Style switcher -->
 <!-- ============================================================== -->
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script src="<%=basePath%>js/bootstrap-table.js"></script>
+<script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
     $(function () {
-        selectRoster(1, 10);
+        selectRosterExamine(1, 10);
         findAllCommunity();
-
         var loginId = $("#loginId").val();
         verification(loginId);
-
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -402,133 +400,347 @@
             }
         });
     }
+    $('#pageLimit').bootstrapPaginator({
+        currentPage: 1,//当前的请求页面。
+        totalPages: 20,//一共多少页。
+        size: "normal",//应该是页眉的大小。
+        bootstrapMajorVersion: 3,//bootstrap的版本要求。
+        alignment: "right",
+        numberOfPages: 5,//一页列出多少数据。
+        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+            switch (type) {
+                case "first":
+                    return "首页";
+                case "prev":
+                    return "上一页";
+                case "next":
+                    return "下一页";
+                case "last":
+                    return "末页";
+                case "page":
+                    return page;
+            }
+        },
+        onPageClicked: function (event, originalEvent, type, page) {
+            selectRosterExamine(page, 10);
+        }
+
+    });
+
     $("#search").on("click", function () {
-        selectRoster(1, 10);
+        selectRosterExamine(1, 10);
     })
 
-    function selectRoster(pageNum, pageSize) {
+    $("#addExamine").on("click", function () {
+        window.location.href = "<%=basePath%>roster/addExaminePage?loginId=" + $("#loginId").val();
+    })
 
+    function selectRosterExamine(pageNum, pageSize) {
         var name = $("#name").val();
-
         var idCard = $("#idCard").val();
-
-        var communityId = $("#communityId").val();
-
-        var isMove = $("#isMove").val();
-
-        var status = $("#status").val();
-
+        var house = $("#house").val();
+        var comping = $("#comping").val();
         var age = $("#age").val();
-
+        var changes = $("#changes").val();
+        var status = $("#status").val();
+        var unemployment = $("#unemployment").val();
+        var isInsured = $("#isInsured").val();
+        var communityId = $("#communityId").val();
+        var h = $(window).height() - 100;
+        var columns = [];
+        var a = {
+            field: 'name',
+            title: '姓名',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                return row.name;
+            }
+        };
+        var b = {
+            field: 'gender',
+            title: '性别',
+            align: 'center',
+            valign: 'middle',
+            width: 60,
+            formatter: function (value, row, index) {
+                return row.gender == 1 ? "男" : "女";
+            }
+        };
+        var c = {
+            field: 'age',
+            title: '年龄',
+            align: 'center',
+            valign: 'middle',
+            width: 60,
+            formatter: function (value, row, index) {
+                return row.age;
+            }
+        };
+        var d = {
+            field: 'birthday',
+            title: '出生年月',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return fmtDate(row.birthday);
+            }
+        };
+        var e = {
+            field: 'idCard',
+            title: '身份证号',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.idCard;
+            }
+        };
+        var f = {
+            field: 'house',
+            title: '户籍所在地',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.house;
+            }
+        };
+        var g = {
+            field: 'address',
+            title: '现住地',
+            align: 'center',
+            valign: 'middle',
+            width: 150,
+            formatter: function (value, row, index) {
+                return row.address;
+            }
+        };
+        var h = {
+            field: 'villageTime',
+            title: '征地时间',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return fmtDate(row.villageTime);
+            }
+        };
+        var i = {
+            field: 'villageAge',
+            title: '征地时年龄',
+            align: 'center',
+            valign: 'middle',
+            width: 150,
+            formatter: function (value, row, index) {
+                return row.villageAge;
+            }
+        };
+        var j = {
+            field: 'village',
+            title: '征地时所在村（组）',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return row.village;
+            }
+        };
+        var k = {
+            field: 'cdState',
+            title: '撤队安置情况',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.cdState == 1 ? "未撤队先安置" : row.cdState == 2 ? "撤队时安置" : row.cdState == 3 ? "领取征地待业" : row.cdState == 4 ? "领取一次性补偿金" : "";
+            }
+        };
+        var l = {
+            field: 'ffbj',
+            title: '发放标准',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.ffbj;
+                return row.ffbj == null ? "" : row.ffbj;
+            }
+        };
+        var m = {
+            field: 'startTime',
+            title: '开始发放时间',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : fmtDate(row.examine.startTime);
+                return row.startTime == null ? "" : fmtDate(row.startTime);
+            }
+        };
+        var n = {
+            field: 'stopTime',
+            title: '停止发放时间',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
+                return row.stopTime == null ? "" : fmtDate(row.stopTime);
+            }
+        };
+        var o = {
+            field: 'dtxsny',
+            title: '动态享受年月',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
+                return row.dtxsny == null ? "" : row.dtxsny;
+            }
+        };
+        var p = {
+            field: 'batch',
+            title: '新增批次',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.batch;
+                return row.batch == null ? "" : row.batch;
+            }
+        };
+        var q = {
+            field: 'changes',
+            title: '变动情况',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
+                return row.changes == null ? "" : row.changes == 1 ? "迁出" : row.changes == 2 ? "新增" : row.changes == 3 ? "死亡" : "";
+            }
+        };
+        var r = {
+            field: 'isInsured',
+            title: '参保状态',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
+                return row.isInsured == null ? "" : row.isInsured == 1 ? "已参保" : row.isInsured == 2 ? "未参保" : "";
+            }
+        };
+        var s = {
+            field: 'unemployment',
+            title: '失业状态',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
+                return row.unemployment == null ? "" : row.unemployment == 1 ? "领取失业金" : row.unemployment == 2 ? "未领取失业金" : "";
+            }
+        };
+        var t = {
+            field: 'comping',
+            title: '是否并轨',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
+                return row.comping == null ? "" : row.comping == 1 ? "是" : "否";
+            }
+        };
+        var u = {
+            field: 'state',
+            title: '审核状态',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
+                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
+            }
+        };
+        var v = {
+            field: 'status',
+            title: '发放状态',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : "";
+            }
+        };
+        var w = {
+            field: 'cz',
+            title: '操作',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+            }
+        };
+        columns.push(a);
+        columns.push(b);
+        columns.push(c);
+        columns.push(d);
+        columns.push(e);
+        columns.push(f);
+        columns.push(g);
+        columns.push(h);
+        columns.push(i);
+        columns.push(j);
+        columns.push(k);
+        columns.push(l);
+        columns.push(m);
+        columns.push(n);
+        columns.push(o);
+        columns.push(p);
+        columns.push(q);
+        columns.push(r);
+        columns.push(s);
+        columns.push(t);
+        columns.push(u);
+        columns.push(v);
+        columns.push(w);
         var loginId = $("#loginId").val();
-
-        $.post("<%=basePath%>roster/selectRoster", {
-            "loginId": loginId,
+        $.post("<%=basePath%>examine/findAllExamine", {
+            "loginId":loginId,
             "name": name,
             "idCard": idCard,
-            "communityId": communityId,
-            "isMove": isMove,
-            "status": status,
+            "house": house,
+            "comping": comping,
             "age": age,
+            "changes": changes,
+            "status": status,
+            "unemployment": unemployment,
+            "isInsured": isInsured,
+            "communityId": communityId,
             "pageNum": pageNum,
             "pageSize": pageSize
         }, function (data) {
-            var count = data.data.count;
-            $("#totalpage").val(count);
             var list = data.data.list;
-            var code = "";
-            for (var i = 0, j = list.length; i < j; i++) {
-                code += "<tr>";
-                code += "<td>" + list[i].idCard + "</td>";
-
-                code += "<td>" + list[i].name + "</td>";
-
-                if (list[i].gender === 1) {
-                    code += "<td>男</td>";
-                } else if (list[i].gender === 2) {
-                    code += "<td>女</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + fmtDate(list[i].birthday) + "</td>";
-
-                code += "<td>" + list[i].address + "</td>";
-
-                code += "<td>" + getAge(list[i].birthday) + "</td>";
-
-                code += "<td>" + list[i].village + "</td>";
-
-                if (list[i].isMove === 1) {
-                    code += "<td>否</td>";
-                } else if (list[i].isMove === 2) {
-                    code += "<td>是</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + list[i].community.name + "</td>";
-
-                code += "<td>" + list[i].house + "</td>";
-
-                if (list[i].status === 1) {
-                    code += "<td>未开始</td>";
-                } else if (list[i].status === 2) {
-                    code += "<td>发放中</td>";
-                } else if (list[i].status === 3) {
-                    code += "<td>已暂停</td>";
-                } else if (list[i].status === 4) {
-                    code += "<td>已退出</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + list[i].remark + "</td>";
-
-                code += "<td><a class='' onclick='updateRoster(" + list[i].id + ")'><span class='fa fa-edit'></span> 查看</a></td>";
-                code += "</tr>";
-            }
-            $("#tbody").html(code);
-            limitPage(pageNum,10);
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                data: list,
+                cache: false,
+                pagination: false,
+                fixedColumns: true,
+                fixedNumber: 3,
+                columns: columns
+            })
         })
     }
 
-    function limitPage(pageNum,totalPage) {
-        $('#pageLimit').bootstrapPaginator({
-            currentPage: pageNum,//当前的请求页面。
-            totalPages: totalPage,//一共多少页。
-            size: "normal",//应该是页眉的大小。
-            bootstrapMajorVersion: 3,//bootstrap的版本要求。
-            alignment: "right",
-            numberOfPages: 5,//一页列出多少数据。
-            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-                switch (type) {
-                    case "first":
-                        return "首页";
-                    case "prev":
-                        return "上一页";
-                    case "next":
-                        return "下一页";
-                    case "last":
-                        return "末页";
-                    case "page":
-                        return page;
-                }
-            },
-            onPageClicked: function (event, originalEvent, type, page) {
-                selectRoster(page, 10);
-            }
-
-        });
-    }
-
-    $("#addRoster").on("click", function () {
-        window.location.href = "<%=basePath%>roster/addRosterPage?loginId=" + $("#loginId").val();
-    })
-
     function findAllCommunity() {
         $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
-
             if (data.code == 0) {
                 var list = data.data;
                 var code = "<option value=''>请选择</option>";
@@ -537,14 +749,8 @@
                 }
                 $("#communityId").html(code);
             }
-
         });
     }
-
-    function updateRoster(id) {
-        window.location.href = "<%=basePath%>roster/updateRosterPager?rosterId=" + id + "&loginId=" + $("#loginId").val();
-    }
-
     function fmtDate(birthday) {
         var date = new Date(birthday);
         var y = 1900 + date.getYear();
@@ -552,7 +758,6 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
-
     function getAge(birthday) {
         //出生时间 毫秒
         var birthDayTime = new Date(birthday).getTime();
@@ -561,13 +766,17 @@
         //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
-    
+
+    function updateExamineById(examineId) {
+        window.location.href = "<%=basePath%>examine/updateExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
+    }
+
     function uploadData(fileObj) {
         var allowExtention = ".xlsx,.xls";
         var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
         if(allowExtention.indexOf(extention) > -1){
             $.ajaxFileUpload({
-                url: '<%=basePath%>roster/importRoster',
+                url: '<%=basePath%>examine/importExamine',
                 type: 'post',
                 data : {
                     "loginId":$("#loginId").val()
@@ -586,6 +795,5 @@
         }
     }
 </script>
-
 </body>
 </html>
