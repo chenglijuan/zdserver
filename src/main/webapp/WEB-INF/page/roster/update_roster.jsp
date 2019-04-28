@@ -90,10 +90,10 @@
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
                     <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
+                    <%--<form class="app-search p-l-20">--%>
+                    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                    <%--class="ti-search"></i></a>--%>
+                    <%--</form>--%>
                     <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
@@ -102,11 +102,12 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >账户：<span id="username"></span> </a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账户：<span
+                                id="username"></span> </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >退出</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">退出</a>
                     </li>
                 </ul>
             </div>
@@ -226,93 +227,116 @@
 
                                 <fieldset>
 
-                                <div class="form-group">
-                                    <label class="col-md-12"><span style="color: red">*</span><span style="color: #000">身份证号</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入身份证号码"
-                                               class="form-control form-control-line" id="idCard">
+                                    <div class="form-group">
+                                        <label class="col-md-12"><span style="color: red">*</span><span
+                                                style="color: #000">身份证号</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请输入身份证号码"
+                                                   class="form-control form-control-line" id="idCard">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="name" class="col-md-12"><span style="color: red">*</span><span style="color: #000">姓名</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入姓名" class="form-control form-control-line"
-                                               name="name"
-                                               id="name">
+                                    <div class="form-group">
+                                        <label for="name" class="col-md-12"><span style="color: red">*</span><span
+                                                style="color: #000">姓名</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请输入姓名"
+                                                   class="form-control form-control-line"
+                                                   name="name"
+                                                   id="name">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">性别</span></label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control form-control-line" id="gender">
-                                            <option value="">请选择</option>
-                                            <option value="1">男</option>
-                                            <option value="2">女</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label class="col-sm-12"><span style="color: red">*</span><span
+                                                style="color: #000">性别</span></label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-control-line" id="gender">
+                                                <option value="">请选择</option>
+                                                <option value="1">男</option>
+                                                <option value="2">女</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="birthday" class="col-md-12"><span
-                                            style="color: red">*</span><span style="color: #000">出生年月</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请选择出生年月"
-                                               class="form-control form-control-line date_picker"
-                                               name="birthday" id="birthday" readonly="readonly">
+                                    <div class="form-group">
+                                        <label for="birthday" class="col-md-12"><span
+                                                style="color: red">*</span><span style="color: #000">出生年月</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请选择出生年月"
+                                                   class="form-control form-control-line date_picker"
+                                                   name="birthday" id="birthday" readonly="readonly">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address" class="col-md-12"><span style="color: red">*</span><span style="color: #000">常住地址</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入常住地址" class="form-control form-control-line"
-                                               name="address"
-                                               id="address">
+                                    <div class="form-group">
+                                        <label for="address" class="col-md-12"><span style="color: red">*</span><span
+                                                style="color: #000">常住地址</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请输入常住地址"
+                                                   class="form-control form-control-line"
+                                                   name="address"
+                                                   id="address">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="village" class="col-md-12"><span
-                                            style="color: red">*</span><span style="color: #000">征地时所在村（组）</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入征地时所在村（组）"
-                                               class="form-control form-control-line" name="village"
-                                               id="village">
+                                    <div class="form-group">
+                                        <label for="village" class="col-md-12"><span
+                                                style="color: red">*</span><span
+                                                style="color: #000">征地时所在村（组）</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请输入征地时所在村（组）"
+                                                   class="form-control form-control-line" name="village"
+                                                   id="village">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">是否迁出</span></label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control form-control-line" id="isMove">
-                                            <option value="">请选择</option>
-                                            <option value="1">未迁出</option>
-                                            <option value="2">已迁出</option>
-                                        </select>
+                                    <div class="form-group">
+                                        <label class="col-sm-12"><span style="color: red">*</span><span
+                                                style="color: #000">是否迁出</span></label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-control-line" id="isMove">
+                                                <option value="">请选择</option>
+                                                <option value="1">未迁出</option>
+                                                <option value="2">已迁出</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group" id="tab_4" style="display: none">
-                                    <label class="col-sm-12"><span style="color: red">*</span><span style="color: #000">所属社区</span></label>
-                                    <div class="col-sm-12">
-                                        <select class="form-control form-control-line" id="community"></select>
+                                    <div class="form-group" id="tab_4" style="display: none">
+                                        <label class="col-sm-12"><span style="color: red">*</span><span
+                                                style="color: #000">所属社区</span></label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-control-line" id="community"></select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="house" class="col-md-12"><span style="color: red">*</span><span style="color: #000">户籍所在地</span></label>
-                                    <div class="col-md-12">
-                                        <input type="text" placeholder="请输入现户籍所在地"
-                                               class="form-control form-control-line" name="house"
-                                               id="house">
+                                    <div class="form-group">
+                                        <label for="house" class="col-md-12"><span style="color: red">*</span><span
+                                                style="color: #000">户籍所在地</span></label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="请输入现户籍所在地"
+                                                   class="form-control form-control-line" name="house"
+                                                   id="house">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12"><span style="color: #000">备注</span></label>
-                                    <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-12"><span style="color: red">*</span><span
+                                                style="color: #000">发放情况</span></label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control form-control-line" id="status">
+                                                <option value="">请选择</option>
+                                                <option value="1">未开始</option>
+                                                <option value="2">发放中</option>
+                                                <option value="3">已暂停</option>
+                                                <option value="4">已退出</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-12"><span style="color: #000">备注</span></label>
+                                        <div class="col-md-12">
                                         <textarea rows="1" placeholder="请填写内容" class="form-control form-control-line"
                                                   id="remark"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-12" style="text-align: center">
-                                        <button type="button" class="btn btn-info" id="submit">确认编辑</button>
+                                    <div class="form-group">
+                                        <div class="col-sm-12" style="text-align: center">
+                                            <button type="button" class="btn btn-info" id="submit">确认编辑</button>
+                                        </div>
                                     </div>
-                                </div>
                                 </fieldset>
                             </form>
                         </div>
@@ -460,6 +484,8 @@
 
         var remark = $("#remark").val();
 
+        var status = $("#status").val();
+
         var loginId = $("#loginId").val();
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
@@ -518,10 +544,11 @@
             "isMove": isMove,
             "communityId": communityId,
             "house": house,
-            "remark": remark
+            "remark": remark,
+            "status": status
         }, function (data) {
             if (data.code == 0) {
-                popup({type: "success", msg: "提交成功", delay: 1000});
+                popup({type: "success", msg: "编辑成功", delay: 1000});
             } else {
                 popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
             }
