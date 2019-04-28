@@ -112,12 +112,12 @@
                     <!-- This is  -->
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                        <%--<form class="app-search p-l-20">--%>
+                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                                <%--class="ti-search"></i></a>--%>
+                        <%--</form>--%>
+                    <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -125,8 +125,12 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账户：<span
+                                id="username"></span> </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">退出</a>
                     </li>
                 </ul>
             </div>
@@ -258,7 +262,10 @@
                         <label for="house">户籍所在地：</label>
                         <input type="text" class="form-control" id="house" placeholder="请输户籍所在地">
                     </div>
-
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="age">人员年龄：</label>
+                        <input type="number" class="form-control" id="age" placeholder="请输年龄">
+                    </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="comping">是否并轨：</label>
                         <select class="form-control" id="comping">
@@ -267,11 +274,6 @@
                             <option value="2">否</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="age">人员年龄：</label>
-                        <input type="number" class="form-control" id="age" placeholder="请输年龄">
-                    </div>
-
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="changes">变动情况：</label>
                         <select class="form-control" id="changes">
@@ -292,19 +294,19 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="unemployment">失业状态：</label>
-                        <select class="form-control" id="unemployment">
-                            <option selected value="">请选择</option>
-                            <option value="1">领取失业金</option>
-                            <option value="2">未领取失业金</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
                         <label for="isInsured">参保状态：</label>
                         <select class="form-control" id="isInsured">
                             <option selected value="">请选择</option>
                             <option value="1">是</option>
                             <option value="2">否</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="unemployment">失业状态：</label>
+                        <select class="form-control" id="unemployment">
+                            <option selected value="">请选择</option>
+                            <option value="1">领取失业金</option>
+                            <option value="2">未领取失业金</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
@@ -317,8 +319,10 @@
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <button type="button" class="btn btn-info" id="search">搜索</button>
-                        <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
+                        <button type="button" class="btn btn-info" id="search"><span
+                                class=" fa fa-search"></span> 搜索</button>
+                        <button type="reset" class="btn btn-primary" style="margin-left: 5px;"><span
+                                class=" fa fa-refresh"></span> 重置</button>
                     </div>
 
 
@@ -405,6 +409,7 @@
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             } else {
+                $("#username").html(data.data.username);
                 if (data.data.type == 1) {
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");

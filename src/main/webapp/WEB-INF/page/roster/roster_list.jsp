@@ -25,9 +25,11 @@
 
 
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
+    <%--<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">--%>
     <!-- Bootstrap Core CSS -->
     <link href="<%=basePath%>assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table-fixed-columns.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<%=basePath%>css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
@@ -39,6 +41,7 @@
     <script src="<%=basePath%>js/respond.min.js"></script>
     <![endif]-->
 
+
     <style type="text/css">
         #example {
 
@@ -46,8 +49,18 @@
         }
 
         #pageLimit li {
-            height: 50px;
-            width: 50px;
+            height: 25px;
+            width: 25px;
+        }
+
+        #table {
+            table-layout: fixed;
+        }
+
+        .bootstrap-table .fixed-table-container .fixed-table-body {
+            overflow-x: auto;
+            overflow-y: auto;
+            height: 55%;
         }
     </style>
 </head>
@@ -100,12 +113,12 @@
                     <!-- This is  -->
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                    <%--<form class="app-search p-l-20">--%>
+                    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                    <%--class="ti-search"></i></a>--%>
+                    <%--</form>--%>
+                    <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -113,8 +126,11 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >账户：<span id="username"></span> </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >退出</a>
                     </li>
                 </ul>
             </div>
@@ -174,13 +190,17 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -239,6 +259,11 @@
                         <input type="text" class="form-control" id="idCard" placeholder="请输姓名身份证号">
                     </div>
 
+                    <div class="form-group col-md-3" style="margin-top: 20px">
+                        <label for="age">人员年龄：</label>
+                        <input type="number" class="form-control" id="age" placeholder="请输年龄">
+                    </div>
+
                     <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
                         <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId"></select>
@@ -264,19 +289,17 @@
                         </select>
                     </div>
 
-
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="age">人员年龄：</label>
-                        <input type="number" class="form-control" id="age" placeholder="请输年龄">
-                    </div>
-
                     <div class="form-group col-md-3" style="margin-top: 20px">
 
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <button type="button" class="btn btn-info" id="search">搜索</button>
-                        <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
+                        <button type="button" class="btn btn-info" id="search"><span
+                                class=" fa fa-search"></span> 搜索
+                        </button>
+                        <button type="reset" class="btn btn-info" style="margin-left: 5px;"><span
+                                class=" fa fa-refresh"></span> 重置
+                        </button>
                     </div>
 
 
@@ -287,40 +310,24 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <button type="button" class="btn btn-info" onclick="$('#file').click()"><span
+                                    class=" fa fa-upload"></span> 批量导入
+                            </button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
-                            <a class="btn btn-info" href="<%=basePath%>/temp/model1.xlsx" style="color: #fff">模板导出</a>
+                            <a class="btn btn-info" href="<%=basePath%>/temp/model1.xlsx" style="color: #fff"><span
+                                    class=" fa fa-download"></span> 模板导出</a>
                             <button type="button" class="btn btn-info" id="addRoster"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
                             <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>身份证号</th>
-                                        <th>姓名</th>
-                                        <th>性别</th>
-                                        <th>出生年月</th>
-                                        <th>常住地址</th>
-                                        <th>年龄</th>
-                                        <th>征地时所在村（组）</th>
-                                        <th>是否迁出</th>
-                                        <th>现所属社区</th>
-                                        <th>现户籍所在地</th>
-                                        <th>发放状态</th>
-                                        <th>备注信息</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                    </tbody>
+                                <table class="table" id="table">
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="example" style="text-align: center">
+            <div style="text-align: center">
                 <ul id="pageLimit"></ul>
             </div>
             <!-- ============================================================== -->
@@ -329,17 +336,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
@@ -355,6 +351,7 @@
 <!-- ============================================================== -->
 <%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
 <script src="<%=basePath%>myjs/jquery.min.js"></script>
+
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
 <script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -373,12 +370,13 @@
 <!-- Style switcher -->
 <!-- ============================================================== -->
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script src="<%=basePath%>js/bootstrap-table.js"></script>
+<script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
     $(function () {
         selectRoster(1, 10);
         findAllCommunity();
-
         var loginId = $("#loginId").val();
         verification(loginId);
 
@@ -389,6 +387,8 @@
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             } else {
+
+                $("#username").html(data.data.username);
                 if (data.data.type == 1) {
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");
@@ -405,23 +405,158 @@
     $("#search").on("click", function () {
         selectRoster(1, 10);
     })
-
     function selectRoster(pageNum, pageSize) {
-
         var name = $("#name").val();
-
         var idCard = $("#idCard").val();
-
         var communityId = $("#communityId").val();
-
         var isMove = $("#isMove").val();
-
         var status = $("#status").val();
-
         var age = $("#age").val();
-
         var loginId = $("#loginId").val();
-
+        var columns = [];
+        var a = {
+            field: 'idCard',
+            title: '身份证号',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.idCard == null ? "-" : row.idCard;
+            }
+        };
+        var b = {
+            field: 'name',
+            title: '姓名',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.name == null ? "-" : row.name;
+            }
+        };
+        var c = {
+            field: 'gender',
+            title: '性别',
+            align: 'center',
+            valign: 'middle',
+            width: 60,
+            formatter: function (value, row, index) {
+                return row.gender == 1 ? "男" : "女";
+            }
+        };
+        var d = {
+            field: 'birthday',
+            title: '出生年月',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return fmtDate(row.birthday);
+            }
+        };
+        var e = {
+            field: 'address',
+            title: '常住地址',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return row.address;
+            }
+        };
+        var f = {
+            field: 'age',
+            title: '年龄',
+            align: 'center',
+            valign: 'middle',
+            width: 60,
+            formatter: function (value, row, index) {
+                return row.age;
+            }
+        };
+        var g = {
+            field: 'village',
+            title: '征地时所在村（组）',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return row.village == null ? "-" : row.village;
+            }
+        };
+        var h = {
+            field: 'isMove',
+            title: '是否迁出',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return row.isMove == 1 ? "是" : row.isMove == 2 ? "否" : "-";
+            }
+        };
+        var i = {
+            field: 'community',
+            title: '所属社区',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.community != null ? row.community.name : "-";
+            }
+        };
+        var j = {
+            field: 'house',
+            title: '户籍所在地',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.house == null ? "" : row.house;
+            }
+        };
+        var k = {
+            field: 'status',
+            title: '发放状态',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : "-";
+            }
+        };
+        var l = {
+            field: 'remark',
+            title: '备注信息',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.remark != null ? row.remark : "-";
+            }
+        };
+        var m = {
+            field: 'cz',
+            title: '操作',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateRoster(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+            }
+        };
+        columns.push(a);
+        columns.push(b);
+        columns.push(c);
+        columns.push(d);
+        columns.push(e);
+        columns.push(f);
+        columns.push(g);
+        columns.push(h);
+        columns.push(i);
+        columns.push(j);
+        columns.push(k);
+        columns.push(l);
+        columns.push(m);
         $.post("<%=basePath%>roster/selectRoster", {
             "loginId": loginId,
             "name": name,
@@ -434,74 +569,39 @@
             "pageSize": pageSize
         }, function (data) {
             var count = data.data.count;
-            $("#totalpage").val(count);
             var list = data.data.list;
-            var code = "";
-            for (var i = 0, j = list.length; i < j; i++) {
-                code += "<tr>";
-                code += "<td>" + list[i].idCard + "</td>";
-
-                code += "<td>" + list[i].name + "</td>";
-
-                if (list[i].gender === 1) {
-                    code += "<td>男</td>";
-                } else if (list[i].gender === 2) {
-                    code += "<td>女</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + fmtDate(list[i].birthday) + "</td>";
-
-                code += "<td>" + list[i].address + "</td>";
-
-                code += "<td>" + getAge(list[i].birthday) + "</td>";
-
-                code += "<td>" + list[i].village + "</td>";
-
-                if (list[i].isMove === 1) {
-                    code += "<td>否</td>";
-                } else if (list[i].isMove === 2) {
-                    code += "<td>是</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + list[i].community.name + "</td>";
-
-                code += "<td>" + list[i].house + "</td>";
-
-                if (list[i].status === 1) {
-                    code += "<td>未开始</td>";
-                } else if (list[i].status === 2) {
-                    code += "<td>发放中</td>";
-                } else if (list[i].status === 3) {
-                    code += "<td>已暂停</td>";
-                } else if (list[i].status === 4) {
-                    code += "<td>已退出</td>";
-                } else {
-                    code += "<td></td>";
-                }
-
-                code += "<td>" + list[i].remark + "</td>";
-
-                code += "<td><a class='' onclick='updateRoster(" + list[i].id + ")'><span class='fa fa-edit'></span> 查看</a></td>";
-                code += "</tr>";
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                data: list,
+                cache: false,
+                pagination: false,
+                fixedColumns: true,
+                fixedNumber: 3,
+                columns: columns
+            })
+            if (new Number(count) != 0) {
+                limitPage(pageNum, getTotalPage(count));
             }
-            $("#tbody").html(code);
-            limitPage(pageNum,10);
         })
     }
-
-    function limitPage(pageNum,totalPage) {
+    function getTotalPage(total) {
+        var count = new Number(total);
+        var tatalPage = 0;
+        if (count % 10 == 0) {
+            tatalPage = count / 10;
+        } else {
+            tatalPage = Math.ceil(count / 10);
+        }
+        return tatalPage;
+    }
+    function limitPage(pageNum, totalPage) {
         $('#pageLimit').bootstrapPaginator({
-            currentPage: pageNum,//当前的请求页面。
-            totalPages: totalPage,//一共多少页。
-            size: "normal",//应该是页眉的大小。
-            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            currentPage: pageNum,
+            totalPages: totalPage,
+            size: "normal",
+            bootstrapMajorVersion: 3,
             alignment: "right",
-            numberOfPages: 5,//一页列出多少数据。
-            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+            numberOfPages: 5,
+            itemTexts: function (type, page, current) {
                 switch (type) {
                     case "first":
                         return "首页";
@@ -518,14 +618,11 @@
             onPageClicked: function (event, originalEvent, type, page) {
                 selectRoster(page, 10);
             }
-
         });
     }
-
     $("#addRoster").on("click", function () {
         window.location.href = "<%=basePath%>roster/addRosterPage?loginId=" + $("#loginId").val();
     })
-
     function findAllCommunity() {
         $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
 
@@ -540,11 +637,9 @@
 
         });
     }
-
     function updateRoster(id) {
         window.location.href = "<%=basePath%>roster/updateRosterPager?rosterId=" + id + "&loginId=" + $("#loginId").val();
     }
-
     function fmtDate(birthday) {
         var date = new Date(birthday);
         var y = 1900 + date.getYear();
@@ -552,40 +647,34 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
-
     function getAge(birthday) {
-        //出生时间 毫秒
         var birthDayTime = new Date(birthday).getTime();
-        //当前时间 毫秒
         var nowTime = new Date().getTime();
-        //一年毫秒数(365 * 86400000 = 31536000000)
         return Math.ceil((nowTime - birthDayTime) / 31536000000);
     }
-    
     function uploadData(fileObj) {
         var allowExtention = ".xlsx,.xls";
         var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        if(allowExtention.indexOf(extention) > -1){
+        if (allowExtention.indexOf(extention) > -1) {
             $.ajaxFileUpload({
                 url: '<%=basePath%>roster/importRoster',
                 type: 'post',
-                data : {
-                    "loginId":$("#loginId").val()
+                data: {
+                    "loginId": $("#loginId").val()
                 },
                 secureuri: false,
                 fileElementId: "file",
                 dataType: 'json',
-                success: function(data, status){
+                success: function (data, status) {
                     console.log(data);
                     alert(data);
                 }
             });
-        }else{
+        } else {
             alert("仅支持" + allowExtention + "为后缀名的文件!");
             fileObj.value = "";
         }
     }
 </script>
-
 </body>
 </html>
