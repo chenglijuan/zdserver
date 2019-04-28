@@ -375,6 +375,7 @@
 <script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 <script>
+    var pageSize = 10;
     $(function () {
         selectRosterExamine(1, 10);
         findAllCommunity();
@@ -400,33 +401,6 @@
             }
         });
     }
-    $('#pageLimit').bootstrapPaginator({
-        currentPage: 1,//当前的请求页面。
-        totalPages: 20,//一共多少页。
-        size: "normal",//应该是页眉的大小。
-        bootstrapMajorVersion: 3,//bootstrap的版本要求。
-        alignment: "right",
-        numberOfPages: 5,//一页列出多少数据。
-        itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-            switch (type) {
-                case "first":
-                    return "首页";
-                case "prev":
-                    return "上一页";
-                case "next":
-                    return "下一页";
-                case "last":
-                    return "末页";
-                case "page":
-                    return page;
-            }
-        },
-        onPageClicked: function (event, originalEvent, type, page) {
-            selectRosterExamine(page, 10);
-        }
-
-    });
-
     $("#search").on("click", function () {
         selectRosterExamine(1, 10);
     })
@@ -441,7 +415,7 @@
         var house = $("#house").val();
         var comping = $("#comping").val();
         var age = $("#age").val();
-        var changes = $("#changes").val();
+        //var changes = $("#changes").val();
         var status = $("#status").val();
         var unemployment = $("#unemployment").val();
         var isInsured = $("#isInsured").val();
@@ -678,7 +652,7 @@
                 return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : "";
             }
         };
-        var w = {
+        /*var w = {
             field: 'cz',
             title: '操作',
             align: 'center',
@@ -687,7 +661,7 @@
             formatter: function (value, row, index) {
                 return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
             }
-        };
+        };*/
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -710,7 +684,7 @@
         columns.push(t);
         columns.push(u);
         columns.push(v);
-        columns.push(w);
+        //columns.push(w);
         var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/findAllExamine", {
             "loginId":loginId,
@@ -719,7 +693,7 @@
             "house": house,
             "comping": comping,
             "age": age,
-            "changes": changes,
+            "changes": 3,
             "status": status,
             "unemployment": unemployment,
             "isInsured": isInsured,
@@ -728,6 +702,7 @@
             "pageSize": pageSize
         }, function (data) {
             var list = data.data.list;
+            var count = data.data.count;
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
                 cache: false,
@@ -736,6 +711,8 @@
                 fixedNumber: 3,
                 columns: columns
             })
+            var totalPage = Math.ceil(count/pageSize);
+            selectByPager(pageNum,totalPage);
         })
     }
 
@@ -758,41 +735,34 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
-    function getAge(birthday) {
-        //出生时间 毫秒
-        var birthDayTime = new Date(birthday).getTime();
-        //当前时间 毫秒
-        var nowTime = new Date().getTime();
-        //一年毫秒数(365 * 86400000 = 31536000000)
-        return Math.ceil((nowTime - birthDayTime) / 31536000000);
-    }
 
-    function updateExamineById(examineId) {
-        window.location.href = "<%=basePath%>examine/updateExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
-    }
-
-    function uploadData(fileObj) {
-        var allowExtention = ".xlsx,.xls";
-        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        if(allowExtention.indexOf(extention) > -1){
-            $.ajaxFileUpload({
-                url: '<%=basePath%>examine/importExamine',
-                type: 'post',
-                data : {
-                    "loginId":$("#loginId").val()
-                },
-                secureuri: false,
-                fileElementId: "file",
-                dataType: 'json',
-                success: function(data, status){
-                    console.log(data);
-                    alert(data);
+    function selectByPager(pageNum,totalPage){
+        $('#pageLimit').bootstrapPaginator({
+            currentPage: pageNum,//当前的请求页面。
+            totalPages: totalPage,//一共多少页。
+            size: "normal",//应该是页眉的大小。
+            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            alignment: "right",
+            numberOfPages: pageSize,//一页列出多少数据。
+            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
                 }
-            });
-        }else{
-            alert("仅支持" + allowExtention + "为后缀名的文件!");
-            fileObj.value = "";
-        }
+            },
+            onPageClicked: function (event, originalEvent, type, page) {
+                selectExamine(page, pageSize);
+            }
+
+        });
     }
 </script>
 </body>
