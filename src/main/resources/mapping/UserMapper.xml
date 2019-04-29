@@ -8,9 +8,10 @@
     <result column="password" property="password" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, nickname, username, password, type, create_time
+    id, nickname, username, password, type, create_time,state
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -22,15 +23,71 @@
     delete from zd_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lemi.msloan.entity.User" >
-    insert into zd_user (id, nickname, username, 
-      password, type, create_time
+  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.User" >
+    update zd_user
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.User" >
+    update zd_user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+       state = #{state,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getByUsername" parameterType="com.lemi.msloan.request.UserRequest" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM zd_user
+    WHERE username = #{username}
+    LIMIT 1
+  </select>
+
+
+
+  <resultMap id="MyRoleTypeMap" type="com.lemi.msloan.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="community_name" property="communityName" jdbcType="VARCHAR" />
+    <result column="community_phone" property="communityPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lemi.msloan.entity.User" keyProperty="id" useGeneratedKeys="true">
+    insert into zd_user (id, nickname, username,
+      password, type, create_time,state
       )
-    values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+      #{password,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+       #{state,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.User" >
+  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.User" keyProperty="id" useGeneratedKeys="true">
     insert into zd_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -50,6 +107,9 @@
       </if>
       <if test="createTime != null" >
         create_time,
+      </if>
+      <if test="state != null" >
+        state,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -71,60 +131,21 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.User" >
-    update zd_user
-    <set >
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="username != null" >
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.User" >
-    update zd_user
-    set nickname = #{nickname,jdbcType=VARCHAR},
-      username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="getByUsername" parameterType="com.lemi.msloan.request.UserRequest" resultMap="BaseResultMap">
-    SELECT
-    <include refid="Base_Column_List" />
-    FROM zd_user
-    WHERE username = #{username}
-    LIMIT 1
+  <select id="getByUserId" resultMap="MyRoleTypeMap">
+    select a.id,a.nickname,a.username,a.type,b.id as community_id,b.name as community_name,b.phone as community_phone
+  from (select * from zd_user where id = #{0} )a LEFT JOIN zd_community b on a.id = b.user_id
   </select>
 
-
-  <resultMap id="MyRoleTypeMap" type="com.lemi.msloan.entity.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
-    <result column="username" property="username" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="community_id" property="communityId" jdbcType="INTEGER" />
-    <result column="community_name" property="communityName" jdbcType="VARCHAR" />
-  </resultMap>
-  <select id="getByUserId" resultMap="MyRoleTypeMap">
-    select a.id,a.nickname,a.username,a.type,b.id as community_id,b.name as community_name
-  from (select * from zd_user where id = #{0} )a LEFT JOIN zd_community b on a.id = b.user_id
+  <select id="selectUserPager" parameterType="com.lemi.msloan.request.UserRequest" resultMap="BaseResultMap">
+    select * from zd_user order by username desc
+  </select>
+  <select id="selectUserCount" parameterType="com.lemi.msloan.request.UserRequest" resultType="int">
+    select count(*) from zd_user
   </select>
 
 

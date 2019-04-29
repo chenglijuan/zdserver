@@ -19,6 +19,12 @@ public class User {
 
     private String communityName;
 
+    private String communityPhone;
+
+    private Integer state;
+
+    private Community community;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +87,29 @@ public class User {
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getCommunityPhone() {
+        return communityPhone;
+    }
+
+    public void setCommunityPhone(String communityPhone) {
+        this.communityPhone = communityPhone;
+    }
+
+    public Community getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(Community community) {
+        this.community = community;
     }
 }
