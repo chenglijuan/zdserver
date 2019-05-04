@@ -34,6 +34,7 @@
     <link href="<%=basePath%>css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="<%=basePath%>css/colors/blue.css" id="theme" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap2/bootstrap-switch.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -260,6 +261,7 @@
                     </div>
                 </div>
             </div>
+
             <div style="text-align: center">
                 <ul id="pageLimit"></ul>
             </div>
@@ -312,6 +314,7 @@
 <script src="<%=basePath%>laydate/laydate.js"></script>
 <script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 
 <script>
     var pageSize = 10;
@@ -383,9 +386,15 @@
             title: '是否启用',
             align: 'center',
             valign: 'middle',
-            width: 180,
+            //width: ,
             formatter: function (value, row, index) {
-                return row.state == null ? "-" : row.state == 1 ? "启用" : "冻结";
+                var checked = row.state == null ? false : row.state == 1 ? true : false;
+                if(checked){
+                    return "<input class='checkbox' name = 'test' type='checkbox' checked  value = '"+row.id+"'/>";
+                }else {
+                    return "<input class='checkbox' name = 'test' type='checkbox' value = '"+row.id+"' />";
+                }
+
             }
         };
         var o = {
@@ -395,7 +404,7 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateUserById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
                     "<a class='btn btn-info' style='color: #fff' onclick='deleteById(" + row.id + ")'><span class='fa fa-edit'></span>删除</a>";
             }
         };
@@ -421,8 +430,33 @@
                 fixedColumns: true,
                 fixedNumber: 3,
                 columns: columns
+                })
+            $('[name="test"]').bootstrapSwitch({
+                onText:"启用",
+                offText:"冻结",
+                //onColor:"success",
+                //offColor:"danger",
+                size:"small",
+                onSwitchChange:function(event,state){
+                    var useSstate = 1;
+                    var userId = $(this).val();
+                    if(state==true){
+                       // console.log('已打开');
+                        useSstate = 1
+                    }else{
+                        //console.log('已关闭');
+                        useSstate = 2;
+                    }
+                    //console.log(userId);
+                    $.post("<%=basePath%>user/updateState", {"userId": userId,"state":useSstate}, function (data) {
+                        if (data.code == 0) {
+                            window.location.href = "<%=basePath%>user/userPage?loginId=${loginId}";
+                        } else {
+                            popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                        }
+                    });
+                }
             })
-
             selectByPager(pageNum, totalPage);
         })
     }
@@ -459,11 +493,19 @@
         window.location.href = "<%=basePath%>user/addUserForm?loginId=" + $("#loginId").val();
     })
 
-    function updateExamineById(respectId) {
-        var pageType = $("#pageType").val();
-        window.location.href = "<%=basePath%>respect/updateRespect?loginId=" + $("#loginId").val() + "&respectId=" + respectId + "&pageType=" + pageType;
+    function updateUserById(userId) {
+        window.location.href = "<%=basePath%>user/updateUserForm?loginId=" + $("#loginId").val() + "&userId=" + userId;
     }
 
+    function deleteById(userId) {
+        $.post("<%=basePath%>user/deleteById", {"userId": userId}, function (data) {
+            if (data.code == 0) {
+                window.location.href = "<%=basePath%>user/userPage?loginId=${loginId}";
+            } else {
+                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+            }
+        });
+    }
 </script>
 </body>
 </html>
