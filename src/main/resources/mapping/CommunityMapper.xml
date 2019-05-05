@@ -101,6 +101,9 @@
       user_id = #{userId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+<!--  ==========================================================-->
+
   <select id="findAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -119,5 +122,25 @@
     FROM zd_community
     WHERE name = #{name}
     LIMIT 1
+  </select>
+  <select id="selectCommunityPager" parameterType="com.lemi.msloan.request.CommunityRequest" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from zd_community
+    <where>
+      <if test="name != null">
+        and name like '%${name}%'
+      </if>
+    </where>
+    order by id desc
+    <if test="start != null and end != null">
+      limit #{start},#{end}
+    </if>
+  </select>
+  <select id="selectCommunityCount" parameterType="com.lemi.msloan.request.CommunityRequest" resultType="int">
+    select count(*) from zd_community
+    <where>
+      <if test="name != null">
+        and name like '%${name}%'
+      </if>
+    </where>
   </select>
 </mapper>

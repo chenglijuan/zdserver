@@ -42,4 +42,14 @@ public class CommunityServiceImpl extends BaseServiceImpl<Community> implements 
         communityRequest.setName(communityName);
         return communityDao.getByName(communityRequest);
     }
+
+    @Override
+    public List<Community> selectCommunityPager(CommunityRequest request) {
+        return communityDao.selectCommunityPager(request);
+    }
+
+    @Override
+    public int selectCommunityCount(CommunityRequest request) {
+        return communityDao.selectCommunityCount(request);
+    }
 }

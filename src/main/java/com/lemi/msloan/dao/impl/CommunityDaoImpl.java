@@ -23,4 +23,14 @@ public class CommunityDaoImpl extends BaseDaoImpl<Community> implements Communit
     public Community getByName(CommunityRequest communityRequest) {
         return sqlSessionTemplate.selectOne("tbl_community.getByName",communityRequest);
     }
+
+    @Override
+    public List<Community> selectCommunityPager(CommunityRequest request) {
+        return sqlSessionTemplate.selectList("tbl_community.selectCommunityPager",request);
+    }
+
+    @Override
+    public int selectCommunityCount(CommunityRequest request) {
+        return sqlSessionTemplate.selectOne("tbl_community.selectCommunityCount",request);
+    }
 }

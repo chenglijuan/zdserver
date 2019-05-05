@@ -8,8 +8,10 @@
 <head>
        
     <base href="<%=basePath%>">
-       
-     <title>新增账号</title>
+        
+        <title>后台管理</title>
+        
+        
     <meta http-equiv="pragma" content="no-cache">
         
     <meta http-equiv="cache-control" content="no-cache">
@@ -21,22 +23,45 @@
         
     <meta http-equiv="description" content="This is my page">
 
+
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="<%=basePath%>assets/images/favicon.png">
-    <title>Monster Admin Template - The Most Complete & Trusted Bootstrap 4 Admin Template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
     <!-- Bootstrap Core CSS -->
     <link href="<%=basePath%>assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table.css" rel="stylesheet">
+    <link href="<%=basePath%>css/bootstrap-table-fixed-columns.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<%=basePath%>css/style.css" rel="stylesheet">
     <!-- You can change the theme colors from here -->
     <link href="<%=basePath%>css/colors/blue.css" id="theme" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>mycss/dialog.css">
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="<%=basePath%>js/html5shiv.js"></script>
+    <script src="<%=basePath%>js/respond.min.js"></script>
     <![endif]-->
+
+    <style type="text/css">
+        #example {
+
+            width: 500px;
+        }
+
+        #pageLimit li {
+            height: 50px;
+            width: 50px;
+        }
+
+        #table {
+            table-layout: fixed;
+        }
+
+        .bootstrap-table .fixed-table-container .fixed-table-body {
+            overflow-x: auto;
+            overflow-y: auto;
+            height: 55%;
+        }
+    </style>
 </head>
 <body class="fix-header card-no-border">
 <!-- ============================================================== -->
@@ -161,13 +186,17 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
+                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
                             </li>
                         </ul>
                     </li>
@@ -177,10 +206,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -209,96 +241,58 @@
         </div>
         <!-- End Sidebar scroll-->
     </aside>
-    <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Page wrapper  -->
-    <!-- ============================================================== -->
     <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
         <div class="container-fluid">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="row page-titles">
-                <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">新增账号</h3>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a
-                                href="<%=basePath%>user/userPage?loginId=${loginId}&pageType=${pageType}">列表</a></li>
-                        <li class="breadcrumb-item active">新增</li>
-                    </ol>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Start Page Content -->
-            <!-- ============================================================== -->
-            <!-- Row -->
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>社区管理</legend>
+            </fieldset>
             <div class="row">
-                <!-- Column -->
-                <div class="col-lg-8 col-xlg-9 col-md-7">
+                <!-- column -->
+                <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-block">
-                            <form class="form-horizontal form-material">
-                                <div class="form-group form-control-line">
-                                    <label for="username" class="col-md-3"><span style="color: red">*</span>账号名称</label>
-                                    <input type="text" placeholder="请输入账号名称" class="form-control col-md-8" name="username"
-                                           id="username">
-                                </div>
-                                <div class="form-group form-control-line">
-                                    <label class="col-md-3">姓名</label>
-                                    <input type="text" placeholder="请输入账号姓名" class="form-control col-md-8" id="nickname">
-                                </div>
-                                <%--<div class="form-group form-control-line">
-                                    <label for="phone" class="col-md-3">联系电话</label>
-                                    <input type="text" placeholder="联系电话" class="form-control col-md-8" name="phone" id="phone">
-                                </div>--%>
-                                <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
-                                    <label for="communityId" class="col-md-3"><span
-                                            style="color: red">*</span>所属社区：</label>
-                                    <select class="form-control col-md-8" id="communityId">
-                                        <option selected value="">请选择</option>
-                                    </select>
-                                </div>
-                                <div class="form-group form-control-line">
-                                    <label for="phone" class="col-md-3">登录密码</label>
-                                    <input type="text" placeholder="登录密码" class="form-control col-md-8" name="password" id="password">
-                                </div>
-                                <div class="form-group form-control-line">
-                                    <label for="phone" class="col-md-3">确认密码</label>
-                                    <input type="text" placeholder="确认密码" class="form-control col-md-8" name="comfirePwd" id="comfirePwd">
-                                </div>
-
-                            </form>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <button type="button" class="btn btn-success" id="submit">确定</button>
-                                </div>
-                            </div>
+                        <div class="card-block" id="operatorBtn">
+                            <button type="button" class="btn btn-info" id="addUser"><span class=" fa fa-plus-square"></span> 新增</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table" id="table">
+                            </table>
                         </div>
                     </div>
                 </div>
-                <!-- Column -->
             </div>
+            <div style="text-align: center">
+                <ul id="pageLimit"></ul>
+            </div>
+            <!-- ============================================================== -->
+            <!-- End PAge Content -->
+            <!-- ============================================================== -->
         </div>
         <footer class="footer text-center">
             © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
                                                                 title="模板之家">模板之家</a> - Collect from <a
                 href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
         </footer>
+        <!-- ============================================================== -->
+        <!-- End footer -->
+        <!-- ============================================================== -->
     </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
 </div>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
-<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<%--<script src="<%=basePath%>assets/plugins/jquery/jquery.min.js"></script>--%>
+<script src="<%=basePath%>myjs/jquery.min.js"></script>
 <!-- Bootstrap tether Core JavaScript -->
 <script src="<%=basePath%>assets/plugins/bootstrap/js/tether.min.js"></script>
 <script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=basePath%>assets/plugins/bootstrap/js/bootstrap-paginator.js"></script>
 <!-- slimscrollbar scrollbar JavaScript -->
 <script src="<%=basePath%>js/jquery.slimscroll.js"></script>
 <!--Wave Effects -->
@@ -312,15 +306,15 @@
 <!-- ============================================================== -->
 <!-- Style switcher -->
 <!-- ============================================================== -->
-<script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
-
-<script src="<%=basePath%>laydate/laydate.js"></script>
-
-<script src="<%=basePath%>myjs/zepto.min.js"></script>
+<script src="<%=basePath%>js/bootstrap-table.js"></script>
+<script src="<%=basePath%>js/bootstrap-table-fixed-columns.js"></script>
 <script src="<%=basePath%>js/util.js"></script>
-<script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
-<script type="text/javascript">
-    var roleType = 2;
+<script src="<%=basePath%>laydate/laydate.js"></script>
+<script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
+
+<script>
+    var pageSize = 5;
     $(function () {
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -328,79 +322,145 @@
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
-            if (data.code == 0){
-                roleType = data.data.type;
-                //如果是社区管理员默认
-                if(roleType == 1){
-                    $("#communityIdDiv").show();
-                    findAllCommunity();
-                }
-            }else{
+            if (data.code == 0) {
+                selectExamine(1, pageSize);
+            } else {
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href = "<%=basePath%>/login.jsp";
             }
         });
     }
 
-    function findAllCommunity() {
-        $.post("<%=basePath%>roster/findAllCommunity", {}, function (data) {
-            if (data.code == 0) {
-                var list = data.data;
-                var code = "<option value=''>请选择</option>";
-                for (var i = 0; i < list.length; i++) {
-                    code += "<option value='" + list[i].id + "'>" + list[i].name + "</option>";
-                }
-                $("#communityId").html(code);
+
+    $("#search").on("click", function () {
+        selectExamine(1, 10);
+    })
+
+    function selectExamine(pageNum, pageSize) {
+        var columns = [];
+        var a = {
+            field: 'name',
+            title: '社区名称',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.name;
             }
+        };
+        var b = {
+            field: 'linkman',
+            title: '社区联系人',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.linkman;
+            }
+        };
+        var c = {
+            field: 'phone',
+            title: '联系电话',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.phone ? row.phone : "-";
+            }
+        };
+        var d = {
+            field: 'address',
+            title: '社区地址',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.address ? row.address : "-";
+            }
+        };
+        var e = {
+            field: 'cz',
+            title: '操作',
+            align: 'center',
+            valign: 'middle',
+            width: 240,
+            formatter: function (value, row, index) {
+                return "<a class='btn btn-info' style='color: #fff' onclick='updateUserById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;"+
+                    "<a class='btn btn-info' style='color: #fff' onclick='deleteById(" + row.id + ")'><span class='fa fa-edit'></span> 删除</a>";
+            }
+        };
+        columns.push(a);
+        columns.push(b);
+        columns.push(c);
+        columns.push(d);
+        columns.push(e);
 
-        });
-    }
-
-    $("#submit").on("click", function () {
-
-        var username = $("#username").val();
-        var nickname = $("#nickname").val();
-        var loginId = $("#loginId").val();
-        var communityId = $("#communityId").val();
-        var password = $("#password").val();
-        var comfirePwd = $("#comfirePwd").val();
-
-        if (username == null || username == "") {
-            popup({type: 'error', msg: "账号名称不能为空", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (password == null || password == "") {
-            popup({type: 'error', msg: "密码不能为空", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (comfirePwd == null || comfirePwd == "") {
-            popup({type: 'error', msg: "确认密码不能为空", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (comfirePwd != password ) {
-            popup({type: 'error', msg: "密码和确认密码不一致", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        if (communityId == null || communityId == "") {
-            popup({type: 'error', msg: "所属社区不能为空", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-        $.post("<%=basePath%>user/addUser", {
-            "username": username,
-            "nickname": nickname,
-            "communityId": communityId,
-            "password": password,
-            "comfirePwd": comfirePwd,
-            "loginId":loginId
+        $.post("<%=basePath%>community/selectCommunity", {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "loginId": $("#loginId").val()
         }, function (data) {
+            var list = data.data.list;
+            var totalPage = data.data.totalPage;
+
+            $('#table').bootstrapTable('destroy').bootstrapTable({
+                data: list,
+                cache: false,
+                pagination: false,
+                fixedColumns: true,
+                //fixedNumber: 3,
+                columns: columns
+            })
+
+            selectByPager(pageNum, totalPage);
+        })
+    }
+
+    function selectByPager(pageNum, totalPage) {
+        $('#pageLimit').bootstrapPaginator({
+            currentPage: pageNum,//当前的请求页面。
+            totalPages: totalPage,//一共多少页。
+            size: "normal",//应该是页眉的大小。
+            bootstrapMajorVersion: 3,//bootstrap的版本要求。
+            alignment: "right",
+            numberOfPages: pageSize,//一页列出多少数据。
+            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
+                switch (type) {
+                    case "first":
+                        return "首页";
+                    case "prev":
+                        return "上一页";
+                    case "next":
+                        return "下一页";
+                    case "last":
+                        return "末页";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked: function (event, originalEvent, type, page) {
+                selectExamine(page, pageSize);
+            }
+        });
+    }
+
+    $("#addUser").on("click", function () {
+        window.location.href = "<%=basePath%>community/addCommunityForm?loginId=" + $("#loginId").val();
+    })
+
+    function updateUserById(communityId) {
+        window.location.href = "<%=basePath%>community/updateCommunityForm?loginId=" + $("#loginId").val() + "&communityId=" + communityId;
+    }
+
+    function deleteById(communityId) {
+        $.post("<%=basePath%>community/deleteById", {"communityId": communityId}, function (data) {
             if (data.code == 0) {
-                popup({type: "success", msg: "提交成功", delay: 1000});
-                window.location.href = "<%=basePath%>user/userPage?loginId=${loginId}";
+                window.location.href = "<%=basePath%>community/communityPage?loginId=${loginId}";
             } else {
                 popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
             }
-        })
-    })
+        });
+    }
 
 </script>
 </body>
