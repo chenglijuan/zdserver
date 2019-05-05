@@ -48,4 +48,24 @@ public class ExamineDaoImpl extends BaseDaoImpl<Examine> implements ExamineDao {
     public Examine getBeanByIdCard(ExamineRequest examineRequest) {
         return sqlSessionTemplate.selectOne("tbl_examine.getBeanByIdCard",examineRequest);
     }
+
+    @Override
+    public List<Examine> findAgainExamine(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectList("tbl_examine.findAgainExamine",examineRequest);
+    }
+
+    @Override
+    public Integer findAgainExamineCount(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectOne("tbl_examine.findAgainExamineCount",examineRequest);
+    }
+
+    @Override
+    public List<Examine> findUndeterminedExamine(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectList("tbl_examine.findUndeterminedExamine",examineRequest);
+    }
+
+    @Override
+    public Integer findUndeterminedExamineCount(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectOne("tbl_examine.findUndeterminedExamineCount",examineRequest);
+    }
 }

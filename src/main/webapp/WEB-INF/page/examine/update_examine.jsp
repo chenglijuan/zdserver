@@ -89,12 +89,12 @@
                     <!-- This is  -->
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                        <%--<form class="app-search p-l-20">--%>
+                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                                <%--class="ti-search"></i></a>--%>
+                        <%--</form>--%>
+                    <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -102,8 +102,11 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >账户：<span id="username"></span> </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >退出</a>
                     </li>
                 </ul>
             </div>
@@ -520,9 +523,9 @@
                     <div class="card">
                         <div class="card-block">
                             <form class="form-horizontal form-material">
-                                <div class="form-group">
+                                <div class="form-group" style="text-align: center">
                                     <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">确定</button>
+                                        <button type="button" class="btn btn-info" id="submit">确认编辑</button>
                                     </div>
                                 </div>
                             </form>
@@ -538,17 +541,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
@@ -604,6 +596,7 @@
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             } else {
+                $("#username").html(data.data.username);
                 if (data.data.type == 1) {
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");

@@ -708,7 +708,7 @@
         return 'Search';
       },
       formatNoMatches: function formatNoMatches() {
-        return 'No matching records found';
+        return '暂无数据';
       },
       formatPaginationSwitch: function formatPaginationSwitch() {
         return 'Hide/Show pagination';

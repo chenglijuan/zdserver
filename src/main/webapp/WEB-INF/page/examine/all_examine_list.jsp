@@ -432,33 +432,6 @@
             }
         });
     }
-    $('#pageLimit').bootstrapPaginator({
-        currentPage: 1,
-        totalPages: 20,
-        size: "normal",
-        bootstrapMajorVersion: 3,
-        alignment: "right",
-        numberOfPages: 5,
-        itemTexts: function (type, page, current) {
-            switch (type) {
-                case "first":
-                    return "首页";
-                case "prev":
-                    return "上一页";
-                case "next":
-                    return "下一页";
-                case "last":
-                    return "末页";
-                case "page":
-                    return page;
-            }
-        },
-        onPageClicked: function (event, originalEvent, type, page) {
-            selectRosterExamine(page, 10);
-        }
-
-    });
-
     $("#search").on("click", function () {
         selectRosterExamine(1, 10);
     })
@@ -544,7 +517,7 @@
             title: '现住地',
             align: 'center',
             valign: 'middle',
-            width: 150,
+            width: 240,
             formatter: function (value, row, index) {
                 return row.address == null ? "-" : row.address;
             }
@@ -679,16 +652,16 @@
                 return row.comping == null ? "-" : row.comping == 1 ? "是" : "否";
             }
         };
-        var u = {
-            field: 'state',
-            title: '审核状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.state == null ? "-" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
-            }
-        };
+//        var u = {
+//            field: 'state',
+//            title: '审核状态',
+//            align: 'center',
+//            valign: 'middle',
+//            width: 120,
+//            formatter: function (value, row, index) {
+//                return row.state == null ? "-" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
+//            }
+//        };
         var v = {
             field: 'status',
             title: '发放状态',
@@ -729,7 +702,7 @@
         columns.push(r);
         columns.push(s);
         columns.push(t);
-        columns.push(u);
+//        columns.push(u);
         columns.push(v);
         columns.push(w);
         var loginId = $("#loginId").val();
