@@ -202,9 +202,6 @@ public class ExamineController {
         if (StringUtils.isBlank(ffbj)) {
             return new ApiResult(false, "请输入发放标准", -1);
         }
-        if (StringUtils.isBlank(batch)) {
-            return new ApiResult(false, "请输入新增批次", -1);
-        }
         if (StringUtils.isBlank(name)) {
             return new ApiResult(false, "请输入姓名", -1);
         }
