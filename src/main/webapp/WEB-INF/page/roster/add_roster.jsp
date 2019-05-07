@@ -191,10 +191,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -361,7 +364,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12" style="text-align: center">
-                                        <button type="button" class="btn btn-info" id="submit">确认新增</button>
+                                        <button type="button" class="btn btn-info" id="submit">确认</button>
                                     </div>
                                 </div>
                             </form>
@@ -460,95 +463,98 @@
     }
 
     $("#submit").on("click", function () {
+        if (confirm("是否确认提交？")) {
 
-        var idCard = $("#idCard").val();
+            var idCard = $("#idCard").val();
 
-        var name = $("#name").val();
+            var name = $("#name").val();
 
-        var gender = $("#gender").val();
+            var gender = $("#gender").val();
 
-        var birthday = $("#birthday").val();
+            var birthday = $("#birthday").val();
 
-        var address = $("#address").val();
+            var address = $("#address").val();
 
-        var village = $("#village").val();
+            var village = $("#village").val();
 
-        var isMove = $("#isMove").val();
+            var isMove = $("#isMove").val();
 
-        var communityId = $("#community").val();
+            var communityId = $("#community").val();
 
-        var house = $("#house").val();
+            var house = $("#house").val();
 
-        var remark = $("#remark").val();
+            var remark = $("#remark").val();
 
-        var loginId = $("#loginId").val();
+            var loginId = $("#loginId").val();
 
-        var status = $("#status").val();
-        if (idCard == null || idCard == "") {
-            popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
+            var status = $("#status").val();
 
-        if (name == null || name == "") {
-            popup({type: 'error', msg: "请输入姓名", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (gender == null || gender == "") {
-            popup({type: 'error', msg: "请选择性别", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (birthday == null || birthday == "") {
-            popup({type: 'error', msg: "请选择出生年月", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (address == null || address == "") {
-            popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (village == null || village == "") {
-            popup({type: 'error', msg: "请输入征地时所在村（组）", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (isMove == null || isMove == "") {
-            popup({type: 'error', msg: "请选择是否迁出", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (communityId == null || communityId == "") {
-            popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        if (house == null || house == "") {
-            popup({type: 'error', msg: "请输入现户籍所在地", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }
-
-        $.post("<%=basePath%>roster/insertRoster", {
-            "loginId": loginId,
-            "idCard": idCard,
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "address": address,
-            "village": village,
-            "isMove": isMove,
-            "communityId": communityId,
-            "house": house,
-            "status": status,
-            "remark": remark
-        }, function (data) {
-            if (data.code == 0) {
-                popup({type: "success", msg: "新增成功", delay: 1000});
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+            if (idCard == null || idCard == "") {
+                popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
+                return;
             }
-        })
+
+            if (name == null || name == "") {
+                popup({type: 'error', msg: "请输入姓名", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (gender == null || gender == "") {
+                popup({type: 'error', msg: "请选择性别", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (birthday == null || birthday == "") {
+                popup({type: 'error', msg: "请选择出生年月", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (address == null || address == "") {
+                popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (village == null || village == "") {
+                popup({type: 'error', msg: "请输入征地时所在村（组）", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (isMove == null || isMove == "") {
+                popup({type: 'error', msg: "请选择是否迁出", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (communityId == null || communityId == "") {
+                popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            if (house == null || house == "") {
+                popup({type: 'error', msg: "请输入现户籍所在地", delay: 2000, bg: true, clickDomCancel: true});
+                return;
+            }
+
+            $.post("<%=basePath%>roster/insertRoster", {
+                "loginId": loginId,
+                "idCard": idCard,
+                "name": name,
+                "gender": gender,
+                "birthday": birthday,
+                "address": address,
+                "village": village,
+                "isMove": isMove,
+                "communityId": communityId,
+                "house": house,
+                "status": status,
+                "remark": remark
+            }, function (data) {
+                if (data.code == 0) {
+                    popup({type: "success", msg: "新增成功", delay: 2000});
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            })
+        }
     })
 </script>
 </body>

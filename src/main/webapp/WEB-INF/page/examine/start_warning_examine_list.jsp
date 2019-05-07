@@ -470,11 +470,11 @@
                     <div class="form-inline" style="padding-top: 20px">
                         <div class="col-md-6 form-inline">
                             <label class="">动态享受年月：</label>
-                            <input class="form-control" id="dtxsny_tab"/>
+                            <input class="form-control" id="dtxsny_tab" readonly/>
                         </div>
                         <div class="col-md-6 form-inline">
                             <label class="">发放标准：</label>
-                            <input class="form-control" id="ffbj_tab"/>
+                            <input class="form-control" id="ffbj_tab" readonly value="180元/月"/>
                         </div>
                     </div>
                     <div class="form-inline" style="padding-top: 20px">
@@ -598,7 +598,11 @@
 
         lay('.date_picker').each(function () {
             laydate.render({
-                elem: this
+                elem: this,
+                done: function(value, date, endDate){
+                    var elemId = $(this.elem[0]).attr("id");
+                    changeDate(value,elemId);
+                }
             });
         });
 
@@ -1053,43 +1057,45 @@
     }
 
     $("#submit").on("click",function () {
-        var loginId = $("#loginId").val();
-        var examineId = $("#examineId").val();
-        var startTime = $("#startTime_tab").val();
-        var stopTime = $("#stopTime_tab").val();
-        var dtxsny = $("#dtxsny_tab").val();
-        var ffbj = $("#ffbj_tab").val();
-        var batch = $("#batch_tab").val();
-        var isInsured = $("#isInsured_tab").val();
-        var unemployment = $("#unemployment_tab").val();
-        var unStart = $("#unStart_tab").val();
-        var unEnd = $("#unEnd_tab").val();
-        var comping = $("#comping_tab").val();
-        var changes = $("#changes_tab").val();
-        $.post("<%=basePath%>examine/startExamine", {
-            "loginId": loginId,
-            "examineId": examineId,
-            "startTime": startTime,
-            "stopTime":stopTime,
-            "dtxsny":dtxsny,
-            "ffbj":ffbj,
-            "batch":batch,
-            "isInsured":isInsured,
-            "unemployment":unemployment,
-            "unStart":unStart,
-            "unEnd":unEnd,
-            "comping":comping,
-            "changes":changes
+        if (confirm("是否确认通过？")) {
+            var loginId = $("#loginId").val();
+            var examineId = $("#examineId").val();
+            var startTime = $("#startTime_tab").val();
+            var stopTime = $("#stopTime_tab").val();
+            var dtxsny = $("#dtxsny_tab").val();
+            var ffbj = $("#ffbj_tab").val();
+            var batch = $("#batch_tab").val();
+            var isInsured = $("#isInsured_tab").val();
+            var unemployment = $("#unemployment_tab").val();
+            var unStart = $("#unStart_tab").val();
+            var unEnd = $("#unEnd_tab").val();
+            var comping = $("#comping_tab").val();
+            var changes = $("#changes_tab").val();
+            $.post("<%=basePath%>examine/startExamine", {
+                "loginId": loginId,
+                "examineId": examineId,
+                "startTime": startTime,
+                "stopTime": stopTime,
+                "dtxsny": dtxsny,
+                "ffbj": ffbj,
+                "batch": batch,
+                "isInsured": isInsured,
+                "unemployment": unemployment,
+                "unStart": unStart,
+                "unEnd": unEnd,
+                "comping": comping,
+                "changes": changes
 
-        },function (data) {
-            if (data.code == 0) {
-                $("#examineModal").modal('toggle');
-                popup({type: "success", msg: "操作成功", delay: 1000});
-                selectStartWarning(1, 10);
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        })
+            }, function (data) {
+                if (data.code == 0) {
+                    $("#examineModal").modal('toggle');
+                    popup({type: "success", msg: "操作成功", delay: 1000});
+                    selectStartWarning(1, 10);
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            })
+        }
     })
 
     $("#unemployment_tab").on("change", function () {
@@ -1113,6 +1119,34 @@
             }
         });
     })
+
+    var startTime = "";
+    var stopTime = "";
+
+    function changeDate(value,elemId) {
+
+        if (elemId == "stopTime_tab"){
+            startTime = value;
+        }else if (elemId == "startTime_tab"){
+            stopTime = value;
+        }
+        if(startTime != "" && stopTime != ""){
+            var days = datedifference(startTime,stopTime);
+            $("#dtxsny_tab").val(days+"天");
+        }
+    }
+
+    function datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
+        var dateSpan,
+            tempDate,
+            iDays;
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+        return iDays
+    }
 </script>
 </body>
 </html>

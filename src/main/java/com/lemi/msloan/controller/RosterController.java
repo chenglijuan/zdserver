@@ -126,23 +126,22 @@ public class RosterController {
     /**
      * 新增花名册
      *
-     * @param idCard        身份证
-     * @param name          姓名
-     * @param gender        性别 1：男 2：女
-     * @param birthday      出生年月
-     * @param address       常住地址
-     * @param village       征地时所在村（组）
-     * @param isMove        是否迁出 1：否  2：是
-     * @param communityId   现所属社区Id
-     * @param communityName 现所属社区名称
-     * @param house         现户籍所在地
-     * @param status        发放状态 1：未开始 2：发放中 3：已暂停 4：已退出
-     * @param remark        备注
+     * @param idCard      身份证
+     * @param name        姓名
+     * @param gender      性别 1：男 2：女
+     * @param birthday    出生年月
+     * @param address     常住地址
+     * @param village     征地时所在村（组）
+     * @param isMove      是否迁出 1：否  2：是
+     * @param communityId 现所属社区Id
+     * @param house       现户籍所在地
+     * @param status      发放状态 1：未开始 2：发放中 3：已暂停 4：已退出
+     * @param remark      备注
      * @return
      */
     @RequestMapping(value = "insertRoster")
     @ResponseBody
-    public ApiResult insertRoster(Integer loginId, String idCard, String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String communityName, String house, Integer status, String remark) {
+    public ApiResult insertRoster(Integer loginId, String idCard, String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String remark) {
 
         User user = userService.get(loginId);
         if (user != null) {
@@ -186,7 +185,7 @@ public class RosterController {
         }
 
         if (StringUtils.isBlank(village)) {
-            return new ApiResult(false, "请输入征地时所在村（组）", -1);
+            return new ApiResult(false, "请输入征地时所在村组", -1);
         }
 
         if (StringUtils.isBlank(house)) {
@@ -212,10 +211,9 @@ public class RosterController {
         roster.setCommunityId(communityId);
         roster.setHouse(house);
         roster.setRemark(remark);
-        roster.setStatus(1);
+        roster.setStatus(status);
         roster.setTime(new Date());
         int result = rosterService.save(roster);
-//        int result = rosterService.insertRoster(idCard, name, gender, birthday, address, village, isMove, communityId, communityName, house, status, remark);
         if (result == 1) {
             Integer rosterId = roster.getId();
             Examine examine = new Examine();
@@ -228,8 +226,7 @@ public class RosterController {
             examine.setIsMove(isMove);
             examine.setCommunityId(communityId);
             examine.setHouse(house);
-            examine.setRemark(remark);
-            examine.setStatus(1);
+            examine.setStatus(status);
             examine.setTime(new Date());
             examine.setState(5);
             int res = examineService.save(examine);
@@ -329,7 +326,6 @@ public class RosterController {
      * @param village       征地时所在村（组）
      * @param isMove        是否迁出 1：否  2：是
      * @param communityId   现所属社区Id
-     * @param communityName 现所属社区名称
      * @param house         现户籍所在地
      * @param status        发放状态 1：未开始 2：发放中 3：已暂停 4：已退出
      * @param remark        备注
@@ -337,7 +333,7 @@ public class RosterController {
      */
     @RequestMapping(value = "updateRosterById")
     @ResponseBody
-    public ApiResult updateRosterById(Integer loginId, Integer rosterId, String idCard, String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String communityName, String house, Integer status, String remark) {
+    public ApiResult updateRosterById(Integer loginId, Integer rosterId, String idCard, String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String remark) {
 
         if (rosterId == null) {
             return new ApiResult(false, "请上传参数", -1);
@@ -447,7 +443,7 @@ public class RosterController {
      * @param session
      * @return
      */
-    @RequestMapping(value = "importRoster",produces="text/html;charset=UTF-8")
+    @RequestMapping(value = "importRoster", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String importRoster(Integer loginId, @RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session) {
         try {
@@ -645,7 +641,7 @@ public class RosterController {
                     updateCount++;
                 }
             }
-            return "共导入"+rosters.size()+"条数据，新增"+insertCount+"条，更新"+updateCount+"条";
+            return "共导入" + rosters.size() + "条数据，新增" + insertCount + "条，更新" + updateCount + "条";
         } catch (Exception ex) {
             ex.printStackTrace();
         }

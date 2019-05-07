@@ -406,20 +406,19 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span style="color: red">*</span>动态享受年月</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="请输入动态享受年月"
-                                               class="form-control form-control-line" id="dtxsny">
+                                        <input type="text" class="form-control form-control-line" id="dtxsny" readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-md-12"><span style="color: red">*</span>发放标准</label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入发放标准"
-                                               class="form-control form-control-line" id="ffbj">
+                                               class="form-control form-control-line" id="ffbj" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="house" class="col-md-12"><span style="color: red">*</span>新增批次</label>
+                                    <label for="house" class="col-md-12">新增批次</label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入新增批次"
                                                class="form-control form-control-line" name="batch"
@@ -544,7 +543,7 @@
                             <form class="form-horizontal form-material">
                                 <div class="form-group" style="text-align: center">
                                     <div class="col-sm-12">
-                                        <button type="button" class="btn btn-info" id="submit">确认编辑</button>
+                                        <button type="button" class="btn btn-info" id="submit">确认</button>
                                     </div>
                                 </div>
                             </form>
@@ -601,7 +600,11 @@
     $(function () {
         lay('.date_picker').each(function () {
             laydate.render({
-                elem: this
+                elem: this,
+                done: function(value, date, endDate){
+                    var elemId = $(this.elem[0]).attr("id");
+                    changeDate(value,elemId);
+                }
             });
         });
         findAllCommunity();
@@ -668,68 +671,71 @@
     })
 
     $("#submit").on("click", function () {
-        var name = $("#name").val();
-        var gender = $("#gender").val();
-        var birthday = $("#birthday").val();
-        var idCard = $("#idCard").val();
-        var phone = $("#phone").val();
-        var house = $("#house").val();
-        var address = $("#address").val();
-        var communityId = $("#community").val();
-        var villageTime = $("#villageTime").val();
-        var villageAge = $("#villageAge").val();
-        var village = $("#village").val();
-        var cdState = $("#cdState").val();
-        var startTime = $("#startTime").val();
-        var stopTime = $("#stopTime").val();
-        var dtxsny = $("#dtxsny").val();
-        var ffbj = $("#ffbj").val();
-        var batch = $("#batch").val();
-        var isInsured = $("#isInsured").val();
-        var unemployment = $("#unemployment").val();
-        var unStart = $("#unStart").val();
-        var unEnd = $("#unEnd").val();
-        var comping = $("#comping").val();
-        var changes = $("#changes").val();
-        var status = $("#status").val();
-        var stopType = $("#stopType").val();
-        var stopReason = $("#stopReason").val();
-        var isMove = $("#isMove").val();
-        var examineId = $("#examineId").val();
-        var loginId = $("#loginId").val();
-        $.post("<%=basePath%>examine/updateExamineById", {
-            "loginId":loginId,
-            "examineId": examineId,
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "idCard": idCard,
-            "phone": phone,
-            "house": house,
-            "address": address,
-            "communityId": communityId,
-            "villageTime": villageTime,
-            "villageAge": villageAge,
-            "village": village,
-            "cdState": cdState,
-            "startTime": startTime,
-            "stopTime": stopTime,
-            "dtxsny": dtxsny,
-            "ffbj": ffbj,
-            "batch": batch,
-            "isInsured": isInsured,
-            "unemployment": unemployment,
-            "unStart": unStart,
-            "unEnd": unEnd,
-            "comping": comping,
-            "changes": changes,
-            "status": status,
-            "stopType": stopType,
-            "stopReason": stopReason,
-            "isMove": isMove
-        }, function (data) {
-            alert(data.message);
-        });
+
+        if(confirm("是否确认提交?")) {
+            var name = $("#name").val();
+            var gender = $("#gender").val();
+            var birthday = $("#birthday").val();
+            var idCard = $("#idCard").val();
+            var phone = $("#phone").val();
+            var house = $("#house").val();
+            var address = $("#address").val();
+            var communityId = $("#community").val();
+            var villageTime = $("#villageTime").val();
+            var villageAge = $("#villageAge").val();
+            var village = $("#village").val();
+            var cdState = $("#cdState").val();
+            var startTime = $("#startTime").val();
+            var stopTime = $("#stopTime").val();
+            var dtxsny = $("#dtxsny").val();
+            var ffbj = $("#ffbj").val();
+            var batch = $("#batch").val();
+            var isInsured = $("#isInsured").val();
+            var unemployment = $("#unemployment").val();
+            var unStart = $("#unStart").val();
+            var unEnd = $("#unEnd").val();
+            var comping = $("#comping").val();
+            var changes = $("#changes").val();
+            var status = $("#status").val();
+            var stopType = $("#stopType").val();
+            var stopReason = $("#stopReason").val();
+            var isMove = $("#isMove").val();
+            var examineId = $("#examineId").val();
+            var loginId = $("#loginId").val();
+            $.post("<%=basePath%>examine/updateExamineById", {
+                "loginId": loginId,
+                "examineId": examineId,
+                "name": name,
+                "gender": gender,
+                "birthday": birthday,
+                "idCard": idCard,
+                "phone": phone,
+                "house": house,
+                "address": address,
+                "communityId": communityId,
+                "villageTime": villageTime,
+                "villageAge": villageAge,
+                "village": village,
+                "cdState": cdState,
+                "startTime": startTime,
+                "stopTime": stopTime,
+                "dtxsny": dtxsny,
+                "ffbj": ffbj,
+                "batch": batch,
+                "isInsured": isInsured,
+                "unemployment": unemployment,
+                "unStart": unStart,
+                "unEnd": unEnd,
+                "comping": comping,
+                "changes": changes,
+                "status": status,
+                "stopType": stopType,
+                "stopReason": stopReason,
+                "isMove": isMove
+            }, function (data) {
+                alert(data.message);
+            });
+        }
     })
 
     function getExamineById() {
@@ -786,6 +792,34 @@
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+    }
+
+    var startTime = "";
+    var stopTime = "";
+
+    function changeDate(value,elemId) {
+
+        if (elemId == "stopTime"){
+            startTime = value;
+        }else if (elemId == "startTime"){
+            stopTime = value;
+        }
+        if(startTime != "" && stopTime != ""){
+            var days = datedifference(startTime,stopTime);
+            $("#dtxsny").val(days+"天");
+        }
+    }
+
+    function datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
+        var dateSpan,
+            tempDate,
+            iDays;
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+        return iDays
     }
 </script>
 </body>
