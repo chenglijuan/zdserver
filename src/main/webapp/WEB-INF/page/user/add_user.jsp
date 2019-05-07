@@ -287,11 +287,6 @@
                 <!-- Column -->
             </div>
         </div>
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
     </div>
 </div>
 <input type="hidden" id="loginId" value="${loginId}">

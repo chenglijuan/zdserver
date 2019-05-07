@@ -311,7 +311,7 @@
                         <div class="card-block" id="operatorBtn">
                             <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
-                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">模板导出</a>
+                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
                             <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>
                         </div>
                         <div class="table-responsive">
@@ -357,17 +357,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
