@@ -16,4 +16,11 @@ public interface RespectService extends BaseService<Respect> {
     int insertBatchData(List<Respect> list);
 
     List<String> getAllIdCards();
+
+
+    List<Respect> selectRemindRespect(Integer communityId,Integer type,Integer auditState);
+
+    int selectRemindRespectCount(Integer communityId,Integer type,Integer auditState);
+
+
 }

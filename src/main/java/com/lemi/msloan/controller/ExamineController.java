@@ -4,11 +4,9 @@ import com.lemi.msloan.entity.Community;
 import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.entity.User;
+import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
-import com.lemi.msloan.service.CommunityService;
-import com.lemi.msloan.service.ExamineService;
-import com.lemi.msloan.service.RosterService;
-import com.lemi.msloan.service.UserService;
+import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.DateUtil;
 import com.lemi.msloan.util.FileUtil;
 import com.lemi.msloan.util.PoiTest;
@@ -47,6 +45,9 @@ public class ExamineController {
 
     @Autowired
     private CommunityService communityService;
+
+    @Autowired
+    private RespectService respectService;
 
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
@@ -1335,10 +1336,11 @@ public class ExamineController {
         Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
         //尊老金城市待审核的数量
 
+        Integer respectTownCount = respectService.selectRemindRespectCount(communityId,1,1);
         //尊老金农村待审核的数量
-
+        Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
         //长寿金待审核的数量
-
+        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
         return null;
     }
 }

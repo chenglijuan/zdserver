@@ -342,7 +342,6 @@ public class RespectController {
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
             }
-
             //如果是社区管理员  只能查看 该社区的数据
             if(user.getType().intValue() == 1){
                 respectRequest.setCommunityId(communityId);
