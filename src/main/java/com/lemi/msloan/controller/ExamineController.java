@@ -1314,6 +1314,33 @@ public class ExamineController {
 
         return new ApiResult(true, "查询成功", 0, map);
     }
+
+    @RequestMapping(value = "getTotalCount")
+    @ResponseBody
+    public ApiResult getTotalCount(Integer loginId){
+        Integer communityId = null;
+        User user = userService.get(loginId);
+        if (user != null) {
+            if (user.getType().intValue() == 2) {
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null) {
+                    communityId = community.getId();
+                }
+            }
+        }
+
+        //进入预警的数量
+        Integer startCount = examineService.getExamineWillStartCount(null, null, null, null, null, null, null, null, null, communityId);
+        //退出预警的数量
+        Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
+        //尊老金城市待审核的数量
+
+        //尊老金农村待审核的数量
+
+        //长寿金待审核的数量
+
+        return null;
+    }
 }
 
 
