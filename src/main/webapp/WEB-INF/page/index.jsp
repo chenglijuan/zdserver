@@ -40,6 +40,52 @@
     <![endif]-->
 </head>
 
+<style type="text/css">
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    li {
+        float: left;
+    }
+    li a, .dropbtn {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    li a:hover, .dropdown:hover .dropbtn {
+        background-color: #1f75cf;
+    }
+    li.dropdown {
+        display: inline-block;
+    }
+    .dropdown-content {
+        /*display: none;*/
+        position: absolute;
+        background-color: red;
+        min-width: 160px;
+
+    }
+    .dropdown-content a {
+
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+    .dropdown-content a:hover {
+        color: white;
+        background-color: #1f75cf;
+    }
+    .show {
+        display: block;
+    }
+</style>
 <body class="fix-header fix-sidebar card-no-border">
 <!-- ============================================================== -->
 <!-- Preloader - style you can find in spinners.css -->
@@ -62,7 +108,7 @@
             <!-- Logo -->
             <!-- ============================================================== -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="<%=basePath%>/roster/indexPage?loginId=${loginId}">
                     <!-- Logo icon -->
                     <b>
                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -95,13 +141,18 @@
                 <!-- ============================================================== -->
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="a" class="nav-link dropdown-toggle text-muted waves-effect waves-dark dropbtn" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="">
                             <img src="<%=basePath%>assets/images/buling.png" alt="user" class="profile-pic m-r-5"/>
                             <span style="font-size:11px;position:absolute;left:33px;top:10px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;">
                             <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"> 12</span>
                             </span>&nbsp;
                         </a>
+                        <div class="dropdown-content" id="dropdown-a">
+                            <a href="#">下拉 1</a>
+                            <a href="#">下拉 2</a>
+                            <a href="#">下拉 3</a>
+                        </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
@@ -297,6 +348,9 @@
             }
         });
     }
+</script>
+<script type="text/javascript">
+
 </script>
 </body>
 </html>

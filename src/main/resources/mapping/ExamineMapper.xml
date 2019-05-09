@@ -39,11 +39,11 @@
         <result column="remark3" property="remark3" jdbcType="VARCHAR"/>
         <result column="remark4" property="remark4" jdbcType="VARCHAR"/>
         <result column="next_time" property="nextTime" jdbcType="DATE"/>
-        <result column="next_out" property="nextOut" jdbcType="DATE" />
-        <result column="time1" property="time1" jdbcType="TIMESTAMP" />
-        <result column="time2" property="time2" jdbcType="TIMESTAMP" />
-        <result column="time3" property="time3" jdbcType="TIMESTAMP" />
-        <result column="time4" property="time4" jdbcType="TIMESTAMP" />
+        <result column="next_out" property="nextOut" jdbcType="DATE"/>
+        <result column="time1" property="time1" jdbcType="TIMESTAMP"/>
+        <result column="time2" property="time2" jdbcType="TIMESTAMP"/>
+        <result column="time3" property="time3" jdbcType="TIMESTAMP"/>
+        <result column="time4" property="time4" jdbcType="TIMESTAMP"/>
     </resultMap>
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Examine" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
@@ -977,5 +977,12 @@
         <if test="communityId != null">
             AND community_id = #{communityId}
         </if>
+    </select>
+
+    <select id="getByStatus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM zd_examine
+        WHERE status = 2
     </select>
 </mapper>

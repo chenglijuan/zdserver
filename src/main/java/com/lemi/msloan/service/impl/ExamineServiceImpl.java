@@ -422,4 +422,9 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
         }
         return examineDao.findUndeterminedExamineCount(examineRequest);
     }
+
+    @Override
+    public List<Examine> getByStatus() {
+        return examineDao.getByStatus();
+    }
 }
