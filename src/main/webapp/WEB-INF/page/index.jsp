@@ -166,10 +166,10 @@
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -195,12 +195,6 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
                             </li>
-                            <li>
-                                <a onclick="gotopage()"  class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
-                            </li>
-                            <%--<li>
-                                <a href="<%=basePath%>authrity/authrityPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>权限管理</a>
-                            </li>--%>
                         </ul>
                     </li>
                 </ul>
@@ -254,3 +248,39 @@
 <script src="<%=basePath%>js/custom.min.js"></script>
 <!-- ============================================================== -->
 <!-- This page plugins -->
+<!-- ============================================================== -->
+<!-- Flot Charts JavaScript -->
+<script src="<%=basePath%>assets/plugins/flot/jquery.flot.js"></script>
+<script src="<%=basePath%>assets/plugins/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+<script src="<%=basePath%>js/flot-data.js"></script>
+<!-- ============================================================== -->
+<!-- Style switcher -->
+<!-- ============================================================== -->
+<script src="<%=basePath%>assets/plugins/styleswitcher/jQuery.style.switcher.js"></script>
+<input type="hidden" id="loginId" value="${loginId}">
+<script type="text/javascript">
+    $(function () {
+        var loginId = $("#loginId").val();
+        verification(loginId);
+    });
+    function verification(loginId) {
+        $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
+            if (data.code == -1){
+                alert(data.message);
+                window.location.href="<%=basePath%>/login.jsp";
+            }else {
+                if (data.data.type == 1){
+                    $("#tab_1").css("display","block");
+                    $("#tab_2").css("display","block");
+                    $("#tab_3").css("display","none");
+                }else if (data.data.type == 2){
+                    $("#tab_1").css("display","none");
+                    $("#tab_2").css("display","none");
+                    $("#tab_3").css("display","block");
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

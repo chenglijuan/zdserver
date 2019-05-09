@@ -166,10 +166,10 @@
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -196,10 +196,6 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
-                            </li>
-                            <li>
-                                <a href="<%=basePath%>authrity/authrityPager?loginId=${loginId}&pageType=4"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>权限管理</a>
                             </li>
                         </ul>
                     </li>
@@ -430,6 +426,7 @@
                 setIssuStandard(age);
             }
         });
+        initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
     })
@@ -533,16 +530,30 @@
 
     
     function setIssuStandard(age) {
-        if(age < 70){
-            $("#issuStandard").val(0);
-        } else if(age >= 70 && age <= 79){
-            $("#issuStandard").val(50);
-        }else if(age >= 80 && age <= 89){
-            $("#issuStandard").val(200);
-        }else if(age >= 90 && age <= 99){
-            $("#issuStandard").val(500);
-        } else if(age >= 100 ){
-            $("#issuStandard").val(1000);
+        // 1农村  2. 城镇
+        var pageType = $("#pageType").val();
+        if(pageType == 1){
+            if(age < 70){
+                $("#issuStandard").val(0);
+            } else if(age >= 70 && age <= 79){
+                $("#issuStandard").val(50);
+            }else if(age >= 80 && age <= 89){
+                $("#issuStandard").val(200);
+            }else if(age >= 90 && age <= 99){
+                $("#issuStandard").val(500);
+            } else if(age >= 100 ){
+                $("#issuStandard").val(1000);
+            }
+        }else if(pageType == 2){
+            if(age < 79){
+                $("#issuStandard").val(0);
+            } else if(age >= 80 && age <= 89){
+                $("#issuStandard").val(50);
+            }else if(age >= 90 && age <= 99){
+                $("#issuStandard").val(100);
+            } else if(age >= 100 ){
+                $("#issuStandard").val(300);
+            }
         }
     }
 

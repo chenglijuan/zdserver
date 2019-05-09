@@ -325,9 +325,10 @@ public class RespectController {
                 respectRequest.setGrantEndTime(endTimes);
             }
             Date nowDate = new Date();
-
+            // type =3  查询长寿金  90岁 或者下个月90岁
             if(type != null && type.intValue() == 3){ //String birthdayBegin = DateUtil.getYearsbefore(nowDate, 80);
-                String birthdayEnd = DateUtil.getYearsbefore(nowDate, 80);
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                String birthdayEnd = DateUtil.getYearsbefore(nextMonth, 90);
                 respectRequest.setType(null);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setChangeState(changeState);
@@ -335,9 +336,10 @@ public class RespectController {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(2);
             } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
-                String birthdayBegin = DateUtil.getYearsbefore(nowDate, 79);
+                //大于70周岁都算
+                //String birthdayBegin = DateUtil.getYearsbefore(nowDate, 79);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
-                respectRequest.setBirthdayBegin(birthdayBegin);
+                //respectRequest.setBirthdayBegin(birthdayBegin);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);

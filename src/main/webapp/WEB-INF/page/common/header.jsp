@@ -1,11 +1,11 @@
+
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<%--<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">--%>
 <header class="topbar">
     <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
         <!-- ============================================================== -->
@@ -60,8 +60,31 @@
         </div>
     </nav>
 </header>
-<script type="text/javascript">
+
+<%--<script type="text/javascript">
     $(function () {
-        // alert(123);
+        var loginId = $("#loginId").val();
+        verification(loginId);
     })
-</script>
+    function verification(loginId) {
+        $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
+            if (data.code == -1) {
+                alert(data.message);
+                window.location.href = "<%=basePath%>/login.jsp";
+            } else {
+                /*if (data.data.type == 1) {
+                    $("#tab_1").css("display", "block");
+                    $("#tab_2").css("display", "block");
+                    $("#tab_3").css("display", "none");
+                } else if (data.data.type == 2) {
+                    $("#tab_1").css("display", "none");
+                    $("#tab_2").css("display", "none");
+                    $("#tab_3").css("display", "block");
+                }*/
+                $("#username").html(data.data.username);
+            }
+        });
+    }
+</script>--%>
+<%--
+</html>--%>

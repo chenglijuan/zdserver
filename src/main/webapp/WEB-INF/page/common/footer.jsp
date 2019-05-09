@@ -6,6 +6,7 @@
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <div class="page-wrapper">
     <!-- ============================================================== -->
     <!-- footer -->
@@ -19,3 +20,10 @@
     <!-- End footer -->
     <!-- ============================================================== -->
 </div>
+<script type="text/javascript">
+    $(function () {
+       // verification(loginId);
+        //$("#footLoginId").html();
+    })
+</script>
+</html>

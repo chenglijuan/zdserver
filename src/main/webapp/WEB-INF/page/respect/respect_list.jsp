@@ -187,10 +187,10 @@
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -217,10 +217,6 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
-                            </li>
-                            <li>
-                                <a href="<%=basePath%>authrity/authrityPager?loginId=${loginId}&pageType=4"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>权限管理</a>
                             </li>
                         </ul>
                     </li>
@@ -250,7 +246,7 @@
                 </div>
             </div>--%>
             <fieldset class="layui-elem-field layui-field-title" >
-                <legend>尊老金</legend>
+                <legend><span id="pageDesc"></span></legend>
             </fieldset>
             <div class="row">
                 <form class="form-inline">
@@ -413,6 +409,7 @@
     var roleType = 2;
     var pageType = 1;
     $(function () {
+
         laydate.render({
             elem: '#grantTimes'
             ,range: true
@@ -423,10 +420,19 @@
             $("#changeStateDiv").hide();
             $("#auditStateDiv").hide();
         }
-
+        initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
+
     })
+
+    function initDesc(){
+        if(pageType == 1){
+            $("#pageDesc").append("城镇居民尊老金");
+        }else{
+            $("#pageDesc").append("农村征地人员尊老金");
+        }
+    }
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
             if (data.code == 0){
@@ -569,7 +575,9 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.issuStandard == null ? "-" : row.issuStandard;
+                console.log("----"+row.birthday);
+                var age =  row.birthday == null ? "0" : jsMyGetAge(row.birthday);
+                return row.birthday == null ? "-" : setIssuStandard(age);
             }
         };
         var m = {
@@ -725,6 +733,34 @@
         window.location.href="<%=basePath%>respect/auditRespect?loginId="+$("#loginId").val()+"&respectId="+respectId+"&pageType="+pageType;
     }
 
+    function setIssuStandard(age) {
+        // 1农村  2. 城镇
+        var standard = 0;
+        if(pageType == 1){
+            if(age < 70){
+                standard = 0;
+            } else if(age >= 70 && age <= 79){
+                standard = 50;
+            }else if(age >= 80 && age <= 89){
+                standard = 200;
+            }else if(age >= 90 && age <= 99){
+                standard = 500;
+            } else if(age >= 100 ){
+                standard = 1000;
+            }
+        }else if(pageType == 2){
+            if(age < 79){
+                standard = 0;
+            } else if(age >= 80 && age <= 89){
+                standard = 50;
+            }else if(age >= 90 && age <= 99){
+                standard = 100;
+            } else if(age >= 100 ){
+                standard = 300;
+            }
+        }
+        return standard;
+    }
 
     function remarkDetail(respectId) {
         $.post("<%=basePath%>respect/getRemarksByRespectId", {
