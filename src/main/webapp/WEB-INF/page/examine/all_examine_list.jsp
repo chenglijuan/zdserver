@@ -41,6 +41,7 @@
     <script src="<%=basePath%>js/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" type="text/css" href="<%=basePath%>mycss/dialog.css">
+    <link rel="stylesheet" href="<%=basePath%>css/timeline.css">
     <style type="text/css">
         #example {
 
@@ -213,10 +214,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -393,6 +397,104 @@
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
+
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <h2>备注查看</h2>
+                            <div class="timeline timeline-line-dotted">
+
+                                <div class="timeline-item">
+                                    <div class="timeline-point timeline-point-success">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="timeline-event">
+                                        <div class="timeline-heading">
+                                            <h4>社区进入审核备注</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p id="remark1"></p>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <p class="text-right" id="time1"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-point timeline-point-success">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="timeline-event">
+                                        <div class="timeline-heading">
+                                            <h4>街道进入审核备注</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p id="remark3"></p>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <p class="text-right" id="time3"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-point timeline-point-success">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="timeline-event">
+                                        <div class="timeline-heading">
+                                            <h4>社区退出审核备注</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p id="remark2"></p>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <p class="text-right" id="time2"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-item">
+                                    <div class="timeline-point timeline-point-success">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <div class="timeline-event">
+                                        <div class="timeline-heading">
+                                            <h4>街道退出审核备注</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p id="remark4"></p>
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <p class="text-right" id="time4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <input type="hidden" id="loginId" value="${loginId}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
@@ -691,6 +793,16 @@
                 return row.status == null ? "-" : row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : "-";
             }
         };
+        var x = {
+            field: 'remark',
+            title: '备注',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return "<a class='btn btn-info' style='color: #fff' onclick='lookRemarkById(" + row.id + ")'><span class='fa fa-eye'></span> 查看</a>";
+            }
+        };
         var w = {
             field: 'cz',
             title: '操作',
@@ -723,6 +835,7 @@
         columns.push(t);
 //        columns.push(u);
         columns.push(v);
+        columns.push(x);
         columns.push(w);
         var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/findAllExamine", {
@@ -846,6 +959,63 @@
             popup({type: "error", msg: "仅支持xlsx、xls文件!", delay: 2000});
             fileObj.value = "";
         }
+    }
+
+    function lookRemarkById(examineId) {
+
+
+        $.post("<%=basePath%>examine/getExamineById", {"examineId": examineId}, function (data) {
+        var object = data.data;
+
+            if (object.remark1 != null && object.remark1 != ""){
+                $("#remark1").html(object.remark1);
+            }else {
+                $("#remark1").html("暂无备注");
+            }
+            if (object.remark2 != null && object.remark2 != ""){
+                $("#remark2").html(object.remark2);
+            }else {
+                $("#remark2").html("暂无备注");
+            }
+            if (object.remark3 != null && object.remark3 != ""){
+                $("#remark3").html(object.remark3);
+            }else {
+                $("#remark3").html("暂无备注");
+            }
+            if (object.remark4 != null && object.remark4 != ""){
+                $("#remark4").html(object.remark4);
+            }else {
+                $("#remark4").html("暂无备注");
+            }
+
+            if (object.time1 != null && object.time1 != ""){
+                $("#time1").html(fmtDate(object.time1));
+            }
+
+            if (object.time2 != null && object.time2 != ""){
+                $("#time2").html(fmtDate(object.time2));
+            }
+
+            if (object.time3 != null && object.time3 != ""){
+                $("#time3").html(fmtDate(object.time3));
+            }
+
+            if (object.time4 != null && object.time4 != ""){
+                $("#time4").html(fmtDate(object.time4));
+            }
+            $("#myModal").modal('show');
+        })
+
+    }
+
+    function fmtDate(day) {
+        var date = new Date(day);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        var h = date.getHours();
+        var min = date.getMinutes();
+        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length) + " " + h + ":" + min;
     }
 </script>
 </body>
