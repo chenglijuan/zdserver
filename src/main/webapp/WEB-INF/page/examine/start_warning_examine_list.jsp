@@ -1156,11 +1156,15 @@
         if (confirm("是否确认提交？")) {
             var examineId = $("#examineId").val();
             var nextTime = $("#nextTime_tab").val();
-            if(nextTime == null || nextTime == ""){
+            if (nextTime == null || nextTime == "") {
                 popup({type: 'error', msg: "请选择下次预警时间", delay: 3000, bg: true, clickDomCancel: true});
                 return;
             }
-            $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId, "status": 7,"nextTime":nextTime}, function (data) {
+            $.post("<%=basePath%>examine/toDaiDing", {
+                "examineId": examineId,
+                "status": 7,
+                "nextTime": nextTime
+            }, function (data) {
                 if (data.code == 0) {
                     $("#nextTimeModel").modal('hide');
                     popup({type: "success", msg: "操作成功", delay: 1000});

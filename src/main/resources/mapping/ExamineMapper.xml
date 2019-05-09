@@ -629,7 +629,7 @@
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         FROM zd_examine
         WHERE
-        (status = 1 OR (status = 7 AND <![CDATA[ next_time<= now()]]>))
+        status = 1
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
@@ -676,7 +676,7 @@
         count(*)
         FROM zd_examine
         WHERE
-        (status = 1 OR (status = 7 AND <![CDATA[ next_time<= now()]]>))
+        status = 1
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
@@ -721,7 +721,7 @@
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         FROM zd_examine
         WHERE
-        (status = 2 OR (status = 8 AND <![CDATA[ next_out<= now()]]>))
+        status = 2
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 60)
@@ -768,7 +768,7 @@
         count(*)
         FROM zd_examine
         WHERE
-        (status = 2 OR (status = 8 AND <![CDATA[ next_out<= now()]]>))
+        status = 2
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 60)
