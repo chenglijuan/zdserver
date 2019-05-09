@@ -214,10 +214,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -385,6 +388,33 @@
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
+
+<div class="modal fade" id="nextTimeModel" tabindex="-1" role="dialog" aria-labelledby="nextTimeModelLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="nextTimeModelLabel"></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-inline">
+                    <div class="col-md-6 form-inline">
+                        <label class="">下次预警时间：</label>
+                        <input class="form-control date_picker" id="nextTime_tab" readonly="readonly"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="show_un">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog"
      aria-labelledby="examineModalLabel"
      aria-hidden="true">
@@ -543,7 +573,6 @@
                             <label class="">备注：</label>
                             <textarea class="form-control" id="remark_tab" cols="70" rows="3"></textarea>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -599,9 +628,9 @@
         lay('.date_picker').each(function () {
             laydate.render({
                 elem: this,
-                done: function(value, date, endDate){
+                done: function (value, date, endDate) {
                     var elemId = $(this.elem[0]).attr("id");
-                    changeDate(value,elemId);
+                    changeDate(value, elemId);
                 }
             });
         });
@@ -867,7 +896,7 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" :row.status == 5 ? "进入待复审" :row.status == 6 ? "退出待复审" :row.status == 7 ? "进入待定" :row.status == 8 ? "退出待定" : "";
+                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : row.status == 5 ? "进入待复审" : row.status == 6 ? "退出待复审" : row.status == 7 ? "进入待定" : row.status == 8 ? "退出待定" : "";
             }
         };
         var w = {
@@ -1026,10 +1055,10 @@
             } else if (object.isMove == 2) {
                 $("#isMove_tab").html("是");
             }
-            if (object.startTime != null){
+            if (object.startTime != null) {
                 $("#startTime_tab").val(fmtDate1(object.startTime));
             }
-            if (object.stopTime != null){
+            if (object.stopTime != null) {
                 $("#stopTime_tab").val(fmtDate1(object.stopTime));
             }
             $("#dtxsny_tab").val(object.dtxsny);
@@ -1038,10 +1067,10 @@
 
             $("#isInsured_tab").val(object.isInsured);
             $("#unemployment_tab").val(object.unemployment);
-            if (object.unStart != null){
+            if (object.unStart != null) {
                 $("#unStart_tab").val(fmtDate1(object.unStart));
             }
-            if (object.unEnd != null){
+            if (object.unEnd != null) {
                 $("#unEnd_tab").val(fmtDate1(object.unEnd));
             }
             if (object.unemployment == 1) {
@@ -1056,7 +1085,7 @@
         $("#examineModal").modal('toggle');
     }
 
-    $("#submit").on("click",function () {
+    $("#submit").on("click", function () {
         if (confirm("是否确认通过？")) {
             var loginId = $("#loginId").val();
             var examineId = $("#examineId").val();
@@ -1071,6 +1100,8 @@
             var unEnd = $("#unEnd_tab").val();
             var comping = $("#comping_tab").val();
             var changes = $("#changes_tab").val();
+            var remark = $("#remark_tab").val();
+
             $.post("<%=basePath%>examine/startExamine", {
                 "loginId": loginId,
                 "examineId": examineId,
@@ -1084,7 +1115,8 @@
                 "unStart": unStart,
                 "unEnd": unEnd,
                 "comping": comping,
-                "changes": changes
+                "changes": changes,
+                "remark": remark
 
             }, function (data) {
                 if (data.code == 0) {
@@ -1098,6 +1130,14 @@
         }
     })
 
+
+    $("#unSubmit").on("click", function () {
+        var loginId = $("#loginId").val();
+        var examineId = $("#examineId").val();
+
+    })
+
+
     $("#unemployment_tab").on("change", function () {
         var unemployment = $("#unemployment_tab").val();
         if (unemployment == 1) {
@@ -1107,32 +1147,43 @@
         }
     })
 
-    $("#daiding").on("click",function () {
-        var examineId = $("#examineId").val();
-        $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId,"status":7}, function (data) {
-            if (data.code == 0) {
-                $("#examineModal").modal('toggle');
-                popup({type: "success", msg: "操作成功", delay: 1000});
-                selectStartWarning(1, 10);
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        });
+    $("#daiding").on("click", function () {
+        $("#nextTimeModel").modal('show');
+        $("#examineModal").modal('hide');
     })
 
+    $("#show_un").on("click", function () {
+        if (confirm("是否确认提交？")) {
+            var examineId = $("#examineId").val();
+            var nextTime = $("#nextTime_tab").val();
+            if(nextTime == null || nextTime == ""){
+                popup({type: 'error', msg: "请选择下次预警时间", delay: 3000, bg: true, clickDomCancel: true});
+                return;
+            }
+            $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId, "status": 7,"nextTime":nextTime}, function (data) {
+                if (data.code == 0) {
+                    $("#nextTimeModel").modal('hide');
+                    popup({type: "success", msg: "操作成功", delay: 1000});
+                    selectStartWarning(1, 10);
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            });
+        }
+    })
     var startTime = "";
     var stopTime = "";
 
-    function changeDate(value,elemId) {
+    function changeDate(value, elemId) {
 
-        if (elemId == "stopTime_tab"){
+        if (elemId == "stopTime_tab") {
             startTime = value;
-        }else if (elemId == "startTime_tab"){
+        } else if (elemId == "startTime_tab") {
             stopTime = value;
         }
-        if(startTime != "" && stopTime != ""){
-            var days = datedifference(startTime,stopTime);
-            $("#dtxsny_tab").val(days+"天");
+        if (startTime != "" && stopTime != "") {
+            var days = datedifference(startTime, stopTime);
+            $("#dtxsny_tab").val(days + "天");
         }
     }
 

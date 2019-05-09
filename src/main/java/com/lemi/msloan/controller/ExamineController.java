@@ -1081,7 +1081,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "startExamine")
     @ResponseBody
-    public ApiResult startExamine(Integer loginId, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, String batch, Integer isInsured, Integer unemployment, String unStart, String unEnd, Integer comping, Integer changes) {
+    public ApiResult startExamine(Integer loginId, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, String batch, Integer isInsured, Integer unemployment, String unStart, String unEnd, Integer comping, Integer changes,String remark) {
 
         if (examineId != null) {
             Examine examine = examineService.get(examineId);
@@ -1123,8 +1123,16 @@ public class ExamineController {
                     User user = userService.get(loginId);
                     if (user.getType() == 2) {
                         examine.setStatus(5);
+                        if (!StringUtils.isBlank(remark)){
+                            examine.setRemark1(remark);
+                        }
+                        examine.setTime1(new Date());
                         examineService.update(examine);
                     } else {
+                        if (!StringUtils.isBlank(remark)){
+                            examine.setRemark3(remark);
+                        }
+                        examine.setTime3(new Date());
                         examine.setStatus(2);
                         examineService.update(examine);
                         Roster roster = rosterService.getByExamineId(examineId);
@@ -1153,7 +1161,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "endExamine")
     @ResponseBody
-    public ApiResult endExamine(Integer examineId, Integer loginId) {
+    public ApiResult endExamine(Integer examineId, Integer loginId,String remark) {
 
         if (examineId == null) {
             return new ApiResult(false, "ID为空", -1);
@@ -1166,8 +1174,16 @@ public class ExamineController {
             User user = userService.get(loginId);
             if (user.getType() == 2) {
                 examine.setStatus(6);
+                if (!StringUtils.isBlank(remark)){
+                    examine.setRemark2(remark);
+                }
+                examine.setTime2(new Date());
                 examineService.update(examine);
             } else {
+                if (!StringUtils.isBlank(remark)){
+                    examine.setRemark4(remark);
+                }
+                examine.setTime4(new Date());
                 examine.setStatus(4);
                 examineService.update(examine);
                 Roster roster = rosterService.getByExamineId(examineId);
@@ -1189,7 +1205,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "toDaiDing")
     @ResponseBody
-    public ApiResult toDaiDing(Integer examineId, Integer status) {
+    public ApiResult toDaiDing(Integer examineId, Integer status, String nextTime) {
         if (examineId == null) {
             return new ApiResult(false, "ID为空", -1);
         }
@@ -1198,6 +1214,15 @@ public class ExamineController {
             return new ApiResult(false, "不存在", -1);
         }
         examine.setStatus(status);
+        if (!StringUtils.isBlank(nextTime)){
+            if (status.intValue() == 7){
+                examine.setNextTime(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
+            }else if (status.intValue() == 8){
+                examine.setNextOut(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
+            }
+
+        }
+
         examineService.update(examine);
         return new ApiResult(true, "操作成功", 0);
     }

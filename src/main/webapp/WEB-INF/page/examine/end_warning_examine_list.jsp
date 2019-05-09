@@ -382,6 +382,32 @@
 <input type="hidden" id="examineId" value="">
 <!-- ============================================================== -->
 
+<div class="modal fade" id="nextTimeModel" tabindex="-1" role="dialog" aria-labelledby="nextTimeModelLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="nextTimeModelLabel"></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-inline">
+                    <div class="col-md-6 form-inline">
+                        <label class="">下次预警时间：</label>
+                        <input class="form-control date_picker" id="nextTime_tab" readonly="readonly"/>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="show_un">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
 <div class="modal fade bs-example-modal-lg" id="examineModal" tabindex="-1" role="dialog"
      aria-labelledby="examineModalLabel"
      aria-hidden="true">
@@ -519,13 +545,12 @@
                             <label class="" id="changes_tab"></label>
                         </div>
                     </div>
-                    <%--<div class="form-inline" style="padding-top: 20px">--%>
-                        <%--<div class="col-md-12 form-inline">--%>
-                            <%--<label class="">备注：</label>--%>
-                            <%--<textarea class="form-control" id="remark_tab" cols="70" rows="3"></textarea>--%>
-                        <%--</div>--%>
-
-                    <%--</div>--%>
+                    <div class="form-inline" style="padding-top: 20px">
+                        <div class="col-md-12 form-inline">
+                            <label class="">备注：</label>
+                            <textarea class="form-control" id="remark_tab" cols="70" rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -578,6 +603,12 @@
         findAllCommunity();
         var loginId = $("#loginId").val();
         verification(loginId);
+
+        lay('.date_picker').each(function () {
+            laydate.render({
+                elem: this
+            });
+        });
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -1053,9 +1084,11 @@
     $("#submit").on("click",function () {
         var examineId = $("#examineId").val();
         var loginId = $("#loginId").val();
+        var remark = $("#remark_tab").val();
         $.post("<%=basePath%>examine/endExamine", {
             "examineId": examineId,
-            "loginId":loginId
+            "loginId":loginId,
+            "remark":remark
         },function (data) {
             if (data.code == 0) {
                 $("#examineModal").modal('toggle');
@@ -1068,16 +1101,30 @@
     })
 
     $("#daiding").on("click",function () {
-        var examineId = $("#examineId").val();
-        $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId,"status":8}, function (data) {
-            if (data.code == 0) {
-                $("#examineModal").modal('toggle');
-                popup({type: "success", msg: "操作成功", delay: 1000});
-                selectEndWarning(1, 10);
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+
+        $("#nextTimeModel").modal('show');
+        $("#examineModal").modal('hide');
+    })
+
+    $("#show_un").on("click", function () {
+        if (confirm("是否确认提交？")) {
+            var examineId = $("#examineId").val();
+            var nextTime = $("#nextTime_tab").val();
+            if(nextTime == null || nextTime == ""){
+                popup({type: 'error', msg: "请选择下次预警时间", delay: 3000, bg: true, clickDomCancel: true});
+                return;
             }
-        });
+
+            $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId,"status":8,"nextTime":nextTime}, function (data) {
+                if (data.code == 0) {
+                    $("#nextTimeModel").modal('hide');
+                    popup({type: "success", msg: "操作成功", delay: 1000});
+                    selectEndWarning(1, 10);
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            });
+        }
     })
 </script>
 </body>

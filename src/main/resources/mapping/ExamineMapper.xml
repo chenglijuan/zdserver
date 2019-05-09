@@ -34,6 +34,16 @@
         <result column="stop_type" property="stopType" jdbcType="INTEGER"/>
         <result column="stop_reason" property="stopReason" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="remark1" property="remark1" jdbcType="VARCHAR"/>
+        <result column="remark2" property="remark2" jdbcType="VARCHAR"/>
+        <result column="remark3" property="remark3" jdbcType="VARCHAR"/>
+        <result column="remark4" property="remark4" jdbcType="VARCHAR"/>
+        <result column="next_time" property="nextTime" jdbcType="DATE"/>
+        <result column="next_out" property="nextOut" jdbcType="DATE" />
+        <result column="time1" property="time1" jdbcType="TIMESTAMP" />
+        <result column="time2" property="time2" jdbcType="TIMESTAMP" />
+        <result column="time3" property="time3" jdbcType="TIMESTAMP" />
+        <result column="time4" property="time4" jdbcType="TIMESTAMP" />
     </resultMap>
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Examine" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
@@ -41,7 +51,10 @@
     <sql id="Base_Column_List">
     id, start_time, stop_time, dtxsny, ffbj, is_Insured, unemployment, comping, changes, 
     remark, batch, state, id_card, name, gender, birthday, address, village, is_move, 
-    community_id, community_name, house, status, time, village_time, village_age, cd_state, un_start, un_end, stop_type, stop_reason, phone
+    community_id, community_name, house, status, time, village_time, village_age,
+    cd_state, un_start, un_end, stop_type, stop_reason, phone,
+    remark1, remark2, remark3, remark4, next_time,
+    next_out, time1, time2, time3, time4
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -63,7 +76,10 @@
       birthday, address, village, 
       is_move, community_id, community_name, 
       house, status, time, 
-      village_time, village_age, cd_state, un_start, un_end, stop_type, stop_reason, phone
+      village_time, village_age, cd_state,
+      un_start, un_end, stop_type, stop_reason, phone,
+      remark1, remark2, remark3, remark4, next_time,
+      next_out, time1, time2, time3, time4
       )
     values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{stopTime,jdbcType=DATE}, 
       #{dtxsny,jdbcType=VARCHAR}, #{ffbj,jdbcType=VARCHAR}, #{isInsured,jdbcType=INTEGER}, 
@@ -74,7 +90,9 @@
       #{isMove,jdbcType=INTEGER}, #{communityId,jdbcType=INTEGER}, #{communityName,jdbcType=VARCHAR}, 
       #{house,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
       #{villageTime,jdbcType=DATE}, #{villageAge,jdbcType=INTEGER}, #{cdState,jdbcType=INTEGER},
-      #{unStart,jdbcType=DATE}, #{unEnd,jdbcType=DATE}, #{stopType,jdbcType=INTEGER}, #{stopReason,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
+      #{unStart,jdbcType=DATE}, #{unEnd,jdbcType=DATE}, #{stopType,jdbcType=INTEGER}, #{stopReason,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+      #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, #{remark3,jdbcType=VARCHAR}, #{remark4,jdbcType=VARCHAR}, #{nextTime,jdbcType=DATE},
+      #{nextOut,jdbcType=DATE}, #{time1,jdbcType=TIMESTAMP}, #{time2,jdbcType=TIMESTAMP}, #{time3,jdbcType=TIMESTAMP}, #{time4,jdbcType=TIMESTAMP}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Examine" keyProperty="id"
@@ -177,6 +195,36 @@
             <if test="phone != null">
                 phone,
             </if>
+            <if test="remark1 != null">
+                remark1,
+            </if>
+            <if test="remark2 != null">
+                remark2,
+            </if>
+            <if test="remark3 != null">
+                remark3,
+            </if>
+            <if test="remark4 != null">
+                remark4,
+            </if>
+            <if test="nextTime != null">
+                next_time,
+            </if>
+            <if test="nextOut != null">
+                next_out,
+            </if>
+            <if test="time1 != null">
+                time1,
+            </if>
+            <if test="time2 != null">
+                time2,
+            </if>
+            <if test="time3 != null">
+                time3,
+            </if>
+            <if test="time4 != null">
+                time4,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -274,6 +322,36 @@
             </if>
             <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="remark1 != null">
+                #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null">
+                #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null">
+                #{remark3,jdbcType=VARCHAR},
+            </if>
+            <if test="remark4 != null">
+                #{remark4,jdbcType=VARCHAR},
+            </if>
+            <if test="nextTime != null">
+                #{nextTime,jdbcType=DATE},
+            </if>
+            <if test="nextOut != null">
+                #{nextOut,jdbcType=DATE},
+            </if>
+            <if test="time1 != null">
+                #{time1,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time2 != null">
+                #{time2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time3 != null">
+                #{time3,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time4 != null">
+                #{time4,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -373,6 +451,36 @@
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
+            <if test="remark1 != null">
+                remark1 = #{remark1,jdbcType=VARCHAR},
+            </if>
+            <if test="remark2 != null">
+                remark2 = #{remark2,jdbcType=VARCHAR},
+            </if>
+            <if test="remark3 != null">
+                remark3 = #{remark3,jdbcType=VARCHAR},
+            </if>
+            <if test="remark4 != null">
+                remark4 = #{remark4,jdbcType=VARCHAR},
+            </if>
+            <if test="nextTime != null">
+                next_time = #{nextTime,jdbcType=DATE},
+            </if>
+            <if test="nextOut != null">
+                next_out = #{nextOut,jdbcType=DATE},
+            </if>
+            <if test="time1 != null">
+                time1 = #{time1,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time2 != null">
+                time2 = #{time2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time3 != null">
+                time3 = #{time3,jdbcType=TIMESTAMP},
+            </if>
+            <if test="time4 != null">
+                time4 = #{time4,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -408,7 +516,17 @@
       un_end = #{unEnd,jdbcType=DATE},
       stop_type = #{stopType,jdbcType=INTEGER},
       stop_reason = #{stopReason,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR}
+      phone = #{phone,jdbcType=VARCHAR},
+       remark1 = #{remark1,jdbcType=VARCHAR},
+       remark2 = #{remark2,jdbcType=VARCHAR},
+       remark3 = #{remark3,jdbcType=VARCHAR},
+       remark4 = #{remark4,jdbcType=VARCHAR},
+       next_time = #{nextTime,jdbcType=DATE},
+       next_out = #{nextOut,jdbcType=DATE},
+       time1 = #{time1,jdbcType=TIMESTAMP},
+       time2 = #{time2,jdbcType=TIMESTAMP},
+       time3 = #{time3,jdbcType=TIMESTAMP},
+       time4 = #{time4,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -511,7 +629,7 @@
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         FROM zd_examine
         WHERE
-        status = 1
+        (status = 1 OR (status = 7 AND <![CDATA[ next_time<= now()]]>))
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
@@ -558,7 +676,7 @@
         count(*)
         FROM zd_examine
         WHERE
-        status = 1
+        (status = 1 OR (status = 7 AND <![CDATA[ next_time<= now()]]>))
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
@@ -603,7 +721,7 @@
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         FROM zd_examine
         WHERE
-        status = 2
+        (status = 2 OR (status = 8 AND <![CDATA[ next_out<= now()]]>))
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 60)
@@ -650,7 +768,7 @@
         count(*)
         FROM zd_examine
         WHERE
-        status = 2
+        (status = 2 OR (status = 8 AND <![CDATA[ next_out<= now()]]>))
         AND
         (
         (gender=1 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 60)
