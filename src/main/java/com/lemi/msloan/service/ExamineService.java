@@ -28,4 +28,6 @@ public interface ExamineService extends BaseService<Examine> {
     List<Examine> findUndeterminedExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum);
 
     Integer findUndeterminedExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId);
+
+    List<Examine> getByStatus();
 }

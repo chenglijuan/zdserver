@@ -68,4 +68,9 @@ public class ExamineDaoImpl extends BaseDaoImpl<Examine> implements ExamineDao {
     public Integer findUndeterminedExamineCount(ExamineRequest examineRequest) {
         return sqlSessionTemplate.selectOne("tbl_examine.findUndeterminedExamineCount",examineRequest);
     }
+
+    @Override
+    public List<Examine> getByStatus() {
+        return sqlSessionTemplate.selectList("tbl_examine.getByStatus");
+    }
 }

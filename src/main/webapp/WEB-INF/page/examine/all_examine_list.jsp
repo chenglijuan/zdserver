@@ -63,6 +63,51 @@
             height: 55%;
         }
     </style>
+    <style type="text/css">
+        #navbar_ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+        }
+        #navbar_ul li {
+            float: left;
+        }
+        #navbar_ul li a, .dropbtn {
+            display: inline-block;
+            color: #5e5e5e;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        #navbar_ul li a:hover, .dropdown:hover .dropbtn {
+            background-color: #1f75cf;
+        }
+        #navbar_ul li.dropdown {
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fafafa;
+            min-width: 220px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        }
+        #navbar_ul .dropdown-content a {
+
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        #navbar_ul .dropdown-content a:hover {
+            color: white;
+            background-color: #1f75cf;
+        }
+        .show {
+            display: block;
+        }
+    </style>
 </head>
 <body class="fix-header card-no-border">
 <!-- ============================================================== -->
@@ -123,7 +168,23 @@
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
                 <!-- ============================================================== -->
-                <ul class="navbar-nav my-lg-0">
+                <ul class="navbar-nav my-lg-0" id="navbar_ul">
+                    <li class="nav-item dropdown">
+                        <a id="a" class="nav-link dropdown-toggle text-muted waves-effect waves-dark dropbtn" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="dropdownContent()">
+                            <img src="<%=basePath%>assets/images/buling.png" alt="user" class="profile-pic m-r-5"/>
+                            <span style="font-size:11px;position:absolute;left:33px;top:10px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;">
+                            <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="total_count"></span>
+                            </span>&nbsp;
+                        </a>
+                        <div class="dropdown-content" id="dropdown-a">
+                            <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}">征地进入待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="start_count"></span></span></a>
+                            <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}">征地退出待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="end_count"></span></span></a>
+                            <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" id="navbar_tab">征地进入/退出待复审 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="again_examine_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1">尊老金城镇居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_town_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2">尊老金农村居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_country_count"></span></span></a>
+                        </div>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账户：<span
@@ -543,11 +604,13 @@
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");
                     $("#tab_3").css("display", "none");
+                    $("#navbar_tab").css("display", "block");
                 } else if (data.data.type == 2) {
                     $("#tab_1").css("display", "none");
                     $("#tab_2").css("display", "none");
                     $("#tab_3").css("display", "block");
                     $("#tab_4").css("display", "none");
+                    $("#navbar_tab").css("display", "none");
                 }
             }
         });
@@ -699,7 +762,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.startTime == null ? "-" : fmtDate(row.startTime);
+                return row.startTime == null ? "-" : fmtDate2(row.startTime);
             }
         };
         var n = {
@@ -709,7 +772,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.stopTime == null ? "-" : fmtDate(row.stopTime);
+                return row.stopTime == null ? "-" : fmtDate2(row.stopTime);
             }
         };
         var o = {
@@ -924,6 +987,15 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
+
+    function fmtDate2(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月";
+    }
+
     function getAge(birthday) {
         //出生时间 毫秒
         var birthDayTime = new Date(birthday).getTime();
@@ -988,26 +1060,26 @@
             }
 
             if (object.time1 != null && object.time1 != ""){
-                $("#time1").html(fmtDate(object.time1));
+                $("#time1").html(fmtDate1(object.time1));
             }
 
             if (object.time2 != null && object.time2 != ""){
-                $("#time2").html(fmtDate(object.time2));
+                $("#time2").html(fmtDate1(object.time2));
             }
 
             if (object.time3 != null && object.time3 != ""){
-                $("#time3").html(fmtDate(object.time3));
+                $("#time3").html(fmtDate1(object.time3));
             }
 
             if (object.time4 != null && object.time4 != ""){
-                $("#time4").html(fmtDate(object.time4));
+                $("#time4").html(fmtDate1(object.time4));
             }
             $("#myModal").modal('show');
         })
 
     }
 
-    function fmtDate(day) {
+    function fmtDate1(day) {
         var date = new Date(day);
         var y = 1900 + date.getYear();
         var m = "0" + (date.getMonth() + 1);
@@ -1015,6 +1087,47 @@
         var h = date.getHours();
         var min = date.getMinutes();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length) + " " + h + ":" + min;
+    }
+</script>
+<script type="text/javascript">
+    function dropdownContent() {
+        if ($("#dropdown-a").hasClass("show")){
+            $("#dropdown-a").removeClass("show");
+        }else {
+            $("#dropdown-a").addClass("show");
+        }
+    }
+
+    window.onclick = function(e) {
+        if ($("#dropdown-a").hasClass("show")){
+            $("#dropdown-a").removeClass("show");
+        }
+    }
+
+    $(function () {
+        getTotalCount();
+    });
+    function getTotalCount() {
+        var loginId = $("#loginId").val();
+        $.post("<%=basePath%>examine/getTotalCount",{"loginId":loginId},function (data) {
+
+            if (data.code == 0){
+                var json = data.data;
+                var startCount = json.startCount;
+                var endCount = json.endCount;
+                var respectTownCount = json.respectTownCount;
+                var respectCountryCount = json.respectCountryCount;
+                var againExamineCount = json.againExamineCount;
+                var total = json.total;
+                $("#total_count").html(total);
+                $("#start_count").html(startCount);
+                $("#end_count").html(endCount);
+                $("#respect_town_count").html(respectTownCount);
+                $("#respect_country_count").html(respectCountryCount);
+                $("#again_examine_count").html(againExamineCount);
+            }
+
+        })
     }
 </script>
 </body>

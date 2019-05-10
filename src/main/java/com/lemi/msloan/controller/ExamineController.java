@@ -819,13 +819,13 @@ public class ExamineController {
                             }
                             if ("开始发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date startTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date startTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setStartTime(startTime);
                                 }
                             }
                             if ("停止发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date stopTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date stopTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setStopTime(stopTime);
                                 }
                             }
@@ -859,13 +859,13 @@ public class ExamineController {
                             }
                             if ("领取失业金开始时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unStart = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date unStart = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setUnStart(unStart);
                                 }
                             }
                             if ("领取失业金截止时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unEnd = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date unEnd = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setUnEnd(unEnd);
                                 }
                             }
@@ -1334,13 +1334,16 @@ public class ExamineController {
         Integer startCount = examineService.getExamineWillStartCount(null, null, null, null, null, null, null, null, null, communityId);
         //退出预警的数量
         Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
+        //征地待复审的数量
+        Integer againExamineCount = examineService.findAgainExamineCount(null, null, null, null, null, null, null, null, null, communityId);
         //尊老金城市待审核的数量
-
         Integer respectTownCount = respectService.selectRemindRespectCount(communityId,1,1);
         //尊老金农村待审核的数量
         Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
+
+
         //长寿金待审核的数量
-        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
+//        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
 
         Map<String,Integer> map = new HashMap();
 
@@ -1348,8 +1351,8 @@ public class ExamineController {
         map.put("endCount",endCount);
         map.put("respectTownCount",respectTownCount);
         map.put("respectCountryCount",respectCountryCount);
-        map.put("respectLongCount",respectLongCount);
-        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+respectLongCount);
+        map.put("againExamineCount",againExamineCount);
+        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+againExamineCount);
         return new ApiResult(true, "查询成功", 0, map);
     }
 }
