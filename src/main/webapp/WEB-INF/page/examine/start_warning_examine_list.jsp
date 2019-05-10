@@ -640,9 +640,9 @@
                 <button type="button" class="btn btn-info" id="submit">
                     通过
                 </button>
-                <button type="button" class="btn btn-info" id="unSubmit">
-                    不通过
-                </button>
+                <%--<button type="button" class="btn btn-info" id="unSubmit">--%>
+                    <%--不通过--%>
+                <%--</button>--%>
                 <button type="button" class="btn btn-primary" id="daiding">
                     待定
                 </button>

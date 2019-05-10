@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tbl_examinestatistic" >
+  <resultMap id="BaseResultMap" type="com.lemi.msloan.entity.ExamineStatistic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="examine_id" property="examineId" jdbcType="INTEGER" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="time" property="time" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, examine_id, community_id, money, time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from zd_examine_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from zd_examine_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lemi.msloan.entity.ExamineStatistic" >
+    insert into zd_examine_statistic (id, examine_id, community_id, 
+      money, time)
+    values (#{id,jdbcType=INTEGER}, #{examineId,jdbcType=INTEGER}, #{communityId,jdbcType=INTEGER}, 
+      #{money,jdbcType=DOUBLE}, #{time,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.ExamineStatistic" >
+    insert into zd_examine_statistic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="examineId != null" >
+        examine_id,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="examineId != null" >
+        #{examineId,jdbcType=INTEGER},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.ExamineStatistic" >
+    update zd_examine_statistic
+    <set >
+      <if test="examineId != null" >
+        examine_id = #{examineId,jdbcType=INTEGER},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.ExamineStatistic" >
+    update zd_examine_statistic
+    set examine_id = #{examineId,jdbcType=INTEGER},
+      community_id = #{communityId,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      time = #{time,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

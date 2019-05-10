@@ -7,8 +7,8 @@
 <generatorConfiguration>
 
     <!-- <classPathEntry location="E://mysql-connector-java-5.1.16.jar" />-->
-    <!--<classPathEntry location="E://mysql-connector-java-5.1.16.jar"/>-->
-    <classPathEntry location="/Users/chenglijuan/Downloads/mysql-connector-java-5.1.16.jar" />
+    <classPathEntry location="E://mysql-connector-java-5.1.16.jar"/>
+    <!--<classPathEntry location="/Users/chenglijuan/Downloads/mysql-connector-java-5.1.16.jar" />-->
     <context id="mysqlTables" targetRuntime="MyBatis3">
 
         <commentGenerator>
@@ -39,7 +39,7 @@
         <!-- 这里是数据库的表名table_user 以及 POJO类的名字User -->
 
 
-        <table tableName="zd_user_menu" domainObjectName="UserMenu"
+        <table tableName="zd_examine_statistic" domainObjectName="ExamineStatistic"
                enableCountByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false">
         </table>
