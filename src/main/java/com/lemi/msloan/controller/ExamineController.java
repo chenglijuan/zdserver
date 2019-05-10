@@ -1334,13 +1334,16 @@ public class ExamineController {
         Integer startCount = examineService.getExamineWillStartCount(null, null, null, null, null, null, null, null, null, communityId);
         //退出预警的数量
         Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
+        //征地待复审的数量
+        Integer againExamineCount = examineService.findAgainExamineCount(null, null, null, null, null, null, null, null, null, communityId);
         //尊老金城市待审核的数量
-
         Integer respectTownCount = respectService.selectRemindRespectCount(communityId,1,1);
         //尊老金农村待审核的数量
         Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
+
+
         //长寿金待审核的数量
-        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
+//        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
 
         Map<String,Integer> map = new HashMap();
 
@@ -1348,8 +1351,8 @@ public class ExamineController {
         map.put("endCount",endCount);
         map.put("respectTownCount",respectTownCount);
         map.put("respectCountryCount",respectCountryCount);
-        map.put("respectLongCount",respectLongCount);
-        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+respectLongCount);
+        map.put("againExamineCount",againExamineCount);
+        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+againExamineCount);
         return new ApiResult(true, "查询成功", 0, map);
     }
 }
