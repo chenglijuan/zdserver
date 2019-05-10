@@ -685,14 +685,44 @@
 <script>
     $(function () {
 
-        lay('.date_picker').each(function () {
-            laydate.render({
-                elem: this,
-                done: function (value, date, endDate) {
-                    var elemId = $(this.elem[0]).attr("id");
-                    changeDate(value, elemId);
-                }
-            });
+//        lay('.date_picker').each(function () {
+//            laydate.render({
+//                elem: this,
+//                type: 'month',
+//                done: function (value, date, endDate) {
+//                    var elemId = $(this.elem[0]).attr("id");
+//                    changeDate(value, elemId);
+//                }
+//            });
+//        });
+
+        laydate.render({
+            elem: "#nextTime_tab"
+        });
+
+        laydate.render({
+            elem: "#unStart_tab",
+            type: 'month'
+        });
+        laydate.render({
+            elem: "#unEnd_tab",
+            type: 'month'
+        });
+        laydate.render({
+            elem: "#startTime_tab",
+            type: 'month',
+            done: function (value, date, endDate) {
+                var elemId = $(this.elem[0]).attr("id");
+                changeDate(value, elemId);
+            }
+        });
+        laydate.render({
+            elem: "#stopTime_tab",
+            type: 'month',
+            done: function (value, date, endDate) {
+                var elemId = $(this.elem[0]).attr("id");
+                changeDate(value, elemId);
+            }
         });
 
         selectStartWarning(1, 10);
@@ -1078,7 +1108,8 @@
         var y = 1900 + date.getYear();
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
-        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+//        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+        return y + "-" + m.substring(m.length - 2, m.length);
     }
 
     function getAge(birthday) {
@@ -1163,7 +1194,18 @@
             var comping = $("#comping_tab").val();
             var changes = $("#changes_tab").val();
             var remark = $("#remark_tab").val();
-
+            if (startTime!=null&&startTime!=""){
+                startTime = startTime+"-01";
+            }
+            if (stopTime!=null&&stopTime!=""){
+                stopTime = stopTime+"-01";
+            }
+            if (unStart!=null&&unStart!=""){
+                unStart = unStart+"-01";
+            }
+            if (unEnd!=null&&unEnd!=""){
+                unEnd = unEnd+"-01";
+            }
             $.post("<%=basePath%>examine/startExamine", {
                 "loginId": loginId,
                 "examineId": examineId,
@@ -1248,8 +1290,10 @@
             stopTime = value;
         }
         if (startTime != "" && stopTime != "") {
-            var days = datedifference(startTime, stopTime);
-            $("#dtxsny_tab").val(days + "天");
+//            var days = datedifference(startTime, stopTime);
+//            $("#dtxsny_tab").val(days + "天");
+            var month = getMonthBetween(stopTime+"-01",startTime+"-01");
+            $("#dtxsny_tab").val(month + "个月");
         }
     }
 
@@ -1263,6 +1307,22 @@
         dateSpan = Math.abs(dateSpan);
         iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
         return iDays
+    }
+
+    function getMonthBetween(startDate,endDate){
+        startDate=new Date(startDate.replace(/-/g,'/'));
+        endDate=new Date(endDate.replace(/-/g,'/'));
+        var num=0;
+        var year=endDate.getFullYear()-startDate.getFullYear();
+        num+=year*12;
+        var month=endDate.getMonth()-startDate.getMonth();
+        num+=month;
+        var day=endDate.getDate()-startDate.getDate();
+        if(day>0){
+            num+=1;
+        }else if(day<0){
+        }
+        return num;
     }
 </script>
 <script type="text/javascript">

@@ -646,7 +646,12 @@
     $(function () {
         lay('.date_picker').each(function () {
             laydate.render({
-                elem: this
+                elem: this,
+                type: 'month',
+                done: function (value, date, endDate) {
+                    var elemId = $(this.elem[0]).attr("id");
+                    changeDate(value, elemId);
+                }
             });
         });
 
@@ -823,7 +828,7 @@
             width: 180,
             formatter: function (value, row, index) {
 //                return row.examine == null ? "" : fmtDate(row.examine.startTime);
-                return row.startTime == null ? "" : fmtDate(row.startTime);
+                return row.startTime == null ? "" : fmtDate3(row.startTime);
             }
         };
         var n = {
@@ -834,7 +839,7 @@
             width: 180,
             formatter: function (value, row, index) {
 //                return row.examine == null ? "" : row.examine == null ? "" : fmtDate(row.examine.stopTime);
-                return row.stopTime == null ? "" : fmtDate(row.stopTime);
+                return row.stopTime == null ? "" : fmtDate3(row.stopTime);
             }
         };
         var o = {
@@ -1047,12 +1052,29 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
+
+    function fmtDate3(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月";
+    }
+
     function fmtDate1(birthday) {
         var date = new Date(birthday);
         var y = 1900 + date.getYear();
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+    }
+
+    function fmtDate2(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "-" + m.substring(m.length - 2, m.length);
     }
     function getAge(birthday) {
         //出生时间 毫秒
@@ -1090,16 +1112,16 @@
             } else if (object.isMove == 2) {
                 $("#isMove_tab").html("是");
             }
-            $("#startTime_tab").val(fmtDate1(object.startTime));
-            $("#stopTime_tab").val(fmtDate1(object.stopTime));
+            $("#startTime_tab").val(fmtDate2(object.startTime));
+            $("#stopTime_tab").val(fmtDate2(object.stopTime));
             $("#dtxsny_tab").val(object.dtxsny);
             $("#ffbj_tab").val(object.ffbj);
             $("#batch_tab").val(object.batch);
 
             $("#isInsured_tab").val(object.isInsured);
             $("#unemployment_tab").val(object.unemployment);
-            $("#unStart_tab").val(fmtDate1(object.unStart));
-            $("#unEnd_tab").val(fmtDate1(object.unEnd));
+            $("#unStart_tab").val(fmtDate2(object.unStart));
+            $("#unEnd_tab").val(fmtDate2(object.unEnd));
             if (object.unemployment == 1) {
                 $("#unemploymentDom").css("display", "");
             } else {
@@ -1126,6 +1148,18 @@
         var unEnd = $("#unEnd_tab").val();
         var comping = $("#comping_tab").val();
         var changes = $("#changes_tab").val();
+        if (startTime!=null&&startTime!=""){
+            startTime = startTime+"-01";
+        }
+        if (stopTime!=null&&stopTime!=""){
+            stopTime = stopTime+"-01";
+        }
+        if (unStart!=null&&unStart!=""){
+            unStart = unStart+"-01";
+        }
+        if (unEnd!=null&&unEnd!=""){
+            unEnd = unEnd+"-01";
+        }
         $.post("<%=basePath%>examine/startExamine", {
             "loginId": loginId,
             "examineId": examineId,
@@ -1151,6 +1185,38 @@
             }
         })
     })
+
+    var startTime = "";
+    var stopTime = "";
+    function changeDate(value, elemId) {
+
+        if (elemId == "stopTime_tab") {
+            startTime = value;
+        } else if (elemId == "startTime_tab") {
+            stopTime = value;
+        }
+        if (startTime != "" && stopTime != "") {
+//            var days = datedifference(startTime, stopTime);
+//            $("#dtxsny_tab").val(days + "天");
+            var month = getMonthBetween(stopTime+"-01",startTime+"-01");
+            $("#dtxsny_tab").val(month + "个月");
+        }
+    }
+    function getMonthBetween(startDate,endDate){
+        startDate=new Date(startDate.replace(/-/g,'/'));
+        endDate=new Date(endDate.replace(/-/g,'/'));
+        var num=0;
+        var year=endDate.getFullYear()-startDate.getFullYear();
+        num+=year*12;
+        var month=endDate.getMonth()-startDate.getMonth();
+        num+=month;
+        var day=endDate.getDate()-startDate.getDate();
+        if(day>0){
+            num+=1;
+        }else if(day<0){
+        }
+        return num;
+    }
 </script>
 <script type="text/javascript">
     function dropdownContent() {

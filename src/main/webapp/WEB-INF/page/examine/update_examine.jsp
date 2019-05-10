@@ -47,9 +47,11 @@
         padding: 0;
         overflow: visible;
     }
+
     #navbar_ul li {
         float: left;
     }
+
     #navbar_ul li a, .dropbtn {
         display: inline-block;
         color: #5e5e5e;
@@ -57,12 +59,15 @@
         padding: 14px 16px;
         text-decoration: none;
     }
+
     #navbar_ul li a:hover, .dropdown:hover .dropbtn {
         background-color: #1f75cf;
     }
+
     #navbar_ul li.dropdown {
         display: inline-block;
     }
+
     .dropdown-content {
         display: none;
         position: absolute;
@@ -70,6 +75,7 @@
         min-width: 220px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     }
+
     #navbar_ul .dropdown-content a {
 
         padding: 12px 16px;
@@ -77,10 +83,12 @@
         display: block;
         text-align: left;
     }
+
     #navbar_ul .dropdown-content a:hover {
         color: white;
         background-color: #1f75cf;
     }
+
     .show {
         display: block;
     }
@@ -135,10 +143,10 @@
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
                     <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
+                    <%--<form class="app-search p-l-20">--%>
+                    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                    <%--class="ti-search"></i></a>--%>
+                    <%--</form>--%>
                     <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
@@ -147,27 +155,45 @@
                 <ul class="navbar-nav my-lg-0" id="navbar_ul">
                     <li class="nav-item dropdown">
                         <a id="a" class="nav-link dropdown-toggle text-muted waves-effect waves-dark dropbtn" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="dropdownContent()">
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           onclick="dropdownContent()">
                             <img src="<%=basePath%>assets/images/buling.png" alt="user" class="profile-pic m-r-5"/>
                             <span style="font-size:11px;position:absolute;left:33px;top:10px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;">
-                            <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="total_count"></span>
+                            <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                  id="total_count"></span>
                             </span>&nbsp;
                         </a>
                         <div class="dropdown-content" id="dropdown-a">
-                            <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}">征地进入待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="start_count"></span></span></a>
-                            <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}">征地退出待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="end_count"></span></span></a>
-                            <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" id="navbar_tab">征地进入/退出待复审 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="again_examine_count"></span></span></a>
-                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1">尊老金城镇居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_town_count"></span></span></a>
-                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2">尊老金农村居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_country_count"></span></span></a>
+                            <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}">征地进入待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="start_count"></span></span></a>
+                            <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}">征地退出待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="end_count"></span></span></a>
+                            <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" id="navbar_tab">征地进入/退出待复审
+                                <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                        style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                        id="again_examine_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1">尊老金城镇居民待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="respect_town_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2">尊老金农村居民待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="respect_country_count"></span></span></a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >账户：<span id="username"></span> </a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账户：<span
+                                id="username"></span> </a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >退出</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">退出</a>
                     </li>
                 </ul>
             </div>
@@ -234,15 +260,19 @@
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -250,10 +280,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -467,7 +500,8 @@
                                 <div class="form-group">
                                     <label class="col-md-12"><span style="color: red">*</span>动态享受年月</label>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control form-control-line" id="dtxsny" readonly="">
+                                        <input type="text" class="form-control form-control-line" id="dtxsny"
+                                               readonly="">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -658,20 +692,54 @@
 <script src="<%=basePath%>myjs/zepto.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        lay('.date_picker').each(function () {
-            laydate.render({
-                elem: this,
-                done: function(value, date, endDate){
-                    var elemId = $(this.elem[0]).attr("id");
-                    changeDate(value,elemId);
-                }
-            });
-        });
-        findAllCommunity();
-        getExamineById();
-        var loginId = $("#loginId").val();
-        verification(loginId);
+        $(function () {
+    //        lay('.date_picker').each(function () {
+    //            laydate.render({
+    //                elem: this,
+    //                done: function(value, date, endDate){
+    //                    var elemId = $(this.elem[0]).attr("id");
+    //                    changeDate(value,elemId);
+    //                }
+    //            });
+    //        });
+
+    laydate.render({
+        elem: "#birthday"
+    });
+
+    laydate.render({
+        elem: "#villageTime"
+    });
+
+    laydate.render({
+        elem: "#startTime",
+        type: 'month',
+        done: function (value, date, endDate) {
+            var elemId = $(this.elem[0]).attr("id");
+            changeDate(value, elemId);
+        }
+    });
+    laydate.render({
+        elem: "#stopTime",
+        type: 'month',
+        done: function (value, date, endDate) {
+            var elemId = $(this.elem[0]).attr("id");
+            changeDate(value, elemId);
+        }
+    });
+    laydate.render({
+        elem: "#unStart",
+        type: 'month'
+    });
+    laydate.render({
+        elem: "#unEnd",
+        type: 'month'
+    });
+
+    findAllCommunity();
+    getExamineById();
+    var loginId = $("#loginId").val();
+    verification(loginId);
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -735,7 +803,7 @@
 
     $("#submit").on("click", function () {
 
-        if(confirm("是否确认提交?")) {
+        if (confirm("是否确认提交?")) {
             var name = $("#name").val();
             var gender = $("#gender").val();
             var birthday = $("#birthday").val();
@@ -765,6 +833,18 @@
             var isMove = $("#isMove").val();
             var examineId = $("#examineId").val();
             var loginId = $("#loginId").val();
+            if (startTime!=null&&startTime!=""){
+                startTime = startTime+"-01";
+            }
+            if (stopTime!=null&&stopTime!=""){
+                stopTime = stopTime+"-01";
+            }
+            if (unStart!=null&&unStart!=""){
+                unStart = unStart+"-01";
+            }
+            if (unEnd!=null&&unEnd!=""){
+                unEnd = unEnd+"-01";
+            }
             $.post("<%=basePath%>examine/updateExamineById", {
                 "loginId": loginId,
                 "examineId": examineId,
@@ -817,15 +897,15 @@
             $("#villageAge").val(object.villageAge);
             $("#village").val(object.village);
             $("#cdState").val(object.cdState);
-            $("#startTime").val(fmtDate(object.startTime));
-            $("#stopTime").val(fmtDate(object.stopTime));
+            $("#startTime").val(fmtDate1(object.startTime));
+            $("#stopTime").val(fmtDate1(object.stopTime));
             $("#dtxsny").val(object.dtxsny);
             $("#ffbj").val(object.ffbj);
             $("#batch").val(object.batch);
             $("#isInsured").val(object.isInsured);
             $("#unemployment").val(object.unemployment);
-            $("#unStart").val(fmtDate(object.unStart));
-            $("#unEnd").val(fmtDate(object.unEnd));
+            $("#unStart").val(fmtDate1(object.unStart));
+            $("#unEnd").val(fmtDate1(object.unEnd));
             $("#comping").val(object.comping);
             $("#changes").val(object.changes);
             $("#status").val(object.status);
@@ -856,20 +936,29 @@
         var d = "0" + date.getDate();
         return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
     }
-
+    function fmtDate1(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+//        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+        return y + "-" + m.substring(m.length - 2, m.length);
+    }
     var startTime = "";
     var stopTime = "";
 
-    function changeDate(value,elemId) {
+    function changeDate(value, elemId) {
 
-        if (elemId == "stopTime"){
+        if (elemId == "stopTime") {
             startTime = value;
-        }else if (elemId == "startTime"){
+        } else if (elemId == "startTime") {
             stopTime = value;
         }
-        if(startTime != "" && stopTime != ""){
-            var days = datedifference(startTime,stopTime);
-            $("#dtxsny").val(days+"天");
+        if (startTime != "" && stopTime != "") {
+//            var days = datedifference(startTime, stopTime);
+//            $("#dtxsny").val(days + "天");
+            var month = getMonthBetween(stopTime+"-01",startTime+"-01");
+            $("#dtxsny").val(month + "个月");
         }
     }
 
@@ -887,15 +976,15 @@
 </script>
 <script type="text/javascript">
     function dropdownContent() {
-        if ($("#dropdown-a").hasClass("show")){
+        if ($("#dropdown-a").hasClass("show")) {
             $("#dropdown-a").removeClass("show");
-        }else {
+        } else {
             $("#dropdown-a").addClass("show");
         }
     }
 
-    window.onclick = function(e) {
-        if ($("#dropdown-a").hasClass("show")){
+    window.onclick = function (e) {
+        if ($("#dropdown-a").hasClass("show")) {
             $("#dropdown-a").removeClass("show");
         }
     }
@@ -905,9 +994,9 @@
     });
     function getTotalCount() {
         var loginId = $("#loginId").val();
-        $.post("<%=basePath%>examine/getTotalCount",{"loginId":loginId},function (data) {
+        $.post("<%=basePath%>examine/getTotalCount", {"loginId": loginId}, function (data) {
 
-            if (data.code == 0){
+            if (data.code == 0) {
                 var json = data.data;
                 var startCount = json.startCount;
                 var endCount = json.endCount;
@@ -924,6 +1013,22 @@
             }
 
         })
+    }
+
+    function getMonthBetween(startDate,endDate){
+        startDate=new Date(startDate.replace(/-/g,'/'));
+        endDate=new Date(endDate.replace(/-/g,'/'));
+        var num=0;
+        var year=endDate.getFullYear()-startDate.getFullYear();
+        num+=year*12;
+        var month=endDate.getMonth()-startDate.getMonth();
+        num+=month;
+        var day=endDate.getDate()-startDate.getDate();
+        if(day>0){
+            num+=1;
+        }else if(day<0){
+        }
+        return num;
     }
 </script>
 </body>

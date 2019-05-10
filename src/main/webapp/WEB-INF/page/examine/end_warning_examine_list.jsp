@@ -665,11 +665,11 @@
         var loginId = $("#loginId").val();
         verification(loginId);
 
-        lay('.date_picker').each(function () {
-            laydate.render({
-                elem: this
-            });
-        });
+//        lay('.date_picker').each(function () {
+//            laydate.render({
+//                elem: this
+//            });
+//        });
     })
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -1068,7 +1068,8 @@
         var y = 1900 + date.getYear();
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
-        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+//        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+        return y + "-" + m.substring(m.length - 2, m.length);
     }
     function SH(examineId) {
         $("#examineId").val(examineId);

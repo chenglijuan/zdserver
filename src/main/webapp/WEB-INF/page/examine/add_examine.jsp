@@ -665,14 +665,47 @@
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        lay('.date_picker').each(function () {
-            laydate.render({
-                elem: this,
-                done: function(value, date, endDate){
-                    var elemId = $(this.elem[0]).attr("id");
-                    changeDate(value,elemId);
-                }
-            });
+//        lay('.date_picker').each(function () {
+//            laydate.render({
+//                elem: this,
+//                done: function(value, date, endDate){
+//                    var elemId = $(this.elem[0]).attr("id");
+//                    changeDate(value,elemId);
+//                }
+//            });
+//        });
+
+        laydate.render({
+            elem: "#birthday"
+        });
+
+        laydate.render({
+            elem: "#villageTime"
+        });
+
+        laydate.render({
+            elem: "#startTime",
+            type: 'month',
+            done: function (value, date, endDate) {
+                var elemId = $(this.elem[0]).attr("id");
+                changeDate(value, elemId);
+            }
+        });
+        laydate.render({
+            elem: "#stopTime",
+            type: 'month',
+            done: function (value, date, endDate) {
+                var elemId = $(this.elem[0]).attr("id");
+                changeDate(value, elemId);
+            }
+        });
+        laydate.render({
+            elem: "#unStart",
+            type: 'month'
+        });
+        laydate.render({
+            elem: "#unEnd",
+            type: 'month'
         });
         findAllCommunity();
         var loginId = $("#loginId").val();
@@ -767,6 +800,18 @@
             var stopType = $("#stopType").val();
             var stopReason = $("#stopReason").val();
             var isMove = $("#isMove").val();
+            if (startTime!=null&&startTime!=""){
+                startTime = startTime+"-01";
+            }
+            if (stopTime!=null&&stopTime!=""){
+                stopTime = stopTime+"-01";
+            }
+            if (unStart!=null&&unStart!=""){
+                unStart = unStart+"-01";
+            }
+            if (unEnd!=null&&unEnd!=""){
+                unEnd = unEnd+"-01";
+            }
             $.post("<%=basePath%>examine/addExamine", {
                 "name": name,
                 "gender": gender,
@@ -812,8 +857,10 @@
             stopTime = value;
         }
         if(startTime != "" && stopTime != ""){
-            var days = datedifference(startTime,stopTime);
-            $("#dtxsny").val(days+"天");
+//            var days = datedifference(startTime,stopTime);
+//            $("#dtxsny").val(days+"天");
+            var month = getMonthBetween(stopTime+"-01",startTime+"-01");
+            $("#dtxsny").val(month + "个月");
         }
     }
 
@@ -868,6 +915,22 @@
             }
 
         })
+    }
+
+    function getMonthBetween(startDate,endDate){
+        startDate=new Date(startDate.replace(/-/g,'/'));
+        endDate=new Date(endDate.replace(/-/g,'/'));
+        var num=0;
+        var year=endDate.getFullYear()-startDate.getFullYear();
+        num+=year*12;
+        var month=endDate.getMonth()-startDate.getMonth();
+        num+=month;
+        var day=endDate.getDate()-startDate.getDate();
+        if(day>0){
+            num+=1;
+        }else if(day<0){
+        }
+        return num;
     }
 </script>
 </body>

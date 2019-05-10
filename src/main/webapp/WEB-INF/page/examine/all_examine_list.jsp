@@ -762,7 +762,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.startTime == null ? "-" : fmtDate(row.startTime);
+                return row.startTime == null ? "-" : fmtDate2(row.startTime);
             }
         };
         var n = {
@@ -772,7 +772,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.stopTime == null ? "-" : fmtDate(row.stopTime);
+                return row.stopTime == null ? "-" : fmtDate2(row.stopTime);
             }
         };
         var o = {
@@ -987,6 +987,15 @@
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
+
+    function fmtDate2(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月";
+    }
+
     function getAge(birthday) {
         //出生时间 毫秒
         var birthDayTime = new Date(birthday).getTime();
@@ -1051,26 +1060,26 @@
             }
 
             if (object.time1 != null && object.time1 != ""){
-                $("#time1").html(fmtDate(object.time1));
+                $("#time1").html(fmtDate1(object.time1));
             }
 
             if (object.time2 != null && object.time2 != ""){
-                $("#time2").html(fmtDate(object.time2));
+                $("#time2").html(fmtDate1(object.time2));
             }
 
             if (object.time3 != null && object.time3 != ""){
-                $("#time3").html(fmtDate(object.time3));
+                $("#time3").html(fmtDate1(object.time3));
             }
 
             if (object.time4 != null && object.time4 != ""){
-                $("#time4").html(fmtDate(object.time4));
+                $("#time4").html(fmtDate1(object.time4));
             }
             $("#myModal").modal('show');
         })
 
     }
 
-    function fmtDate(day) {
+    function fmtDate1(day) {
         var date = new Date(day);
         var y = 1900 + date.getYear();
         var m = "0" + (date.getMonth() + 1);

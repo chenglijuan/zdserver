@@ -819,13 +819,13 @@ public class ExamineController {
                             }
                             if ("开始发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date startTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date startTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setStartTime(startTime);
                                 }
                             }
                             if ("停止发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date stopTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date stopTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setStopTime(stopTime);
                                 }
                             }
@@ -859,13 +859,13 @@ public class ExamineController {
                             }
                             if ("领取失业金开始时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unStart = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date unStart = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setUnStart(unStart);
                                 }
                             }
                             if ("领取失业金截止时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unEnd = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                    Date unEnd = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
                                     temp.setUnEnd(unEnd);
                                 }
                             }
