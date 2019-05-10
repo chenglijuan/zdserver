@@ -197,10 +197,6 @@
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>authrity/authrityPager?loginId=${loginId}&pageType=4"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>权限管理</a>
-                            </li>
                         </ul>
                     </li>
                 </ul>

@@ -6,10 +6,7 @@ import com.lemi.msloan.entity.User;
 import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.service.*;
-import com.lemi.msloan.util.DateUtil;
-import com.lemi.msloan.util.FileUtil;
-import com.lemi.msloan.util.PhoneUtil;
-import com.lemi.msloan.util.PoiTest;
+import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,12 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -610,5 +607,175 @@ public class RespectController {
             return new ApiResult(false, "操作失败", -1, null);
         }
     }
+
+
+    /**
+     * 导出
+     * @param response
+     */
+    @RequestMapping(value = "exportRespect")
+    public void exportOrder(HttpServletResponse response,String name, String idCard, Integer communityId, String phone,
+                            Integer changeState, String grantTimes, Integer type,Integer auditState,Integer loginId) {
+        try {
+            System.out.println("name="+name);
+            User user = userService.getByUserId(loginId);
+            if (user == null) {
+                return;
+            }
+            RespectRequest respectRequest = new RespectRequest();
+            List<Respect> list = respectService.selectRespectPager(respectRequest);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            List<List<String>> strsList = new ArrayList<List<String>>();
+            List<String> title = new ArrayList<String>();
+            title.add("姓名");
+            title.add("身份证");
+            title.add("性别");//1.男2.女
+            title.add("出生年月");
+            title.add("年龄");
+            title.add("联系方式");
+            title.add("类型");//1.城镇 2.农村
+            title.add("现户籍所在地");
+            title.add("社区名称");
+            title.add("动态享受年月");
+            title.add("起始发放时间");
+            title.add("发放标准(元)");
+            title.add("审核状态"); //1.待审核2.审核通过 3.审核为通过'
+            title.add("发放状态");//发放状态1.已暂停 2.发放
+            title.add("变动情况说明");//1.迁出 2.死亡
+            strsList.add(title);
+            for (int i = 0, length = list.size(); i < length; i++) {
+                List<String> strings = new ArrayList<>();
+                Respect respect = list.get(i);
+                //姓名
+                strings.add(respect.getName());
+                //身份证
+                strings.add(respect.getIdCard());
+                //性别
+                if (respect.getGender() != null) {
+                    if (respect.getGender().intValue() == 1) {
+                        strings.add("男");
+                    } else if (respect.getGender().intValue() == 2) {
+                        strings.add("女");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //出生年月
+                if (!StringUtils.isBlank(respect.getBirthday())) {
+                    strings.add(respect.getBirthday());
+                } else {
+                    strings.add("");
+                }
+                if (!StringUtils.isBlank(respect.getBirthday())) {
+                    int age = DateUtil.getAgeByBirth(sdf.parse(respect.getBirthday()));
+                    strings.add(age + "");
+                } else {
+                    strings.add("");
+                }
+                //联系方式
+                if(!StringUtils.isBlank(respect.getPhone())){
+                    strings.add(respect.getPhone());
+                }else{
+                    strings.add("");
+                }
+                //类型1.城镇 2.农村
+                if (respect.getType() != null) {
+                    if (respect.getType().intValue() == 1) {
+                        strings.add("城镇");
+                    } else if (respect.getType().intValue() == 2) {
+                        strings.add("农村");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //现户籍所在地
+                if(!StringUtils.isBlank(respect.getHouse())){
+                    strings.add(respect.getHouse());
+                }else{
+                    strings.add("");
+                }
+                //社区名称
+                if(!StringUtils.isBlank(respect.getCommunityName())){
+                    strings.add(respect.getCommunityName());
+                }else{
+                    strings.add("");
+                }
+                //动态享受年月
+                if(!StringUtils.isBlank(respect.getDynamicYearMonth())){
+                    strings.add(respect.getDynamicYearMonth());
+                }else{
+                    strings.add("");
+                }
+                //起始发放时间
+                if(!StringUtils.isBlank(respect.getGrantTime())){
+                    strings.add(respect.getGrantTime());
+                }else{
+                    strings.add("");
+                }
+                //审核状态 1.待审核2.审核通过 3.审核未通过
+                if (respect.getAuditState() != null) {
+                    if (respect.getAuditState().intValue() == 1) {
+                        strings.add("待审核");
+                    } else if (respect.getAuditState().intValue() == 2) {
+                        strings.add("审核通过");
+                    }else if (respect.getAuditState().intValue() == 3) {
+                        strings.add("审核未通过");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //发放状态 发放状态1.已暂停 2.发放
+                if (respect.getGrantState() != null) {
+                    if (respect.getGrantState().intValue() == 1) {
+                        strings.add("已暂停");
+                    } else if (respect.getGrantState().intValue() == 2) {
+                        strings.add("发放中");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //变动情况说明 1.迁出 2.死亡
+                if (respect.getChangeState() != null) {
+                    if (respect.getChangeState().intValue() == 1) {
+                        strings.add("迁出");
+                    } else if (respect.getChangeState().intValue() == 2) {
+                        strings.add("死亡");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                strsList.add(strings);
+            }
+            String str = "尊老金导出";
+            String fileName = str + DateUtil.getDateString("yyyy-MM-dd", new Date());
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+            ServletOutputStream out = response.getOutputStream();
+            OutputStream os = out;
+            String excelTitle = "这个是***";
+
+            POIExcelUtil.writerDataInExcelIo(strsList, os, excelTitle, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getissuStandard(int age,int type){
+
+        return 0;
+    }
+
 
 }
