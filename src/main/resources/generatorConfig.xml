@@ -39,10 +39,14 @@
         <!-- 这里是数据库的表名table_user 以及 POJO类的名字User -->
 
 
-        <table tableName="zd_audit_remark" domainObjectName="AuditRemark"
+        <table tableName="zd_user_menu" domainObjectName="UserMenu"
                enableCountByExample="false" enableSelectByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false">
         </table>
+        <!--<table tableName="zd_menu" domainObjectName="Menu"
+               enableCountByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false">
+        </table>-->
 
     </context>
 

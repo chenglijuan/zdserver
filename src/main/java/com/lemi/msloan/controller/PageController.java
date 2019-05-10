@@ -13,9 +13,10 @@ public class PageController {
 
 
     @RequestMapping(value = "header")
-    public ModelAndView header() {
+    public ModelAndView header(Integer loginId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/common/header");
+        modelAndView.addObject("loginId",loginId);
         return modelAndView;
     }
 
