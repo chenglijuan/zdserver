@@ -232,7 +232,7 @@
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
                                    class="waves-effect"><i class="fa fa-user m-r-10"
-                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
+                                                           aria-hidden="true"></i>农村居民尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -268,10 +268,7 @@
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
                             </li>
-                            <li>
-                                <a onclick="gotopage()" class="waves-effect"><i class="fa fa-user m-r-10"
-                                                                                aria-hidden="true"></i>社区管理</a>
-                            </li>
+
                         </ul>
                     </li>
                 </ul>

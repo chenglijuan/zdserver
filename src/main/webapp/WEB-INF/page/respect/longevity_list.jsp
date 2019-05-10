@@ -190,7 +190,7 @@
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -293,7 +293,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px;display: none" id="communityIdDiv">
-                        <label for="communityId">所属小区：</label>
+                        <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId">
                             <option selected value="">==请选择==</option>
                         </select>
@@ -496,7 +496,7 @@
         };
         var g = {
             field: 'communityName',
-            title: '所属小区',
+            title: '所属社区',
             align: 'center',
             valign: 'middle',
             width: 150,
