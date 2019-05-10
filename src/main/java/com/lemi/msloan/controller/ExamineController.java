@@ -4,11 +4,9 @@ import com.lemi.msloan.entity.Community;
 import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.entity.User;
+import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
-import com.lemi.msloan.service.CommunityService;
-import com.lemi.msloan.service.ExamineService;
-import com.lemi.msloan.service.RosterService;
-import com.lemi.msloan.service.UserService;
+import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.DateUtil;
 import com.lemi.msloan.util.FileUtil;
 import com.lemi.msloan.util.PoiTest;
@@ -26,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -46,6 +45,9 @@ public class ExamineController {
 
     @Autowired
     private CommunityService communityService;
+
+    @Autowired
+    private RespectService respectService;
 
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
@@ -200,9 +202,6 @@ public class ExamineController {
         }
         if (StringUtils.isBlank(ffbj)) {
             return new ApiResult(false, "请输入发放标准", -1);
-        }
-        if (StringUtils.isBlank(batch)) {
-            return new ApiResult(false, "请输入新增批次", -1);
         }
         if (StringUtils.isBlank(name)) {
             return new ApiResult(false, "请输入姓名", -1);
@@ -398,9 +397,6 @@ public class ExamineController {
         if (StringUtils.isBlank(ffbj)) {
             return new ApiResult(false, "请输入发放标准", -1);
         }
-        if (StringUtils.isBlank(batch)) {
-            return new ApiResult(false, "请输入新增批次", -1);
-        }
         if (StringUtils.isBlank(name)) {
             return new ApiResult(false, "请输入姓名", -1);
         }
@@ -510,7 +506,10 @@ public class ExamineController {
         if (examine == null) {
             return new ApiResult(false, "编辑的征地人员社会救济金不存在", -1);
         }
-
+        if (examine.getCommunityId() != null) {
+            Community community = communityService.get(examine.getCommunityId());
+            examine.setCommunityName(community.getName());
+        }
         return new ApiResult(true, "查询成功", 0, examine);
     }
 
@@ -636,22 +635,22 @@ public class ExamineController {
                 examine.setState(4);
             }
         }
-        if (!StringUtils.isBlank(stopReason)){
+        if (!StringUtils.isBlank(stopReason)) {
             examine.setStopReason(stopReason);
         }
-        if (stopType != null){
+        if (stopType != null) {
             examine.setStopType(stopType);
         }
-        if (status != null){
+        if (status != null) {
             examine.setStatus(status);
             Roster roster = rosterService.getByExamineId(examineId);
             roster.setStatus(status);
             rosterService.update(roster);
         }
-        if (changes != null){
+        if (changes != null) {
             examine.setChanges(changes);
         }
-        if (comping != null){
+        if (comping != null) {
             examine.setComping(comping);
         }
         if (isInsured != null) {
@@ -1051,6 +1050,7 @@ public class ExamineController {
 
     /**
      * 征地人员已故名单
+     *
      * @param examineId
      * @param loginId
      * @return
@@ -1063,6 +1063,295 @@ public class ExamineController {
         return modelAndView;
     }
 
+    /**
+     * 进入审核
+     *
+     * @param examineId
+     * @param startTime
+     * @param stopTime
+     * @param dtxsny
+     * @param ffbj
+     * @param batch
+     * @param isInsured
+     * @param unemployment
+     * @param unStart
+     * @param unEnd
+     * @param comping
+     * @param changes
+     * @return
+     */
+    @RequestMapping(value = "startExamine")
+    @ResponseBody
+    public ApiResult startExamine(Integer loginId, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, String batch, Integer isInsured, Integer unemployment, String unStart, String unEnd, Integer comping, Integer changes,String remark) {
+
+        if (examineId != null) {
+            Examine examine = examineService.get(examineId);
+            if (examine != null) {
+                if (!StringUtils.isBlank(startTime)) {
+                    examine.setStartTime(DateUtil.getDateToString(startTime, "yyyy-MM-dd"));
+                }
+                if (!StringUtils.isBlank(stopTime)) {
+                    examine.setStopTime(DateUtil.getDateToString(stopTime, "yyyy-MM-dd"));
+                }
+                if (!StringUtils.isBlank(dtxsny)) {
+                    examine.setDtxsny(dtxsny);
+                }
+                if (!StringUtils.isBlank(ffbj)) {
+                    examine.setFfbj(ffbj);
+                }
+                if (!StringUtils.isBlank(batch)) {
+                    examine.setBatch(batch);
+                }
+                if (isInsured != null) {
+                    examine.setIsInsured(isInsured);
+                }
+                if (unemployment != null) {
+                    examine.setUnemployment(unemployment);
+                }
+                if (!StringUtils.isBlank(unStart)) {
+                    examine.setUnStart(DateUtil.getDateToString(unStart, "yyyy-MM-dd"));
+                }
+                if (!StringUtils.isBlank(unEnd)) {
+                    examine.setUnEnd(DateUtil.getDateToString(unEnd, "yyyy-MM-dd"));
+                }
+                if (comping != null) {
+                    examine.setComping(comping);
+                }
+                if (changes != null) {
+                    examine.setChanges(changes);
+                }
+                if (loginId != null) {
+                    User user = userService.get(loginId);
+                    if (user.getType() == 2) {
+                        examine.setStatus(5);
+                        if (!StringUtils.isBlank(remark)){
+                            examine.setRemark1(remark);
+                        }
+                        examine.setTime1(new Date());
+                        examineService.update(examine);
+                    } else {
+                        if (!StringUtils.isBlank(remark)){
+                            examine.setRemark3(remark);
+                        }
+                        examine.setTime3(new Date());
+                        examine.setStatus(2);
+                        examineService.update(examine);
+                        Roster roster = rosterService.getByExamineId(examineId);
+                        if (roster != null) {
+                            roster.setStatus(2);
+                            rosterService.update(roster);
+                        }
+                    }
+                }
+
+                return new ApiResult(true, "进入成功", 0);
+            } else {
+                return new ApiResult(false, "不存在", -1);
+            }
+        } else {
+            return new ApiResult(false, "ID为空", -1);
+        }
+
+    }
+
+    /**
+     * 退出
+     *
+     * @param examineId
+     * @return
+     */
+    @RequestMapping(value = "endExamine")
+    @ResponseBody
+    public ApiResult endExamine(Integer examineId, Integer loginId,String remark) {
+
+        if (examineId == null) {
+            return new ApiResult(false, "ID为空", -1);
+        }
+        Examine examine = examineService.get(examineId);
+        if (examine == null) {
+            return new ApiResult(false, "不存在", -1);
+        }
+        if (loginId != null) {
+            User user = userService.get(loginId);
+            if (user.getType() == 2) {
+                examine.setStatus(6);
+                if (!StringUtils.isBlank(remark)){
+                    examine.setRemark2(remark);
+                }
+                examine.setTime2(new Date());
+                examineService.update(examine);
+            } else {
+                if (!StringUtils.isBlank(remark)){
+                    examine.setRemark4(remark);
+                }
+                examine.setTime4(new Date());
+                examine.setStatus(4);
+                examineService.update(examine);
+                Roster roster = rosterService.getByExamineId(examineId);
+                if (roster != null) {
+                    roster.setStatus(4);
+                    rosterService.update(roster);
+                }
+            }
+        }
+
+        return new ApiResult(true, "退出成功", 0);
+    }
+
+    /**
+     * 待定
+     *
+     * @param examineId
+     * @return
+     */
+    @RequestMapping(value = "toDaiDing")
+    @ResponseBody
+    public ApiResult toDaiDing(Integer examineId, Integer status, String nextTime) {
+        if (examineId == null) {
+            return new ApiResult(false, "ID为空", -1);
+        }
+        Examine examine = examineService.get(examineId);
+        if (examine == null) {
+            return new ApiResult(false, "不存在", -1);
+        }
+        examine.setStatus(status);
+        if (!StringUtils.isBlank(nextTime)){
+            if (status.intValue() == 7){
+                examine.setNextTime(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
+            }else if (status.intValue() == 8){
+                examine.setNextOut(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
+            }
+
+        }
+
+        examineService.update(examine);
+        return new ApiResult(true, "操作成功", 0);
+    }
+
+    /**
+     * 查询待复审
+     *
+     * @param loginId
+     * @param house
+     * @param name
+     * @param idCard
+     * @param comping
+     * @param age
+     * @param changes
+     * @param status
+     * @param unemployment
+     * @param isInsured
+     * @param communityId
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    @RequestMapping(value = "findAgainExamine")
+    @ResponseBody
+    public ApiResult findAgainExamine(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+        User user = userService.get(loginId);
+        if (user != null) {
+            if (user.getType().intValue() == 2) {
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null) {
+                    communityId = community.getId();
+                }
+            }
+        }
+
+        List<Examine> list = examineService.findAgainExamine(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+
+        Integer count = examineService.findAgainExamineCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("list", list);
+
+        map.put("count", count);
+
+        return new ApiResult(true, "查询成功", 0, map);
+    }
+
+    /**
+     * 查询待定
+     *
+     * @param loginId
+     * @param house
+     * @param name
+     * @param idCard
+     * @param comping
+     * @param age
+     * @param changes
+     * @param status
+     * @param unemployment
+     * @param isInsured
+     * @param communityId
+     * @param pageSize
+     * @param pageNum
+     * @return
+     */
+    @RequestMapping(value = "findUndeterminedExamine")
+    @ResponseBody
+    public ApiResult findUndeterminedExamine(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+        User user = userService.get(loginId);
+        if (user != null) {
+            if (user.getType().intValue() == 2) {
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null) {
+                    communityId = community.getId();
+                }
+            }
+        }
+
+        List<Examine> list = examineService.findUndeterminedExamine(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+
+        Integer count = examineService.findUndeterminedExamineCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("list", list);
+
+        map.put("count", count);
+
+        return new ApiResult(true, "查询成功", 0, map);
+    }
+
+    @RequestMapping(value = "getTotalCount")
+    @ResponseBody
+    public ApiResult getTotalCount(Integer loginId){
+        Integer communityId = null;
+        User user = userService.get(loginId);
+        if (user != null) {
+            if (user.getType().intValue() == 2) {
+                Community community = communityService.selectByUserId(loginId);
+                if (community != null) {
+                    communityId = community.getId();
+                }
+            }
+        }
+
+        //进入预警的数量
+        Integer startCount = examineService.getExamineWillStartCount(null, null, null, null, null, null, null, null, null, communityId);
+        //退出预警的数量
+        Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
+        //尊老金城市待审核的数量
+
+        Integer respectTownCount = respectService.selectRemindRespectCount(communityId,1,1);
+        //尊老金农村待审核的数量
+        Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
+        //长寿金待审核的数量
+        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
+
+        Map<String,Integer> map = new HashMap();
+
+        map.put("startCount",startCount);
+        map.put("endCount",endCount);
+        map.put("respectTownCount",respectTownCount);
+        map.put("respectCountryCount",respectCountryCount);
+        map.put("respectLongCount",respectLongCount);
+        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+respectLongCount);
+        return new ApiResult(true, "查询成功", 0, map);
+    }
 }
 
 

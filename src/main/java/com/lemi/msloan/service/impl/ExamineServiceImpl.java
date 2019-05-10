@@ -272,4 +272,154 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
         }
         return examineDao.getExamineWillStopCount(examineRequest);
     }
+
+    @Override
+    public List<Examine> findAgainExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+        ExamineRequest examineRequest = new ExamineRequest();
+        if (!StringUtils.isBlank(house)){
+            examineRequest.setHouse(house);
+        }
+        if (!StringUtils.isBlank(name)) {
+            examineRequest.setName(name);
+        }
+        if (!StringUtils.isBlank(idCard)) {
+            examineRequest.setIdCard(idCard);
+        }
+        if (comping != null) {
+            examineRequest.setComping(comping);
+        }
+        if (age != null) {
+            examineRequest.setAge(age);
+        }
+        if (changes != null) {
+            examineRequest.setChanges(changes);
+        }
+        if (status != null) {
+            examineRequest.setStatus(status);
+        }
+        if (unemployment != null) {
+            examineRequest.setUnemployment(unemployment);
+        }
+        if (isInsured != null) {
+            examineRequest.setIsInsured(isInsured);
+        }
+        if (communityId != null) {
+            examineRequest.setCommunityId(communityId);
+        }
+        if (pageNum != null && pageSize != null) {
+            examineRequest.setPager(pageNum, pageSize);
+        }
+        return examineDao.findAgainExamine(examineRequest);
+    }
+
+    @Override
+    public Integer findAgainExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+        ExamineRequest examineRequest = new ExamineRequest();
+        if (!StringUtils.isBlank(house)){
+            examineRequest.setHouse(house);
+        }
+        if (!StringUtils.isBlank(name)) {
+            examineRequest.setName(name);
+        }
+        if (!StringUtils.isBlank(idCard)) {
+            examineRequest.setIdCard(idCard);
+        }
+        if (comping != null) {
+            examineRequest.setComping(comping);
+        }
+        if (age != null) {
+            examineRequest.setAge(age);
+        }
+        if (changes != null) {
+            examineRequest.setChanges(changes);
+        }
+        if (status != null) {
+            examineRequest.setStatus(status);
+        }
+        if (unemployment != null) {
+            examineRequest.setUnemployment(unemployment);
+        }
+        if (isInsured != null) {
+            examineRequest.setIsInsured(isInsured);
+        }
+        if (communityId != null) {
+            examineRequest.setCommunityId(communityId);
+        }
+        return examineDao.findAgainExamineCount(examineRequest);
+    }
+
+    @Override
+    public List<Examine> findUndeterminedExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+        ExamineRequest examineRequest = new ExamineRequest();
+        if (!StringUtils.isBlank(house)){
+            examineRequest.setHouse(house);
+        }
+        if (!StringUtils.isBlank(name)) {
+            examineRequest.setName(name);
+        }
+        if (!StringUtils.isBlank(idCard)) {
+            examineRequest.setIdCard(idCard);
+        }
+        if (comping != null) {
+            examineRequest.setComping(comping);
+        }
+        if (age != null) {
+            examineRequest.setAge(age);
+        }
+        if (changes != null) {
+            examineRequest.setChanges(changes);
+        }
+        if (status != null) {
+            examineRequest.setStatus(status);
+        }
+        if (unemployment != null) {
+            examineRequest.setUnemployment(unemployment);
+        }
+        if (isInsured != null) {
+            examineRequest.setIsInsured(isInsured);
+        }
+        if (communityId != null) {
+            examineRequest.setCommunityId(communityId);
+        }
+        if (pageNum != null && pageSize != null) {
+            examineRequest.setPager(pageNum, pageSize);
+        }
+        return examineDao.findUndeterminedExamine(examineRequest);
+    }
+
+    @Override
+    public Integer findUndeterminedExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+        ExamineRequest examineRequest = new ExamineRequest();
+        if (!StringUtils.isBlank(house)){
+            examineRequest.setHouse(house);
+        }
+        if (!StringUtils.isBlank(name)) {
+            examineRequest.setName(name);
+        }
+        if (!StringUtils.isBlank(idCard)) {
+            examineRequest.setIdCard(idCard);
+        }
+        if (comping != null) {
+            examineRequest.setComping(comping);
+        }
+        if (age != null) {
+            examineRequest.setAge(age);
+        }
+        if (changes != null) {
+            examineRequest.setChanges(changes);
+        }
+        if (status != null) {
+            examineRequest.setStatus(status);
+        }
+        if (unemployment != null) {
+            examineRequest.setUnemployment(unemployment);
+        }
+        if (isInsured != null) {
+            examineRequest.setIsInsured(isInsured);
+        }
+        if (communityId != null) {
+            examineRequest.setCommunityId(communityId);
+        }
+        return examineDao.findUndeterminedExamineCount(examineRequest);
+    }
 }

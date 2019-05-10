@@ -89,12 +89,12 @@
                     <!-- This is  -->
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                    <%--<form class="app-search p-l-20">--%>
+                    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                    <%--class="ti-search"></i></a>--%>
+                    <%--</form>--%>
+                    <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
                 <!-- User profile and search -->
@@ -102,8 +102,12 @@
                 <ul class="navbar-nav my-lg-0">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">账户：<span
+                                id="username"></span> </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">退出</a>
                     </li>
                 </ul>
             </div>
@@ -166,10 +170,17 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -182,10 +193,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -383,7 +397,8 @@
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请选择开始发放时间"
                                                class="form-control form-control-line date_picker"
-                                               name="startTime" id="startTime" readonly="readonly">
+                                               name="startTime" id="startTime" readonly="readonly"
+                                               onblur="changeDate()">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -392,27 +407,25 @@
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请选择停止发放时间"
                                                class="form-control form-control-line date_picker"
-                                               name="stopTime" id="stopTime" readonly="readonly">
+                                               name="stopTime" id="stopTime" readonly="readonly" onblur="changeDate()">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-12"><span style="color: red">*</span>动态享受年月</label>
+                                    <label class="col-md-12">动态享受年月</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="请输入动态享受年月"
-                                               class="form-control form-control-line" id="dtxsny">
+                                        <input type="text" class="form-control form-control-line" id="dtxsny" readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-12"><span style="color: red">*</span>发放标准</label>
+                                    <label class="col-md-12">发放标准</label>
                                     <div class="col-md-12">
-                                        <input type="text" placeholder="请输入发放标准"
-                                               class="form-control form-control-line" id="ffbj">
+                                        <input type="text" class="form-control form-control-line" id="ffbj" value="180元/月" readonly>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="house" class="col-md-12"><span style="color: red">*</span>新增批次</label>
+                                    <label for="house" class="col-md-12">新增批次</label>
                                     <div class="col-md-12">
                                         <input type="text" placeholder="请输入新增批次"
                                                class="form-control form-control-line" name="batch"
@@ -536,8 +549,8 @@
                         <div class="card-block">
                             <form class="form-horizontal form-material">
                                 <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">确定</button>
+                                    <div class="col-sm-12" style="text-align: center">
+                                        <button type="button" class="btn btn-info" id="submit">确认</button>
                                     </div>
                                 </div>
                             </form>
@@ -553,17 +566,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
@@ -604,7 +606,11 @@
     $(function () {
         lay('.date_picker').each(function () {
             laydate.render({
-                elem: this
+                elem: this,
+                done: function(value, date, endDate){
+                    var elemId = $(this.elem[0]).attr("id");
+                    changeDate(value,elemId);
+                }
             });
         });
         findAllCommunity();
@@ -617,6 +623,7 @@
                 alert(data.message);
                 window.location.href = "<%=basePath%>/login.jsp";
             } else {
+                $("#username").html(data.data.username);
                 if (data.data.type == 1) {
                     $("#tab_1").css("display", "block");
                     $("#tab_2").css("display", "block");
@@ -667,65 +674,97 @@
     })
 
     $("#submit").on("click", function () {
-        var name = $("#name").val();
-        var gender = $("#gender").val();
-        var birthday = $("#birthday").val();
-        var idCard = $("#idCard").val();
-        var phone = $("#phone").val();
-        var house = $("#house").val();
-        var address = $("#address").val();
-        var communityId = $("#community").val();
-        var villageTime = $("#villageTime").val();
-        var villageAge = $("#villageAge").val();
-        var village = $("#village").val();
-        var cdState = $("#cdState").val();
-        var startTime = $("#startTime").val();
-        var stopTime = $("#stopTime").val();
-        var dtxsny = $("#dtxsny").val();
-        var ffbj = $("#ffbj").val();
-        var batch = $("#batch").val();
-        var isInsured = $("#isInsured").val();
-        var unemployment = $("#unemployment").val();
-        var unStart = $("#unStart").val();
-        var unEnd = $("#unEnd").val();
-        var comping = $("#comping").val();
-        var changes = $("#changes").val();
-        var status = $("#status").val();
-        var stopType = $("#stopType").val();
-        var stopReason = $("#stopReason").val();
-        var isMove = $("#isMove").val();
-        $.post("<%=basePath%>examine/addExamine", {
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "idCard": idCard,
-            "phone": phone,
-            "house": house,
-            "address": address,
-            "communityId": communityId,
-            "villageTime": villageTime,
-            "villageAge": villageAge,
-            "village": village,
-            "cdState": cdState,
-            "startTime": startTime,
-            "stopTime": stopTime,
-            "dtxsny": dtxsny,
-            "ffbj": ffbj,
-            "batch": batch,
-            "isInsured": isInsured,
-            "unemployment": unemployment,
-            "unStart": unStart,
-            "unEnd": unEnd,
-            "comping": comping,
-            "changes": changes,
-            "status": status,
-            "stopType": stopType,
-            "stopReason": stopReason,
-            "isMove": isMove
-        }, function (data) {
-            alert(data.message);
-        });
+
+        if (confirm("是否确认提交？")){
+
+            var name = $("#name").val();
+            var gender = $("#gender").val();
+            var birthday = $("#birthday").val();
+            var idCard = $("#idCard").val();
+            var phone = $("#phone").val();
+            var house = $("#house").val();
+            var address = $("#address").val();
+            var communityId = $("#community").val();
+            var villageTime = $("#villageTime").val();
+            var villageAge = $("#villageAge").val();
+            var village = $("#village").val();
+            var cdState = $("#cdState").val();
+            var startTime = $("#startTime").val();
+            var stopTime = $("#stopTime").val();
+            var dtxsny = $("#dtxsny").val();
+            var ffbj = $("#ffbj").val();
+            var batch = $("#batch").val();
+            var isInsured = $("#isInsured").val();
+            var unemployment = $("#unemployment").val();
+            var unStart = $("#unStart").val();
+            var unEnd = $("#unEnd").val();
+            var comping = $("#comping").val();
+            var changes = $("#changes").val();
+            var status = $("#status").val();
+            var stopType = $("#stopType").val();
+            var stopReason = $("#stopReason").val();
+            var isMove = $("#isMove").val();
+            $.post("<%=basePath%>examine/addExamine", {
+                "name": name,
+                "gender": gender,
+                "birthday": birthday,
+                "idCard": idCard,
+                "phone": phone,
+                "house": house,
+                "address": address,
+                "communityId": communityId,
+                "villageTime": villageTime,
+                "villageAge": villageAge,
+                "village": village,
+                "cdState": cdState,
+                "startTime": startTime,
+                "stopTime": stopTime,
+                "dtxsny": dtxsny,
+                "ffbj": ffbj,
+                "batch": batch,
+                "isInsured": isInsured,
+                "unemployment": unemployment,
+                "unStart": unStart,
+                "unEnd": unEnd,
+                "comping": comping,
+                "changes": changes,
+                "status": status,
+                "stopType": stopType,
+                "stopReason": stopReason,
+                "isMove": isMove
+            }, function (data) {
+                alert(data.message);
+            });
+        }
     })
+
+    var startTime = "";
+    var stopTime = "";
+
+    function changeDate(value,elemId) {
+
+        if (elemId == "stopTime"){
+            startTime = value;
+        }else if (elemId == "startTime"){
+            stopTime = value;
+        }
+        if(startTime != "" && stopTime != ""){
+            var days = datedifference(startTime,stopTime);
+            $("#dtxsny").val(days+"天");
+        }
+    }
+
+    function datedifference(sDate1, sDate2) {    //sDate1和sDate2是2006-12-18格式
+        var dateSpan,
+            tempDate,
+            iDays;
+        sDate1 = Date.parse(sDate1);
+        sDate2 = Date.parse(sDate2);
+        dateSpan = sDate2 - sDate1;
+        dateSpan = Math.abs(dateSpan);
+        iDays = Math.floor(dateSpan / (24 * 3600 * 1000));
+        return iDays
+    }
 </script>
 </body>
 </html>

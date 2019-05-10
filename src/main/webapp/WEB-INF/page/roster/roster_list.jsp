@@ -86,7 +86,7 @@
             <!-- Logo -->
             <!-- ============================================================== -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="<%=basePath%>/roster/indexPage?loginId=${loginId}">
                     <!-- Logo icon -->
                     <b>
                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -189,6 +189,10 @@
                                 class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                            </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
@@ -329,7 +333,7 @@
                             </button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
                             <a class="btn btn-info" href="<%=basePath%>/temp/model1.xlsx" style="color: #fff"><span
-                                    class=" fa fa-download"></span> 模板导出</a>
+                                    class=" fa fa-download"></span> 下载模板</a>
                             <button type="button" class="btn btn-info" id="addRoster"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>

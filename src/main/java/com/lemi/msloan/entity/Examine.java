@@ -69,6 +69,106 @@ public class Examine {
 
     private String phone;
 
+    private String remark1;
+
+    private String remark2;
+
+    private String remark3;
+
+    private String remark4;
+
+    private Date nextTime;
+
+    private Date nextOut;
+
+    private Date time1;
+
+    private Date time2;
+
+    private Date time3;
+
+    private Date time4;
+
+    public Date getNextOut() {
+        return nextOut;
+    }
+
+    public void setNextOut(Date nextOut) {
+        this.nextOut = nextOut;
+    }
+
+    public Date getTime1() {
+        return time1;
+    }
+
+    public void setTime1(Date time1) {
+        this.time1 = time1;
+    }
+
+    public Date getTime2() {
+        return time2;
+    }
+
+    public void setTime2(Date time2) {
+        this.time2 = time2;
+    }
+
+    public Date getTime3() {
+        return time3;
+    }
+
+    public void setTime3(Date time3) {
+        this.time3 = time3;
+    }
+
+    public Date getTime4() {
+        return time4;
+    }
+
+    public void setTime4(Date time4) {
+        this.time4 = time4;
+    }
+
+    public String getRemark1() {
+        return remark1;
+    }
+
+    public void setRemark1(String remark1) {
+        this.remark1 = remark1;
+    }
+
+    public String getRemark2() {
+        return remark2;
+    }
+
+    public void setRemark2(String remark2) {
+        this.remark2 = remark2;
+    }
+
+    public String getRemark3() {
+        return remark3;
+    }
+
+    public void setRemark3(String remark3) {
+        this.remark3 = remark3;
+    }
+
+    public String getRemark4() {
+        return remark4;
+    }
+
+    public void setRemark4(String remark4) {
+        this.remark4 = remark4;
+    }
+
+    public Date getNextTime() {
+        return nextTime;
+    }
+
+    public void setNextTime(Date nextTime) {
+        this.nextTime = nextTime;
+    }
+
     public String getPhone() {
         return phone;
     }

@@ -54,7 +54,7 @@
     <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <header class="topbar">
+   <%-- <header class="topbar">
         <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
             <!-- ============================================================== -->
             <!-- Logo -->
@@ -106,7 +106,8 @@
                 </ul>
             </div>
         </nav>
-    </header>
+    </header>--%>
+    <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -160,6 +161,10 @@
                                 class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                            </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
@@ -271,16 +276,17 @@
                                            name="age" id="age" readonly="readonly">
                                 </div>
                                 <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
+                                    <input type="text" placeholder="发放标准"
+                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
+                                </div>
+                                <div class="form-group form-control-line">
                                     <label for="phone" class="col-md-3"><span style="color: red">*</span>联系电话</label>
                                     <input type="text" placeholder="联系电话"
                                            class="form-control col-md-8" name="phone"
                                            id="phone">
                                 </div>
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
-                                    <input type="text" placeholder="请输入现户籍所在地"
-                                           class="form-control col-md-8" name="house" id="house">
-                                </div>
+
                                 <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
                                     <label for="communityId" class="col-md-3"><span
                                             style="color: red">*</span>所属社区：</label>
@@ -301,6 +307,11 @@
                     <div class="card">
                         <div class="card-block">
                             <form class="form-horizontal form-material">
+                                <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
+                                    <input type="text" placeholder="请输入现户籍所在地"
+                                           class="form-control col-md-8" name="house" id="house">
+                                </div>
                                 <div class="form-group form-control-line">
                                     <label for="grantTimeStr" class="col-md-3"><span
                                             style="color: red">*</span>起始发放时间</label>
@@ -332,11 +343,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
-                                    <input type="text" placeholder="发放标准"
-                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
-                                </div>
+
                                 <div class="form-group" rows="3">
                                     <label class="col-md-3">备注</label>
                                     <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
@@ -362,17 +369,6 @@
         </div>
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
         <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
@@ -414,6 +410,7 @@
 <script type="text/javascript">
     var roleType = 2;
     $(function () {
+        $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimeStr'
         });

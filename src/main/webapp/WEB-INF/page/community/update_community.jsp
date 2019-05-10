@@ -54,59 +54,60 @@
     <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <header class="topbar">
-        <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                    <!-- Logo icon -->
-                    <b>
-                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                        <!-- Dark Logo icon -->
-                        <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>
+    <%--<header class="topbar">--%>
+        <%--<nav class="navbar top-navbar navbar-toggleable-sm navbar-light">--%>
+            <%--<!-- ============================================================== -->--%>
+            <%--<!-- Logo -->--%>
+            <%--<!-- ============================================================== -->--%>
+            <%--<div class="navbar-header">--%>
+                <%--<a class="navbar-brand" href="index.html">--%>
+                    <%--<!-- Logo icon -->--%>
+                    <%--<b>--%>
+                        <%--<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->--%>
+                        <%--<!-- Dark Logo icon -->--%>
+                        <%--<img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>--%>
 
-                    </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
-                    <span>
-                            <!-- dark Logo text -->
-                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>
-                        </span>
-                </a>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-collapse">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav mr-auto mt-md-0 ">
-                    <!-- This is  -->
-                    <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
-                                            href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
-                </ul>
-                <!-- ============================================================== -->
-                <!-- User profile and search -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav my-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+                    <%--</b>--%>
+                    <%--<!--End Logo icon -->--%>
+                    <%--<!-- Logo text -->--%>
+                    <%--<span>--%>
+                            <%--<!-- dark Logo text -->--%>
+                            <%--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>--%>
+                        <%--</span>--%>
+                <%--</a>--%>
+            <%--</div>--%>
+            <%--<!-- ============================================================== -->--%>
+            <%--<!-- End Logo -->--%>
+            <%--<!-- ============================================================== -->--%>
+            <%--<div class="navbar-collapse">--%>
+                <%--<!-- ============================================================== -->--%>
+                <%--<!-- toggle and nav items -->--%>
+                <%--<!-- ============================================================== -->--%>
+                <%--<ul class="navbar-nav mr-auto mt-md-0 ">--%>
+                    <%--<!-- This is  -->--%>
+                    <%--<li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"--%>
+                                            <%--href="javascript:void(0)"><i class="ti-menu"></i></a></li>--%>
+                    <%--<li class="nav-item hidden-sm-down">--%>
+                        <%--<form class="app-search p-l-20">--%>
+                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                                <%--class="ti-search"></i></a>--%>
+                        <%--</form>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+                <%--<!-- ============================================================== -->--%>
+                <%--<!-- User profile and search -->--%>
+                <%--<!-- ============================================================== -->--%>
+                <%--<ul class="navbar-nav my-lg-0">--%>
+                    <%--<li class="nav-item dropdown">--%>
+                        <%--<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""--%>
+                           <%--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img--%>
+                                <%--src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+            <%--</div>--%>
+        <%--</nav>--%>
+    <%--</header>--%>
+    <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -160,6 +161,10 @@
                                 class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                            </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
@@ -275,11 +280,6 @@
                 <!-- Column -->
             </div>
         </div>
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
     </div>
 </div>
 <input type="hidden" id="loginId" value="${loginId}">
@@ -311,6 +311,7 @@
 <script type="text/javascript">
     var roleType = 2;
     $(function () {
+        $("#headerpage").load("page/header");
         var loginId = $("#loginId").val();
         verification(loginId);
     })

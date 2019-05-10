@@ -79,7 +79,7 @@
     <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <header class="topbar">
+    <%--<header class="topbar">
         <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
             <!-- ============================================================== -->
             <!-- Logo -->
@@ -131,7 +131,8 @@
                 </ul>
             </div>
         </nav>
-    </header>
+    </header>--%>
+    <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -181,6 +182,10 @@
                                 class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                            </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
@@ -307,8 +312,8 @@
                         <div class="card-block" id="operatorBtn">
                             <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
-                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">模板导出</a>
-                            <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>
+                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
+                            <button id="addRespect" style="display: none;" type="button" class="btn btn-info"><span class=" fa fa-plus-square"></span> 新增</button>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -354,17 +359,6 @@
         <!-- ============================================================== -->
         <!-- End Container fluid  -->
         <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            © 2017 Monster Admin by wrappixel.More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                title="模板之家">模板之家</a> - Collect from <a
-                href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
     </div>
     <!-- ============================================================== -->
     <!-- End Page wrapper  -->
@@ -374,7 +368,7 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
-<input type="hidden" id="pageType" value="${pageType}">
+<input type="text" id="pageType" value="${pageType}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -409,7 +403,7 @@
     var roleType = 2;
     var pageType = 1;
     $(function () {
-
+        $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimes'
             ,range: true
@@ -420,6 +414,7 @@
             $("#changeStateDiv").hide();
             $("#auditStateDiv").hide();
         }
+
         initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -429,8 +424,12 @@
     function initDesc(){
         if(pageType == 1){
             $("#pageDesc").append("城镇居民尊老金");
-        }else{
+            $("#addRespect").show();
+        }else if(pageType == 2){
             $("#pageDesc").append("农村征地人员尊老金");
+            $("#addRespect").show();
+        }else if(pageType == 5){
+            $("#pageDesc").append("全部");
         }
     }
     function verification(loginId) {
@@ -575,7 +574,6 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                console.log("----"+row.birthday);
                 var age =  row.birthday == null ? "0" : jsMyGetAge(row.birthday);
                 return row.birthday == null ? "-" : setIssuStandard(age);
             }
@@ -599,7 +597,7 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.auditState == 2 ? "发放中" : "-";
+                return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.grantState == 2 ? "发放中" : "-";
             }
         };
 
@@ -737,6 +735,16 @@
         // 1农村  2. 城镇
         var standard = 0;
         if(pageType == 1){
+            if(age < 79){
+                standard = 0;
+            } else if(age >= 80 && age <= 89){
+                standard = 50;
+            }else if(age >= 90 && age <= 99){
+                standard = 100;
+            } else if(age >= 100 ){
+                standard = 300;
+            }
+        }else if(pageType == 2){
             if(age < 70){
                 standard = 0;
             } else if(age >= 70 && age <= 79){
@@ -747,16 +755,6 @@
                 standard = 500;
             } else if(age >= 100 ){
                 standard = 1000;
-            }
-        }else if(pageType == 2){
-            if(age < 79){
-                standard = 0;
-            } else if(age >= 80 && age <= 89){
-                standard = 50;
-            }else if(age >= 90 && age <= 99){
-                standard = 100;
-            } else if(age >= 100 ){
-                standard = 300;
             }
         }
         return standard;
