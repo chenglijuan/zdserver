@@ -633,17 +633,66 @@ public class RespectController {
     public void exportOrder(HttpServletResponse response,String name, String idCard, Integer communityId, String phone,
                             Integer changeState, String grantTimes, Integer type,Integer auditState,Integer loginId) {
         try {
-            System.out.println("name="+name);
             User user = userService.getByUserId(loginId);
             if (user == null) {
                 return;
             }
             RespectRequest respectRequest = new RespectRequest();
+            if (!StringUtils.isBlank(name)) {
+                respectRequest.setName(name);
+            }
+            if (!StringUtils.isBlank(idCard)) {
+                respectRequest.setIdCard(idCard);
+            }
+            if (!StringUtils.isBlank(phone)) {
+                respectRequest.setPhone(phone);
+            }
+            respectRequest.setAuditState(auditState);
+            if (!StringUtils.isBlank(grantTimes)) {
+                grantTimes = grantTimes.replaceAll(" ", "");
+                String beginTimes = grantTimes.substring(0, 10);
+                String endTimes = grantTimes.substring(11, grantTimes.length());
+                respectRequest.setGrantBeginTime(beginTimes);
+                respectRequest.setGrantEndTime(endTimes);
+            }
+            Date nowDate = new Date();
+            //type 1 城镇  2.农村  type =3  查询长寿金  90岁 或者下个月90岁  4 已故人员名单  5查询全部
+            if(type != null && type.intValue() == 3){
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                String birthdayEnd = DateUtil.getYearsbefore(nextMonth, 90);
+                respectRequest.setType(null);
+                respectRequest.setBirthdayEnd(birthdayEnd);
+                respectRequest.setChangeState(changeState);
+                //respectRequest.setChangeState(1);
+            }else if (type != null && type.intValue() == 4){
+                //已故人员名单   变更情况说明是死亡
+                respectRequest.setChangeState(2);
+            } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
+                //大于70周岁都算 小于90
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
+                String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
+                respectRequest.setBirthdayBegin(birthdayBegin);
+                respectRequest.setBirthdayEnd(birthdayEnd);
+                respectRequest.setType(type);
+                respectRequest.setChangeState(changeState);
+                //respectRequest.setChangeState(1);
+            }else if (type != null && type.intValue() == 5){
+                //已故人员名单   变更情况说明是死亡
+                respectRequest.setChangeState(changeState);
+            }
+            //如果是社区管理员  只能查看 该社区的数据
+            if(user.getType().intValue() == 1){
+                respectRequest.setCommunityId(communityId);
+            }else if(user.getType().intValue() == 2){
+                respectRequest.setCommunityId(user.getCommunityId());
+            }
             List<Respect> list = respectService.selectRespectPager(respectRequest);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             List<List<String>> strsList = new ArrayList<List<String>>();
             List<String> title = new ArrayList<String>();
             title.add("姓名");
+            title.add("尊老金类型");
             title.add("身份证");
             title.add("性别");//1.男2.女
             title.add("出生年月");
@@ -664,6 +713,17 @@ public class RespectController {
                 Respect respect = list.get(i);
                 //姓名
                 strings.add(respect.getName());
+                if (respect.getType() != null) {
+                    if (respect.getType().intValue() == 1) {
+                        strings.add("城镇");
+                    } else if (respect.getType().intValue() == 2) {
+                        strings.add("农村");
+                    } else {
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
                 //身份证
                 strings.add(respect.getIdCard());
                 //性别
@@ -684,9 +744,10 @@ public class RespectController {
                 } else {
                     strings.add("");
                 }
+                int respectAge = 0;
                 if (!StringUtils.isBlank(respect.getBirthday())) {
-                    int age = DateUtil.getAgeByBirth(sdf.parse(respect.getBirthday()));
-                    strings.add(age + "");
+                    respectAge = DateUtil.getAgeByBirth(sdf.parse(respect.getBirthday()));
+                    strings.add(respectAge + "");
                 } else {
                     strings.add("");
                 }
@@ -721,8 +782,13 @@ public class RespectController {
                     strings.add("");
                 }
                 //动态享受年月
-                if(!StringUtils.isBlank(respect.getDynamicYearMonth())){
-                    strings.add(respect.getDynamicYearMonth());
+                if(!StringUtils.isBlank(respect.getGrantTime())){
+                    String end = respect.getGrantTime();
+                    Date current = new Date();
+                    int betweenMonth = DateUtil.getMonthBetween(sdf.parse(end),current);
+                    /*int year = betweenMonth / 12;
+                    int month = betweenMonth % 12;*/
+                    strings.add( betweenMonth +"月");
                 }else{
                     strings.add("");
                 }
@@ -731,6 +797,11 @@ public class RespectController {
                     strings.add(respect.getGrantTime());
                 }else{
                     strings.add("");
+                }
+                if(respectAge > 0 && respect.getType() != null){
+                    strings.add(AgeUtils.getIssuStandard(respectAge,respect.getType())+"");
+                }else{
+                    strings.add(0+"");
                 }
                 //审核状态 1.待审核2.审核通过 3.审核未通过
                 if (respect.getAuditState() != null) {
@@ -780,17 +851,12 @@ public class RespectController {
                     + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
             ServletOutputStream out = response.getOutputStream();
             OutputStream os = out;
-            String excelTitle = "这个是***";
+            String excelTitle = "尊老金列表";
 
             POIExcelUtil.writerDataInExcelIo(strsList, os, excelTitle, 15);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public int getissuStandard(int age,int type){
-
-        return 0;
     }
 
 

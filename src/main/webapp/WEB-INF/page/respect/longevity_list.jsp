@@ -76,62 +76,6 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <%--<header class="topbar">
-        <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                    <!-- Logo icon -->
-                    <b>
-                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                        <!-- Dark Logo icon -->
-                        <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>
-
-                    </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
-                    <span>
-                            <!-- dark Logo text -->
-                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>
-                        </span>
-                </a>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-collapse">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav mr-auto mt-md-0 ">
-                    <!-- This is  -->
-                    <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
-                                            href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
-                </ul>
-                <!-- ============================================================== -->
-                <!-- User profile and search -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav my-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>--%>
     <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
@@ -242,14 +186,6 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <%--<div class="row page-titles">
-                <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金</h3>
-                </div>
-            </div>--%>
             <fieldset class="layui-elem-field layui-field-title" >
                 <legend>长寿金</legend>
             </fieldset>
@@ -310,10 +246,11 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block">
-                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
-                            <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
-                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
-                            <button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>
+                            <%--<button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>--%>
+                            <%--<input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
+                            <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>--%>
+                            <%--<button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>--%>
+                            <a class="btn btn-info" id="exportRespect" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -511,7 +448,19 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.dynamicYearMonth;
+                var current = fmtmatDate(new Date());
+                var between = 0;
+                if(row.grantTime != null && row.grantTime != ""){
+                    between = getMonthBetween(fmtmatDate(row.grantTime),current);
+                }
+                var year = 0;
+                var month = 0;
+                if(between > 0){
+                    year =  Math.floor(between / 12);
+                    month = between % 12;
+                }
+                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
+                return between == 0 ? "-" : desc;
             }
         };
         var i = {
@@ -551,7 +500,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.issuStandard == null ? "-" : row.issuStandard;
+                var age =  row.birthday == null ? "0" : jsMyGetAge(row.birthday);
+                return row.birthday == null ? "-" : setIssuStandard(age,row.type);
             }
         };
         var m = {
@@ -561,7 +511,6 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-               // return row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
                 var htmlRow = row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
                 htmlRow = htmlRow + "<br/><span style='color: red'><a onclick='remarkDetail("+row.id+")'>审核详情</a></span>";
                 return htmlRow;
@@ -575,6 +524,17 @@
             width: 180,
             formatter: function (value, row, index) {
                 return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.auditState == 2 ? "发放中" : "-";
+            }
+        };
+        var p = {
+            field: 'type',
+            title: '长寿金类型',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                console.log("row.type="+row.type);
+                return row.type == null ? "-" : row.type == 1 ? "城镇":"农村" ;
             }
         };
         var o = {
@@ -593,6 +553,7 @@
         columns.push(b);
         columns.push(c);
         columns.push(d);
+        columns.push(p);
         columns.push(e);
         columns.push(f);
         columns.push(g);
@@ -766,6 +727,23 @@
             }
         })
     }
+
+    function exportRespect() {
+        var loginId = $("#loginId").val();
+        var name = $("#name").val();
+        var changeState  = $("#changeState").val();
+        var idCard = $("#idCard").val();
+        var phone = $("#phone").val();
+        var grantTimes  = $("#grantTimes").val();
+        var communityId  = $("#communityId").val();
+        var auditState =$("#auditState").val();
+        var type = 3;
+
+        var href = '<%=basePath%>respect/exportRespect?loginId='+loginId+"&name="+name+"&changeState="+changeState+"&idCard="+idCard+"&phone="+phone+"&grantTimes="+grantTimes+"&communityId="+communityId+"&auditState="+auditState+"&type="+type;
+        $('#exportRespect').attr('href',href);
+        $('#exportRespect span').trigger('click');
+    }
+
 </script>
 </body>
 </html>

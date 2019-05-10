@@ -88,3 +88,48 @@ function getMonthBetween(startDate,endDate){
     var m = Math.abs(date1 - date2);
     return m;
 }
+
+function setIssuStandard(age,roleType) {
+    //2 农村  1城镇
+    var standard = 0;
+    if(roleType == 1){
+        if(age < 79){
+            standard = 0;
+        } else if(age >= 80 && age <= 89){
+            standard = 50;
+        }else if(age >= 90 && age <= 99){
+            standard = 100;
+        } else if(age >= 100 ){
+            standard = 300;
+        }
+    }else{
+        if(age < 70){
+            standard = 0;
+        } else if(age >= 70 && age <= 79){
+            standard = 50;
+        }else if(age >= 80 && age <= 89){
+            standard = 200;
+        }else if(age >= 90 && age <= 99){
+            standard = 500;
+        } else if(age >= 100 ){
+            standard = 1000;
+        }
+    }
+    return standard;
+}
+
+function getBetweenMonthStr(grantTime) {
+    var current = fmtmatDate(new Date());
+    var between = 0;
+    if(grantTime != null && grantTime != ""){
+        between = getMonthBetween(fmtmatDate(grantTime),current);
+    }
+    var year = 0;
+    var month = 0;
+    if(between > 0){
+        year =  Math.floor(between / 12);
+        month = between % 12;
+    }
+    var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
+    return between == 0 ? "-" : desc;
+}

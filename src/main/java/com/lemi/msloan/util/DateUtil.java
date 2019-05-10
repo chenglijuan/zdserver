@@ -311,6 +311,8 @@ import java.util.*;
 
      public static int monthBetween(Date smdate, Date bdate){
          int result = 0;
+         int month = 0;
+         int year = 0;
 
          //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -319,10 +321,13 @@ import java.util.*;
 
          c1.setTime(smdate);
          c2.setTime(bdate);
-         result = c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
-
-         return result == 0 ? 1 : Math.abs(result);
-     }
+         month = c2.get(Calendar.MONTH) - c1.get(Calendar.MONTH);
+         year = c2.get(Calendar.YEAR) - c1.get(Calendar.YEAR);
+         System.out.println("month="+month);
+         System.out.println("year="+year);
+         result = year * 12 + Math.abs(result) + Math.abs(result);
+         return result;
+ }
 
 
      /**
@@ -447,8 +452,28 @@ import java.util.*;
      }
 
 
+     public static int getMonthBetween(Date str1,Date str2) throws ParseException {
+         Calendar bef = Calendar.getInstance();
+         Calendar aft = Calendar.getInstance();
+         bef.setTime(str1);
+         aft.setTime(str2);
+         int surplus = aft.get(Calendar.DATE) - bef.get(Calendar.DATE);
+         int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
+         int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
+         surplus = surplus <= 0 ? 1 : 0;
+         //System.out.println("相差月份：" + (Math.abs(month + result) + surplus));
+         return Math.abs(month + result) + surplus;
+     }
      public static void main(String[] args) {
-         getNLastMonthInfo(new Date(),1);
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+         try {
+             String str1 = "2014-02-04";
+             String str2 = "2012-02-05";
+             int month = getMonthBetween(sdf.parse(str1),sdf.parse(str2));
+             System.out.println("month="+month);
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }
      }
 
 

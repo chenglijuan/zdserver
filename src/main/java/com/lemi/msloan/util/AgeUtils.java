@@ -55,6 +55,35 @@ public class AgeUtils {
         return age;
     }
 
+    public static int getIssuStandard(int age,int respectType){
+        int standard = 0;
+        if(respectType == 1){
+            if(age < 79){
+                standard = 0;
+            } else if(age >= 80 && age <= 89){
+                standard = 50;
+            }else if(age >= 90 && age <= 99){
+                standard = 100;
+            } else if(age >= 100 ){
+                standard = 300;
+            }
+        }else if(respectType == 2){
+            if(age < 70){
+                standard = 0;
+            } else if(age >= 70 && age <= 79){
+                standard = 50;
+            }else if(age >= 80 && age <= 89){
+                standard = 200;
+            }else if(age >= 90 && age <= 99){
+                standard = 500;
+            } else if(age >= 100 ){
+                standard = 1000;
+            }
+        }
+        return standard;
+    }
+
+
     // 根据时间戳计算年龄
     public static int getAgeFromBirthTime(long birthTimeLong) {
         Date date = new Date(birthTimeLong * 1000l);

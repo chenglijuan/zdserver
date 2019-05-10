@@ -318,6 +318,9 @@
       <if test="idCard != null">
         and id_card like '%${idCard}%'
       </if>
+      <if test="changeState != null">
+        and change_state = #{changeState}
+      </if>
       <if test="type != null">
         and type = #{type}
       </if>

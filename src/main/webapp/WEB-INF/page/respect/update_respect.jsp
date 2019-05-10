@@ -501,7 +501,9 @@
             $("#house").val(object.house);
             $("#communityId").val(object.communityId);
             $("#grantTimeStr").val(object.grantTime);
-            $("#dynamicYearMonth").val(object.dynamicYearMonth);
+            if(object.grantTime){
+                $("#dynamicYearMonth").val(getBetweenMonthStr(object.grantTime));
+            }
             $("#changeState").val(object.changeState);
             $("#grantState").val(object.grantState);
             $("#remark").val(object.remark);
@@ -535,7 +537,6 @@
                 standard = 1000;
             }
         }
-        console.log("respectType="+respectType);
         $("#issuStandard").val(standard);
     }
 

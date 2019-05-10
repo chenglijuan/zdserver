@@ -283,10 +283,11 @@
                                            id="phone">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
-                                    <input type="text" placeholder="请输入现户籍所在地"
-                                           class="form-control col-md-8" name="house" id="house">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准(元)</label>
+                                    <input type="text" placeholder="发放标准(元)"
+                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
                                 </div>
+
                                 <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
                                     <label for="communityId" class="col-md-3"><span
                                             style="color: red">*</span>所属社区：</label>
@@ -322,6 +323,11 @@
                                            id="dynamicYearMonth">
                                 </div>
                                 <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
+                                    <input type="text" placeholder="请输入现户籍所在地"
+                                           class="form-control col-md-8" name="house" id="house">
+                                </div>
+                                <div class="form-group form-control-line">
                                     <label for="changeState" class="col-md-3">变动情况说明：</label>
                                     <select class="form-control col-md-8" id="changeState">
                                         <option selected value="">==请选择==</option>
@@ -337,19 +343,11 @@
                                         <option value="2">发放中</option>
                                     </select>
                                 </div>
-
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
-                                    <input type="text" placeholder="发放标准"
-                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
-                                </div>
                                 <div class="form-group" rows="3">
                                     <label class="col-md-3">备注</label>
                                     <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
                                               id="remark"></textarea>
                                 </div>
-
-
                                 <div class="form-group">
                                     <div class="col-sm-12">
                                         <button type="button" class="btn btn-success" id="submit">提交审核</button>
@@ -378,6 +376,7 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="respectType">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -416,9 +415,10 @@
             elem: '#birthday' //指定元素
             //控件选择完毕后的回调,点击日期、清空、现在、确定均会触发。
             , done: function (value, date, endDate) {
-                var age = jsMyGetAge(value)
+                var age = jsMyGetAge(value);
+                var respectType = $("#respectType").val();
                 $("#age").val(age);
-                setIssuStandard(age);
+                setIssuStandard(age,respectType);
             }
         });
 
@@ -475,7 +475,7 @@
         var grantState = $("#grantState").val();
         var respectId = $("#respectId").val();
         var communityName = $("#communityId option:selected").text();
-        var type = $("#pageType").val();
+        var type = $("#respectType").val();
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
             return;
@@ -536,32 +536,21 @@
             if(object.birthday){
                 var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
-                setIssuStandard(age);
+                var issuStandard = setIssuStandard(age,object.type);
+                $("#issuStandard").val(issuStandard);
             }
             $("#phone").val(object.phone);
             $("#house").val(object.house);
             $("#communityId").val(object.communityId);
             $("#grantTimeStr").val(object.grantTime);
-            $("#dynamicYearMonth").val(object.dynamicYearMonth);
+            if(object.grantTime){
+                $("#dynamicYearMonth").val(getBetweenMonthStr(object.grantTime));
+            }
             $("#changeState").val(object.changeState);
             $("#grantState").val(object.grantState);
             $("#remark").val(object.remark);
+            $("#respectType").val(object.type);
         })
-    }
-
-
-    function setIssuStandard(age) {
-        if(age < 70){
-            $("#issuStandard").val(0);
-        } else if(age >= 70 && age <= 79){
-            $("#issuStandard").val(50);
-        }else if(age >= 80 && age <= 89){
-            $("#issuStandard").val(200);
-        }else if(age >= 90 && age <= 99){
-            $("#issuStandard").val(500);
-        } else if(age >= 100 ){
-            $("#issuStandard").val(1000);
-        }
     }
 
 

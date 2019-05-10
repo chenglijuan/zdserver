@@ -108,6 +108,7 @@
         <%--</nav>--%>
     <%--</header>--%>
     <div id="headerpage"></div>
+    <input type="hidden" id="loginId" value="${loginId}">
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -226,7 +227,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">长寿金新增</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">新增长寿金</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/longevityPager?loginId=${loginId}&pageType=${pageType}">列表</a></li>
@@ -260,6 +261,14 @@
                                     </select>
                                 </div>
                                 <div class="form-group form-control-line">
+                                    <label for="gender" class="col-md-3"><span style="color: red">*</span>尊老金类型</label>
+                                    <select class="form-control col-md-8" id="type">
+                                        <option value="" selected>==请选择==</option>
+                                        <option value="1">城镇</option>
+                                        <option value="2">农村</option>
+                                    </select>
+                                </div>
+                                <div class="form-group form-control-line">
                                     <label class="col-md-3"><span style="color: red">*</span>身份证号</label>
                                     <input type="text" placeholder="请输入身份证号码"
                                            class="form-control col-md-8" id="idCard">
@@ -280,6 +289,11 @@
                                     <input type="text" placeholder="联系电话"
                                            class="form-control col-md-8" name="phone"
                                            id="phone">
+                                </div>
+                                <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
+                                    <input type="text" placeholder="发放标准"
+                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
                                 </div>
                                 <div class="form-group form-control-line">
                                     <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
@@ -336,12 +350,6 @@
                                         <option value="2">发放中</option>
                                     </select>
                                 </div>
-
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
-                                    <input type="text" placeholder="发放标准"
-                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
-                                </div>
                                 <div class="form-group" rows="3">
                                     <label class="col-md-3">备注</label>
                                     <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
@@ -358,26 +366,14 @@
                         </div>
                     </div>
                 </div>
-                <!-- Column -->
             </div>
-            <!-- Row -->
-            <!-- ============================================================== -->
-            <!-- End PAge Content -->
-            <!-- ============================================================== -->
         </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
-<input type="hidden" id="loginId" value="${loginId}">
-<input type="hidden" id="pageType" value="${pageType}">
+
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -428,7 +424,6 @@
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == 0){
-                //console.log(data.data);
                 roleType = data.data.type;
                 //如果是社区管理员默认
                 if(roleType == 1){
@@ -473,8 +468,12 @@
         var issuStandard = $("#issuStandard").val();
         var remark = $("#remark").val();
         var grantState = $("#grantState").val();
-        var type = $("#pageType").val();
+        var type = $("#type").val();
 
+        if (type == null || type == "") {
+            popup({type: 'error', msg: "尊老金类型不能为空", delay: 2000, bg: true, clickDomCancel: true});
+            return;
+        }
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
             return;
@@ -495,10 +494,7 @@
             popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-        /*if (communityId == null || communityId == "") {
-            popup({type: 'error', msg: "请选择现所属社区", delay: 2000, bg: true, clickDomCancel: true});
-            return;
-        }*/
+
         $.post("<%=basePath%>respect/insertRespect", {
             "idCard": idCard,
             "name": name,

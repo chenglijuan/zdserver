@@ -314,7 +314,7 @@
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
                             <button id="addRespect" style="display: none;" type="button" class="btn btn-info"><span class=" fa fa-plus-square"></span> 新增</button>
-                            <a class="btn btn-info" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
+                            <a class="btn btn-info" id="exportRespect" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -420,7 +420,6 @@
         verification(loginId);
 
     })
-
     function initDesc(){
         if(pageType == 1){
             $("#pageDesc").append("城镇居民尊老金");
@@ -448,8 +447,6 @@
             }
         });
     }
-
-
     $("#search").on("click", function () {
         selectExamine(1, 10);
     })
@@ -556,12 +553,7 @@
                     year =  Math.floor(between / 12);
                     month = between % 12;
                 }
-                console.log("year="+year);
-                console.log("between="+between);
-                console.log("month="+month);
-
                 var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
-
                 return between == 0 ? "-" : desc;
             }
         };
@@ -749,7 +741,7 @@
         window.location.href="<%=basePath%>respect/auditRespect?loginId="+$("#loginId").val()+"&respectId="+respectId+"&pageType="+pageType;
     }
 
-    function setIssuStandard(age,roleType) {
+    /*function setIssuStandard(age,roleType) {
         //2 农村  1城镇
         var standard = 0;
         if(roleType == 1){
@@ -776,7 +768,7 @@
             }
         }
         return standard;
-    }
+    }*/
 
     function remarkDetail(respectId) {
         $.post("<%=basePath%>respect/getRemarksByRespectId", {
@@ -842,11 +834,19 @@
     }
 
     function exportRespect() {
-        //alert(123456);
-        $('#exportRespect').attr('href','<%=basePath%>respect/exportRespect');
+        var loginId = $("#loginId").val();
+        var name = $("#name").val();
+        var changeState  = $("#changeState").val();
+        var idCard = $("#idCard").val();
+        var phone = $("#phone").val();
+        var grantTimes  = $("#grantTimes").val();
+        var communityId  = $("#communityId").val();
+        var auditState =$("#auditState").val();
+        var type = $("#pageType").val();
+
+        var href = '<%=basePath%>respect/exportRespect?loginId='+loginId+"&name="+name+"&changeState="+changeState+"&idCard="+idCard+"&phone="+phone+"&grantTimes="+grantTimes+"&communityId="+communityId+"&auditState="+auditState+"&type="+type;
+        $('#exportRespect').attr('href',href);
         $('#exportRespect span').trigger('click');
-        //$('a span').trigger('click');
-        //alert(369);
     }
 
 
