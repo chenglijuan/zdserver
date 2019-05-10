@@ -30,4 +30,9 @@ public class RespectDaoImpl extends BaseDaoImpl<Respect> implements RespectDao {
     public List<String> getAllIdCards() {
         return sqlSessionTemplate.selectList("tbl_respect.getAllIdCards");
     }
+
+    @Override
+    public Respect getDataByIdCard(String idCard) {
+        return sqlSessionTemplate.selectOne("tbl_respect.getDataByIdCard",idCard);
+    }
 }

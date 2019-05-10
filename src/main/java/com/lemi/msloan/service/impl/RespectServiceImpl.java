@@ -82,7 +82,7 @@ public class RespectServiceImpl extends BaseServiceImpl<Respect> implements Resp
         respectRequest.setCommunityId(communityId);
         if(type.intValue() == 1 || type.intValue() == 2){
             respectRequest.setType(type);
-            String birthdayBegin = DateUtil.getYearsbefore(nowDate, 79);
+            String birthdayBegin = DateUtil.getYearsbefore(nowDate, 90);
             String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
             respectRequest.setBirthdayBegin(birthdayBegin);
             respectRequest.setBirthdayEnd(birthdayEnd);
@@ -95,6 +95,11 @@ public class RespectServiceImpl extends BaseServiceImpl<Respect> implements Resp
         }
         //3长寿
         return 0;
+    }
+
+    @Override
+    public Respect getDataByIdCard(String idCard) {
+        return respectDao.getDataByIdCard(idCard);
     }
 }
 

@@ -64,3 +64,27 @@ function isEmpty(obj){
         return true;
     return false;
 }
+// 2019-08-02
+function fmtmatDate(birthday) {
+    var date = new Date(birthday);
+    var y = 1900 + date.getYear();
+    var m = "0" + (date.getMonth() + 1);
+    var d = "0" + date.getDate();
+    return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
+}
+
+
+function getMonthBetween(startDate,endDate){
+    var date1 = startDate;
+    var date2 = endDate;
+// 拆分年月日
+    date1 = date1.split('-');
+// 得到月数
+    date1 = parseInt(date1[0]) * 12 + parseInt(date1[1]);
+// 拆分年月日
+    date2 = date2.split('-');
+// 得到月数
+    date2 = parseInt(date2[0]) * 12 + parseInt(date2[1]);
+    var m = Math.abs(date1 - date2);
+    return m;
+}

@@ -166,6 +166,10 @@ public class RespectController {
         if (user == null) {
             return new ApiResult(false, "登录用户异常", -1);
         }
+        Respect idCardRespect = respectService.getDataByIdCard(idCard);
+        if(idCardRespect != null){
+            return new ApiResult(false, "身份证号码已经存在", -1);
+        }
         try {
             Respect respect = new Respect();
             respect.setIdCard(idCard);
@@ -246,6 +250,10 @@ public class RespectController {
             Respect respect = respectService.get(respectId);
             if (respect == null) {
                 return new ApiResult(false, "记录不存在", -1);
+            }
+            Respect idCardRespect = respectService.getDataByIdCard(idCard);
+            if(idCardRespect != null && idCardRespect.getId().intValue() != respect.getId()){
+                return new ApiResult(false, "身份证号码已经存在", -1);
             }
             respect.setIdCard(idCard);
             respect.setName(name);
@@ -343,6 +351,9 @@ public class RespectController {
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
                 //respectRequest.setChangeState(1);
+            }else if (type != null && type.intValue() == 5){
+                //已故人员名单   变更情况说明是死亡
+                respectRequest.setChangeState(changeState);
             }
             //如果是社区管理员  只能查看 该社区的数据
             if(user.getType().intValue() == 1){

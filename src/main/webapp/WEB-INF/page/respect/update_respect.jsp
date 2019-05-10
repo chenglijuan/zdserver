@@ -51,62 +51,6 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <%--<header class="topbar">--%>
-        <%--<nav class="navbar top-navbar navbar-toggleable-sm navbar-light">--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-header">--%>
-                <%--<a class="navbar-brand" href="index.html">--%>
-                    <%--<!-- Logo icon -->--%>
-                    <%--<b>--%>
-                        <%--<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->--%>
-                        <%--<!-- Dark Logo icon -->--%>
-                        <%--<img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>--%>
-
-                    <%--</b>--%>
-                    <%--<!--End Logo icon -->--%>
-                    <%--<!-- Logo text -->--%>
-                    <%--<span>--%>
-                            <%--<!-- dark Logo text -->--%>
-                            <%--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>--%>
-                        <%--</span>--%>
-                <%--</a>--%>
-            <%--</div>--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- End Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-collapse">--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- toggle and nav items -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav mr-auto mt-md-0 ">--%>
-                    <%--<!-- This is  -->--%>
-                    <%--<li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"--%>
-                                            <%--href="javascript:void(0)"><i class="ti-menu"></i></a></li>--%>
-                    <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- User profile and search -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav my-lg-0">--%>
-                    <%--<li class="nav-item dropdown">--%>
-                        <%--<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""--%>
-                           <%--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img--%>
-                                <%--src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-            <%--</div>--%>
-        <%--</nav>--%>
-    <%--</header>--%>
     <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
@@ -227,7 +171,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金修改</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0" id="editHTitle"></h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a></li>
@@ -379,6 +323,8 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="text" id="pageType" value="${pageType}">
+
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -408,6 +354,7 @@
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
     var roleType = 2;
+    var pageType = 1;
     $(function () {
         $("#headerpage").load("page/header");
         laydate.render({
@@ -419,13 +366,24 @@
             , done: function (value, date, endDate) {
                 var age = jsMyGetAge(value)
                 $("#age").val(age);
-                setIssuStandard(age);
+                setIssuStandard(age,pageType);
             }
         });
-
+        pageType =$("#pageType").val();
+        initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
     })
+
+    function initDesc(){
+        if(pageType == 1){
+            $("#editHTitle").append("修改城镇居民尊老金");
+        }else if(pageType == 2){
+            $("#editHTitle").append("修改农村居民尊老金");
+        }else if(pageType == 5){
+            $("#editHTitle").append("全部");
+        }
+    }
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -519,7 +477,7 @@
         }, function (data) {
             if (data.code == 0) {
                 popup({type: "success", msg: "提交成功", delay: 1000});
-                window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}";
+                window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}&pageType="+pageType;
             } else {
                 popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
             }
@@ -537,7 +495,7 @@
             if(object.birthday){
                 var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
-                setIssuStandard(age);
+                setIssuStandard(age,object.type);
             }
             $("#phone").val(object.phone);
             $("#house").val(object.house);
@@ -551,18 +509,34 @@
     }
 
 
-    function setIssuStandard(age) {
-        if(age < 70){
-            $("#issuStandard").val(0);
-        } else if(age >= 70 && age <= 79){
-            $("#issuStandard").val(50);
-        }else if(age >= 80 && age <= 89){
-            $("#issuStandard").val(200);
-        }else if(age >= 90 && age <= 99){
-            $("#issuStandard").val(500);
-        } else if(age >= 100 ){
-            $("#issuStandard").val(1000);
+    function setIssuStandard(age,respectType) {
+        //2 农村  1城镇
+        var standard = 0;
+        if(respectType == 1){
+            if(age < 79){
+                standard = 0;
+            } else if(age >= 80 && age <= 89){
+                standard = 50;
+            }else if(age >= 90 && age <= 99){
+                standard = 100;
+            } else if(age >= 100 ){
+                standard = 300;
+            }
+        }else if(respectType == 2) {
+            if(age < 70){
+                standard = 0;
+            } else if(age >= 70 && age <= 79){
+                standard = 50;
+            }else if(age >= 80 && age <= 89){
+                standard = 200;
+            }else if(age >= 90 && age <= 99){
+                standard = 500;
+            } else if(age >= 100 ){
+                standard = 1000;
+            }
         }
+        console.log("respectType="+respectType);
+        $("#issuStandard").val(standard);
     }
 
 

@@ -371,4 +371,7 @@
   <select id="getAllIdCards" resultType="java.lang.String">
         select DISTINCT(id_card) from zd_respect where id_card is not null
     </select>
+  <select id="getDataByIdCard" resultMap="BaseResultMap">
+    select * from zd_respect where id_card = #{0} limit 1
+  </select>
 </mapper>

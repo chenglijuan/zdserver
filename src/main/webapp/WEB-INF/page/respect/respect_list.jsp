@@ -310,10 +310,11 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block" id="operatorBtn">
-                            <button type="button" class="btn btn-info" onclick="$('#file').click()">批量导入</button>
+                            <button type="button" class="btn btn-info" id="importData" onclick="$('#file').click()">批量导入</button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
                             <button id="addRespect" style="display: none;" type="button" class="btn btn-info"><span class=" fa fa-plus-square"></span> 新增</button>
+                            <a class="btn btn-info" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -414,7 +415,6 @@
             $("#changeStateDiv").hide();
             $("#auditStateDiv").hide();
         }
-
         initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -426,7 +426,7 @@
             $("#pageDesc").append("城镇居民尊老金");
             $("#addRespect").show();
         }else if(pageType == 2){
-            $("#pageDesc").append("农村征地人员尊老金");
+            $("#pageDesc").append("农村居民尊老金");
             $("#addRespect").show();
         }else if(pageType == 5){
             $("#pageDesc").append("全部");
@@ -527,16 +527,6 @@
                 return row.communityId == null ? "-" : row.communityName;
             }
         };
-        var h = {
-            field: 'dynamicYearMonth',
-            title: '动态享受年月',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.dynamicYearMonth;
-            }
-        };
         var i = {
             field: 'grantTime',
             title: '起始发放时间',
@@ -544,7 +534,35 @@
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
+               // console.log("grantTime="+row.grantTime);
                 return row.grantTime == null ? "-" : fmtDate(row.grantTime);
+            }
+        };
+        var h = {
+            field: 'dynamicYearMonth',
+            title: '动态享受年月',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                var current = fmtmatDate(new Date());
+                var between = 0;
+                if(row.grantTime != null && row.grantTime != ""){
+                    between = getMonthBetween(fmtmatDate(row.grantTime),current);
+                }
+                var year = 0;
+                var month = 0;
+                if(between > 0){
+                    year =  Math.floor(between / 12);
+                    month = between % 12;
+                }
+                console.log("year="+year);
+                console.log("between="+between);
+                console.log("month="+month);
+
+                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
+
+                return between == 0 ? "-" : desc;
             }
         };
         var j = {
@@ -575,7 +593,7 @@
             width: 120,
             formatter: function (value, row, index) {
                 var age =  row.birthday == null ? "0" : jsMyGetAge(row.birthday);
-                return row.birthday == null ? "-" : setIssuStandard(age);
+                return row.birthday == null ? "-" : setIssuStandard(age,row.type);
             }
         };
         var m = {
@@ -731,10 +749,10 @@
         window.location.href="<%=basePath%>respect/auditRespect?loginId="+$("#loginId").val()+"&respectId="+respectId+"&pageType="+pageType;
     }
 
-    function setIssuStandard(age) {
-        // 1农村  2. 城镇
+    function setIssuStandard(age,roleType) {
+        //2 农村  1城镇
         var standard = 0;
-        if(pageType == 1){
+        if(roleType == 1){
             if(age < 79){
                 standard = 0;
             } else if(age >= 80 && age <= 89){
@@ -744,7 +762,7 @@
             } else if(age >= 100 ){
                 standard = 300;
             }
-        }else if(pageType == 2){
+        }else{
             if(age < 70){
                 standard = 0;
             } else if(age >= 70 && age <= 79){
@@ -821,6 +839,14 @@
             alert("仅支持" + allowExtention + "为后缀名的文件!");
             fileObj.value = "";
         }
+    }
+
+    function exportRespect() {
+        //alert(123456);
+        $('#exportRespect').attr('href','<%=basePath%>respect/exportRespect');
+        $('#exportRespect span').trigger('click');
+        //$('a span').trigger('click');
+        //alert(369);
     }
 
 

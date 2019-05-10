@@ -22,5 +22,6 @@ public interface RespectService extends BaseService<Respect> {
 
     int selectRemindRespectCount(Integer communityId,Integer type,Integer auditState);
 
+    Respect getDataByIdCard(String idCard);
 
 }

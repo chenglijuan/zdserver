@@ -226,7 +226,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金新增</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0" id="addHTitle"></h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a></li>
@@ -375,11 +375,12 @@
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
 </div>
+<input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="pageType" value="${pageType}">
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
-<input type="hidden" id="loginId" value="${loginId}">
-<input type="hidden" id="pageType" value="${pageType}">
+
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -409,10 +410,27 @@
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
     var roleType = 2;
+    var pageType = 1;
     $(function () {
         $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimeStr'
+            ,done: function (value, date, endDate) {
+                var current = fmtmatDate(new Date());
+                var between = 0;
+                between = getMonthBetween(value,current);
+                var year = 0;
+                var month = 0;
+                if(between > 0){
+                    year =  Math.floor(between / 12);
+                    month = between % 12;
+                }
+                console.log("year="+year);
+                console.log("between="+between);
+                console.log("month="+month);
+                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
+                $("#dynamicYearMonth").val(desc);
+            }
         });
         laydate.render({
             elem: '#birthday' //指定元素
@@ -423,10 +441,21 @@
                 setIssuStandard(age);
             }
         });
+        pageType =$("#pageType").val();
         initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
     })
+
+    function initDesc(){
+        if(pageType == 1){
+            $("#addHTitle").append("新增城镇居民尊老金");
+        }else if(pageType == 2){
+            $("#addHTitle").append("新增农村居民尊老金");
+        }else if(pageType == 5){
+            $("#addHTitle").append("全部");
+        }
+    }
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -527,9 +556,19 @@
 
     
     function setIssuStandard(age) {
-        // 1农村  2. 城镇
+        // 2农村  1. 城镇
         var pageType = $("#pageType").val();
         if(pageType == 1){
+            if(age < 79){
+                $("#issuStandard").val(0);
+            } else if(age >= 80 && age <= 89){
+                $("#issuStandard").val(50);
+            }else if(age >= 90 && age <= 99){
+                $("#issuStandard").val(100);
+            } else if(age >= 100 ){
+                $("#issuStandard").val(300);
+            }
+        }else if(pageType == 2){
             if(age < 70){
                 $("#issuStandard").val(0);
             } else if(age >= 70 && age <= 79){
@@ -540,16 +579,6 @@
                 $("#issuStandard").val(500);
             } else if(age >= 100 ){
                 $("#issuStandard").val(1000);
-            }
-        }else if(pageType == 2){
-            if(age < 79){
-                $("#issuStandard").val(0);
-            } else if(age >= 80 && age <= 89){
-                $("#issuStandard").val(50);
-            }else if(age >= 90 && age <= 99){
-                $("#issuStandard").val(100);
-            } else if(age >= 100 ){
-                $("#issuStandard").val(300);
             }
         }
     }

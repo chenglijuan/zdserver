@@ -230,7 +230,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center" id="respect" style="display: none">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金审核</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0" id="addHTitle"></h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a>
@@ -436,11 +436,24 @@
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script type="text/javascript">
     var roleType = 2;
+    var pageType = 1;
     $(function () {
         $("#headerpage").load("page/header");
         var loginId = $("#loginId").val();
         verification(loginId);
+        pageType =$("#pageType").val();
+        initDesc();
     })
+
+    function initDesc(){
+        if(pageType == 1){
+            $("#addHTitle").append("审核城镇居民尊老金");
+        }else if(pageType == 2){
+            $("#addHTitle").append("审核农村居民尊老金");
+        }else if(pageType == 5){
+            $("#addHTitle").append("全部");
+        }
+    }
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
@@ -489,7 +502,7 @@
             if (object.birthday) {
                 var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
-                setIssuStandard(age);
+                setIssuStandard(age,object.type);
             }
             $("#phone").val(object.phone);
             $("#house").val(object.house);
@@ -537,17 +550,31 @@
         });
     }
 
-    function setIssuStandard(age) {
-        if(age < 70){
-            $("#issuStandard").val(0);
-        } else if(age >= 70 && age <= 79){
-            $("#issuStandard").val(50);
-        }else if(age >= 80 && age <= 89){
-            $("#issuStandard").val(200);
-        }else if(age >= 90 && age <= 99){
-            $("#issuStandard").val(500);
-        } else if(age >= 100 ){
-            $("#issuStandard").val(1000);
+    function setIssuStandard(age,resepectType) {
+        // resepectType 1 城镇  2.农村
+        // 2农村  1. 城镇
+        if(resepectType == 1){
+            if(age < 79){
+                $("#issuStandard").val(0);
+            } else if(age >= 80 && age <= 89){
+                $("#issuStandard").val(50);
+            }else if(age >= 90 && age <= 99){
+                $("#issuStandard").val(100);
+            } else if(age >= 100 ){
+                $("#issuStandard").val(300);
+            }
+        }else if(resepectType == 2){
+            if(age < 70){
+                $("#issuStandard").val(0);
+            } else if(age >= 70 && age <= 79){
+                $("#issuStandard").val(50);
+            }else if(age >= 80 && age <= 89){
+                $("#issuStandard").val(200);
+            }else if(age >= 90 && age <= 99){
+                $("#issuStandard").val(500);
+            } else if(age >= 100 ){
+                $("#issuStandard").val(1000);
+            }
         }
     }
 
