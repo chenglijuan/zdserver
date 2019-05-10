@@ -293,7 +293,7 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3" style="margin-top: 20px;display: none" id="communityIdDiv">
-                        <label for="communityId">所属小区：</label>
+                        <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId">
                             <option selected value="">==请选择==</option>
                         </select>
@@ -519,7 +519,7 @@
         };
         var g = {
             field: 'communityName',
-            title: '所属小区',
+            title: '所属社区',
             align: 'center',
             valign: 'middle',
             width: 150,

@@ -273,7 +273,7 @@
   <select id="selectRespectPager" parameterType="com.lemi.msloan.request.RespectRequest" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from zd_respect
     <where>
-      <if test="idCard != null">
+      <if test="idCard != null and !&quot;&quot;.equals(idCard.trim())">
         and id_card like '%${idCard}%'
       </if>
       <if test="changeState != null">
