@@ -322,22 +322,27 @@ public class RespectController {
                 respectRequest.setGrantEndTime(endTimes);
             }
             Date nowDate = new Date();
-
-            if(type != null && type.intValue() == 3){ //String birthdayBegin = DateUtil.getYearsbefore(nowDate, 80);
-                String birthdayEnd = DateUtil.getYearsbefore(nowDate, 80);
+            //type 1 城镇  2.农村  type =3  查询长寿金  90岁 或者下个月90岁  4 已故人员名单  5查询全部
+            if(type != null && type.intValue() == 3){
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                String birthdayEnd = DateUtil.getYearsbefore(nextMonth, 90);
                 respectRequest.setType(null);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setChangeState(changeState);
-            }if (type != null && type.intValue() == 4){
+                //respectRequest.setChangeState(1);
+            }else if (type != null && type.intValue() == 4){
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(2);
             } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
-                String birthdayBegin = DateUtil.getYearsbefore(nowDate, 79);
+                //大于70周岁都算 小于90
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
                 respectRequest.setBirthdayBegin(birthdayBegin);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
+                //respectRequest.setChangeState(1);
             }
             //如果是社区管理员  只能查看 该社区的数据
             if(user.getType().intValue() == 1){

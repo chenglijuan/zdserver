@@ -1341,7 +1341,16 @@ public class ExamineController {
         Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
         //长寿金待审核的数量
         Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
-        return null;
+
+        Map<String,Integer> map = new HashMap();
+
+        map.put("startCount",startCount);
+        map.put("endCount",endCount);
+        map.put("respectTownCount",respectTownCount);
+        map.put("respectCountryCount",respectCountryCount);
+        map.put("respectLongCount",respectLongCount);
+        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+respectLongCount);
+        return new ApiResult(true, "查询成功", 0, map);
     }
 }
 

@@ -79,7 +79,7 @@
     <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <header class="topbar">
+    <%--<header class="topbar">
         <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
             <!-- ============================================================== -->
             <!-- Logo -->
@@ -131,7 +131,8 @@
                 </ul>
             </div>
         </nav>
-    </header>
+    </header>--%>
+    <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
@@ -182,15 +183,19 @@
                                 aria-hidden="true"></i>尊老金</a>
                         <ul>
                             <li>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=5"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
+                            </li>
+                            <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
-                            <li>
-                                <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>长寿金</a>
-                            </li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -217,10 +222,6 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
-                            </li>
-                            <li>
-                                <a href="<%=basePath%>authrity/authrityPager?loginId=${loginId}&pageType=4"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>权限管理</a>
                             </li>
                         </ul>
                     </li>
@@ -399,6 +400,7 @@
     var pageSize = 10;
     var roleType = 2;
     $(function () {
+        $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimes'
             ,range: true
