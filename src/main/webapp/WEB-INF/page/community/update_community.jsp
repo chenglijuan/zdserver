@@ -322,7 +322,7 @@
                 getCommunityById();
             }else{
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href="../login.jsp";
             }
         });
     }

@@ -178,7 +178,8 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -186,10 +187,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -229,16 +233,16 @@
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
             <div class="row page-titles">
-                <div class="col-md-6 col-8 align-self-center" id="respect" style="display: none">
+                <div class="col-md-6 col-8 align-self-center" id="respect">
                     <h3 class="text-themecolor m-b-0 m-t-0" id="addHTitle"></h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a
+                        <li class="breadcrumb-item" id="longBackHref"><a
                                 href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=${pageType}">列表</a>
                         </li>
                         <li class="breadcrumb-item active">审核</li>
                     </ol>
                 </div>
-                <div class="col-md-6 col-8 align-self-center" id="longevity" style="display: none">
+                <%--<div class="col-md-6 col-8 align-self-center" id="longevity" style="display: none">
                     <h3 class="text-themecolor m-b-0 m-t-0">长寿金审核</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
@@ -246,7 +250,7 @@
                         </li>
                         <li class="breadcrumb-item active">审核</li>
                     </ol>
-                </div>
+                </div>--%>
             </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
@@ -263,48 +267,55 @@
                         <div class="card-block">
                             <form class="form-horizontal form-material">
                                 <div class="form-group form-control-line">
-                                    <label for="name" class="col-md-3"><span style="color: red">*</span>姓名</label>
-                                    <input type="text" placeholder="请输入姓名" class="form-control col-md-8" name="name"
+                                    <label for="name" class="col-md-3">姓名</label>
+                                    <input type="text" placeholder="请输入姓名" readonly class="form-control col-md-8"
+                                           name="name"
                                            id="name">
                                 </div>
+                                <div class="form-group form-control-line" style="display: none" id="respectTypeDiv">
+                                    <label for="gender" class="col-md-3">尊老金类型</label>
+                                    <select class="form-control col-md-8" readonly="" id="respectType">
+                                        <option value="1" selected>城镇</option>
+                                        <option value="2">农村</option>
+                                    </select>
+                                </div>
                                 <div class="form-group form-control-line">
-                                    <label for="gender" class="col-md-3"><span style="color: red">*</span>性别</label>
-                                    <select class="form-control col-md-8" id="gender">
+                                    <label for="gender" class="col-md-3">性别</label>
+                                    <select class="form-control col-md-8" readonly="" id="gender">
                                         <option value="1">男</option>
                                         <option value="2">女</option>
                                     </select>
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label class="col-md-3"><span style="color: red">*</span>身份证号</label>
-                                    <input type="text"  placeholder="请输入身份证号码"
-                                           class="form-control col-md-8" id="idCard">
+                                    <label class="col-md-3">身份证号</label>
+                                    <input type="text" placeholder="请输入身份证号码"
+                                           class="form-control col-md-8" readonly id="idCard">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="birthday" class="col-md-3"><span style="color: red">*</span>出生年月</label>
+                                    <label for="birthday" class="col-md-3">出生年月</label>
                                     <input type="text" placeholder="请选择出生年月"
                                            class="form-control col-md-8 date_picker"
                                            name="birthday" id="birthday" readonly="readonly">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="birthday" class="col-md-3"><span style="color: red"></span>年龄周岁</label>
+                                    <label for="birthday" class="col-md-3">年龄周岁</label>
                                     <input type="text" placeholder="" class="form-control col-md-8"
                                            name="age" id="age" readonly="readonly">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="phone" class="col-md-3"><span style="color: red">*</span>联系电话</label>
-                                    <input type="text" placeholder="联系电话"
-                                           class="form-control col-md-8" name="phone"
-                                           id="phone">
+                                    <label for="house" class="col-md-3">发放标准</label>
+                                    <input type="text" placeholder="发放标准"
+                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>现户籍所在地</label>
-                                    <input type="text" placeholder="请输入现户籍所在地"
-                                           class="form-control col-md-8" name="house" id="house">
+                                    <label for="phone" class="col-md-3">联系电话</label>
+                                    <input type="text" placeholder="联系电话"
+                                           class="form-control col-md-8" readonly name="phone"
+                                           id="phone">
                                 </div>
                                 <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
-                                    <label for="communityId" class="col-md-3"><span
-                                            style="color: red">*</span>所属社区：</label>
-                                    <select class="form-control col-md-8" id="communityId">
+                                    <label for="communityId" class="col-md-3">所属社区：</label>
+                                    <select class="form-control col-md-8" readonly="" id="communityId">
                                         <option selected value="">请选择</option>
                                     </select>
                                 </div>
@@ -322,22 +333,25 @@
                         <div class="card-block">
                             <form class="form-horizontal form-material">
                                 <div class="form-group form-control-line">
-                                    <label for="grantTimeStr" class="col-md-3"><span
-                                            style="color: red">*</span>起始发放时间</label>
+                                    <label for="house" class="col-md-3">现户籍所在地</label>
+                                    <input type="text" placeholder="请输入现户籍所在地"
+                                           class="form-control col-md-8" readonly name="house" id="house">
+                                </div>
+                                <div class="form-group form-control-line">
+                                    <label for="grantTimeStr" class="col-md-3">起始发放时间</label>
                                     <input type="text" placeholder="请选择出生年月"
                                            class="form-control col-md-8 date_picker"
                                            name="grantTimeStr" id="grantTimeStr" readonly="readonly">
                                 </div>
                                 <div class="form-group form-control-line">
-                                    <label for="phone" class="col-md-3"><span
-                                            style="color: red">*</span>动态享受年月</label>
+                                    <label for="phone" class="col-md-3">动态享受年月</label>
                                     <input type="text" placeholder="动态享受年月"
-                                           class="form-control col-md-8" name="dynamicYearMonth"
+                                           class="form-control col-md-8" readonly name="dynamicYearMonth"
                                            id="dynamicYearMonth">
                                 </div>
                                 <div class="form-group form-control-line">
                                     <label for="changeState" class="col-md-3">变动情况说明：</label>
-                                    <select class="form-control col-md-8" id="changeState">
+                                    <select class="form-control col-md-8" readonly="" id="changeState">
                                         <option selected value="">==请选择==</option>
                                         <option value="1">迁出</option>
                                         <option value="2">死亡</option>
@@ -345,17 +359,11 @@
                                 </div>
                                 <div class="form-group form-control-line">
                                     <label for="grantState" class="col-md-3">发放状态：</label>
-                                    <select class="form-control col-md-8" id="grantState">
+                                    <select class="form-control col-md-8" readonly="" id="grantState">
                                         <option selected value="">==请选择==</option>
                                         <option value="1">已暂停</option>
                                         <option value="2">发放中</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准</label>
-                                    <input type="text" placeholder="发放标准"
-                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
                                 </div>
                                 <div class="form-group" rows="3">
                                     <label class="col-md-3">备注</label>
@@ -381,29 +389,20 @@
                                     <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
                                               id="auditRemark"></textarea>
                                 </div>
-                                <button type="button" style="display: none" id="button1"  class="btn btn-success" onclick="examineSH(2)">审核通过</button>
-                                <button type="button" style="display: none" id="button2" class="btn btn-warning" onclick="examineSH(3)">审核不通过</button>
+                                <button type="button" style="display: none" id="button1" class="btn btn-success"
+                                        onclick="examineSH(2)">审核通过
+                                </button>
+                                <button type="button" style="display: none" id="button2" class="btn btn-warning"
+                                        onclick="examineSH(3)">审核不通过
+                                </button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Row -->
-            <!-- ============================================================== -->
-            <!-- End PAge Content -->
-            <!-- ============================================================== -->
         </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
 <input type="hidden" id="respectId" value="${respectId}"/>
 <input type="hidden" id="pageType" value="${pageType}">
@@ -441,17 +440,22 @@
         $("#headerpage").load("page/header");
         var loginId = $("#loginId").val();
         verification(loginId);
-        pageType =$("#pageType").val();
-        initDesc();
+        pageType = $("#pageType").val();
+        console.log("pageType="+pageType);
     })
 
-    function initDesc(){
-        if(pageType == 1){
+    function initDesc() {
+        if (pageType == 1) {
             $("#addHTitle").append("审核城镇居民尊老金");
-        }else if(pageType == 2){
+        } else if (pageType == 2) {
             $("#addHTitle").append("审核农村居民尊老金");
-        }else if(pageType == 5){
-            $("#addHTitle").append("全部");
+        } else if (pageType == 5) {
+            $("#addHTitle").append("审核居民尊老金");
+            $("#respectTypeDiv").show();
+        } else if (pageType == 3) {
+            $("#addHTitle").append("审核居民长寿金");
+            $("#respectTypeDiv").show();
+            $('#longBackHref').attr('href','<%=basePath%>respect/longevityPager?loginId=${loginId}&pageType=${pageType}');
         }
     }
 
@@ -464,16 +468,16 @@
                     $("#communityIdDiv").show();
                     findAllCommunity();
                 }
+                initDesc();
                 getRespectById();
-
-                var pageType = $("#pageType").val();
-                if(pageType == 3){
-                    $("#longevity").show();
-                }else{
-                    $("#respect").show();
-                }
+                /*// var pageType = $("#pageType").val();
+                 if(pageType == 3){
+                     $("#longevity").show();
+                 }else{
+                     $("#respect").show();
+                 }*/
             } else if (data.code == -1) {
-                window.location.href = "<%=basePath%>/login.jsp";
+                window.location.href = "../login.jsp";
             }
         });
     }
@@ -502,24 +506,24 @@
             if (object.birthday) {
                 var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
-                setIssuStandard(age,object.type);
+                setIssuStandard(age, object.type);
             }
             $("#phone").val(object.phone);
             $("#house").val(object.house);
             $("#communityId").val(object.communityId);
             $("#grantTimeStr").val(object.grantTime);
-            $("#dynamicYearMonth").val(object.dynamicYearMonth);
+            //$("#dynamicYearMonth").val(object.dynamicYearMonth);
             $("#changeState").val(object.changeState);
             $("#grantState").val(object.grantState);
             $("#remark").val(object.remark);
 
             var auditState = object.auditState;
-            if(auditState == 1){
+            if (auditState == 1) {
                 $("#button1").show();
                 $("#button2").show();
-            } else if(auditState == 2){
+            } else if (auditState == 2) {
                 $("#button2").show();
-            } else if(auditState == 3){
+            } else if (auditState == 3) {
                 $("#button1").show();
             }
         })
@@ -530,49 +534,51 @@
         var auditRemark = $("#auditRemark").val();
         var respectId = $("#respectId").val();
         var pageType = $("#pageType").val();
-        $.post("<%=basePath%>respect/auditReaspectById", {
-            "loginId": $("#loginId").val(),
-            "respectId": respectId,
-            "remark":auditRemark,
-            "state": state,
-            "pageType":pageType
-        }, function (data) {
-            if (data.code == 0) {
-                console.log(data.data);
-                if(data.data == 3){
-                    window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
-                }else{
-                    window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}&pageType="+pageType;
+        if (confirm("是否确认提交？")) {
+            $.post("<%=basePath%>respect/auditReaspectById", {
+                "loginId": $("#loginId").val(),
+                "respectId": respectId,
+                "remark": auditRemark,
+                "state": state,
+                "pageType": pageType
+            }, function (data) {
+                if (data.code == 0) {
+                    console.log(data.data);
+                    if (data.data == 3) {
+                        window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
+                    } else {
+                        window.location.href = "<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=" + pageType;
+                    }
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
                 }
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        });
+            });
+        }
     }
 
-    function setIssuStandard(age,resepectType) {
+    function setIssuStandard(age, resepectType) {
         // resepectType 1 城镇  2.农村
         // 2农村  1. 城镇
-        if(resepectType == 1){
-            if(age < 79){
+        if (resepectType == 1) {
+            if (age < 79) {
                 $("#issuStandard").val(0);
-            } else if(age >= 80 && age <= 89){
+            } else if (age >= 80 && age <= 89) {
                 $("#issuStandard").val(50);
-            }else if(age >= 90 && age <= 99){
+            } else if (age >= 90 && age <= 99) {
                 $("#issuStandard").val(100);
-            } else if(age >= 100 ){
+            } else if (age >= 100) {
                 $("#issuStandard").val(300);
             }
-        }else if(resepectType == 2){
-            if(age < 70){
+        } else if (resepectType == 2) {
+            if (age < 70) {
                 $("#issuStandard").val(0);
-            } else if(age >= 70 && age <= 79){
+            } else if (age >= 70 && age <= 79) {
                 $("#issuStandard").val(50);
-            }else if(age >= 80 && age <= 89){
+            } else if (age >= 80 && age <= 89) {
                 $("#issuStandard").val(200);
-            }else if(age >= 90 && age <= 99){
+            } else if (age >= 90 && age <= 99) {
                 $("#issuStandard").val(500);
-            } else if(age >= 100 ){
+            } else if (age >= 100) {
                 $("#issuStandard").val(1000);
             }
         }

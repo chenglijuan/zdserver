@@ -186,8 +186,10 @@ public class RespectController {
                 respect.setCommunityId(user.getCommunityId());
                 respect.setCommunityName(user.getCommunityName());
             }
-            respect.setDynamicYearMonth(dynamicYearMonth);
-            respect.setGrantTime(grantTime);
+            //respect.setDynamicYearMonth(dynamicYearMonth);
+            if(!StringUtils.isBlank(grantTime)){
+                respect.setGrantTime(grantTime+"-01");
+            }
             respect.setPhone(phone);
             respect.setRemark(remark);
             respect.setIssuStandard(issuStandard);
@@ -269,8 +271,14 @@ public class RespectController {
                 respect.setCommunityId(user.getCommunityId());
                 respect.setCommunityName(user.getCommunityName());
             }
-            respect.setDynamicYearMonth(dynamicYearMonth);
-            respect.setGrantTime(grantTime);
+           // respect.setDynamicYearMonth(dynamicYearMonth);
+            if(!StringUtils.isBlank(grantTime)){
+                if(grantTime.length()  < 10){
+                    respect.setGrantTime(grantTime +"-01");
+                }else{
+                    respect.setGrantTime(grantTime);
+                }
+            }
             respect.setPhone(phone);
             respect.setRemark(remark);
             respect.setIssuStandard(issuStandard);
@@ -324,8 +332,8 @@ public class RespectController {
             respectRequest.setAuditState(auditState);
             if (!StringUtils.isBlank(grantTimes)) {
                 grantTimes = grantTimes.replaceAll(" ", "");
-                String beginTimes = grantTimes.substring(0, 10);
-                String endTimes = grantTimes.substring(11, grantTimes.length());
+                String beginTimes = grantTimes.substring(0, 7)+"-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length())+"-01";
                 respectRequest.setGrantBeginTime(beginTimes);
                 respectRequest.setGrantEndTime(endTimes);
             }
@@ -638,20 +646,25 @@ public class RespectController {
                 return;
             }
             RespectRequest respectRequest = new RespectRequest();
+
             if (!StringUtils.isBlank(name)) {
+                name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
                 respectRequest.setName(name);
             }
             if (!StringUtils.isBlank(idCard)) {
+                idCard = new String(idCard.getBytes("ISO-8859-1"), "UTF-8");
                 respectRequest.setIdCard(idCard);
             }
             if (!StringUtils.isBlank(phone)) {
+                phone = new String(phone.getBytes("ISO-8859-1"), "UTF-8");
                 respectRequest.setPhone(phone);
             }
             respectRequest.setAuditState(auditState);
             if (!StringUtils.isBlank(grantTimes)) {
+                grantTimes = new String(grantTimes.getBytes("ISO-8859-1"), "UTF-8");
                 grantTimes = grantTimes.replaceAll(" ", "");
-                String beginTimes = grantTimes.substring(0, 10);
-                String endTimes = grantTimes.substring(11, grantTimes.length());
+                String beginTimes = grantTimes.substring(0, 7)+"-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length())+"-01";
                 respectRequest.setGrantBeginTime(beginTimes);
                 respectRequest.setGrantEndTime(endTimes);
             }

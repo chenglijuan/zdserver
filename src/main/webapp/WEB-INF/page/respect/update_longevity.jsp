@@ -55,57 +55,57 @@
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <%--<header class="topbar">--%>
-        <%--<nav class="navbar top-navbar navbar-toggleable-sm navbar-light">--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-header">--%>
-                <%--<a class="navbar-brand" href="index.html">--%>
-                    <%--<!-- Logo icon -->--%>
-                    <%--<b>--%>
-                        <%--<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->--%>
-                        <%--<!-- Dark Logo icon -->--%>
-                        <%--<img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>--%>
+    <%--<nav class="navbar top-navbar navbar-toggleable-sm navbar-light">--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<!-- Logo -->--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<div class="navbar-header">--%>
+    <%--<a class="navbar-brand" href="index.html">--%>
+    <%--<!-- Logo icon -->--%>
+    <%--<b>--%>
+    <%--<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->--%>
+    <%--<!-- Dark Logo icon -->--%>
+    <%--<img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>--%>
 
-                    <%--</b>--%>
-                    <%--<!--End Logo icon -->--%>
-                    <%--<!-- Logo text -->--%>
-                    <%--<span>--%>
-                            <%--<!-- dark Logo text -->--%>
-                            <%--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>--%>
-                        <%--</span>--%>
-                <%--</a>--%>
-            <%--</div>--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- End Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-collapse">--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- toggle and nav items -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav mr-auto mt-md-0 ">--%>
-                    <%--<!-- This is  -->--%>
-                    <%--<li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"--%>
-                                            <%--href="javascript:void(0)"><i class="ti-menu"></i></a></li>--%>
-                    <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- User profile and search -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav my-lg-0">--%>
-                    <%--<li class="nav-item dropdown">--%>
-                        <%--<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""--%>
-                           <%--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img--%>
-                                <%--src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-            <%--</div>--%>
-        <%--</nav>--%>
+    <%--</b>--%>
+    <%--<!--End Logo icon -->--%>
+    <%--<!-- Logo text -->--%>
+    <%--<span>--%>
+    <%--<!-- dark Logo text -->--%>
+    <%--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>--%>
+    <%--</span>--%>
+    <%--</a>--%>
+    <%--</div>--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<!-- End Logo -->--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<div class="navbar-collapse">--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<!-- toggle and nav items -->--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<ul class="navbar-nav mr-auto mt-md-0 ">--%>
+    <%--<!-- This is  -->--%>
+    <%--<li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"--%>
+    <%--href="javascript:void(0)"><i class="ti-menu"></i></a></li>--%>
+    <%--<li class="nav-item hidden-sm-down">--%>
+    <%--<form class="app-search p-l-20">--%>
+    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+    <%--class="ti-search"></i></a>--%>
+    <%--</form>--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<!-- User profile and search -->--%>
+    <%--<!-- ============================================================== -->--%>
+    <%--<ul class="navbar-nav my-lg-0">--%>
+    <%--<li class="nav-item dropdown">--%>
+    <%--<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""--%>
+    <%--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img--%>
+    <%--src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>--%>
+    <%--</li>--%>
+    <%--</ul>--%>
+    <%--</div>--%>
+    <%--</nav>--%>
     <%--</header>--%>
     <div id="headerpage"></div>
     <!-- ============================================================== -->
@@ -166,15 +166,18 @@
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -182,10 +185,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -226,7 +232,7 @@
             <!-- ============================================================== -->
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">长寿金金修改</h3>
+                    <h3 class="text-themecolor m-b-0 m-t-0">修改长寿金</h3>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a
                                 href="<%=basePath%>respect/longevityPager?loginId=${loginId}">列表</a></li>
@@ -253,6 +259,13 @@
                                     <input type="text" placeholder="请输入姓名" class="form-control col-md-8" name="name"
                                            id="name">
                                 </div>
+                                <div class="form-group form-control-line" id="respectTypeDiv">
+                                    <label for="gender" class="col-md-3"><span style="color: red">*</span>尊老金类型</label>
+                                    <select class="form-control col-md-8" id="respectType">
+                                        <option value="1" selected>城镇</option>
+                                        <option value="2">农村</option>
+                                    </select>
+                                </div>
                                 <div class="form-group form-control-line">
                                     <label for="gender" class="col-md-3"><span style="color: red">*</span>性别</label>
                                     <select class="form-control col-md-8" id="gender">
@@ -277,16 +290,17 @@
                                            name="age" id="age" readonly="readonly">
                                 </div>
                                 <div class="form-group form-control-line">
+                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准(元)</label>
+                                    <input type="text" placeholder="发放标准(元)"
+                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
+                                </div>
+                                <div class="form-group form-control-line">
                                     <label for="phone" class="col-md-3"><span style="color: red">*</span>联系电话</label>
                                     <input type="text" placeholder="联系电话"
                                            class="form-control col-md-8" name="phone"
                                            id="phone">
                                 </div>
-                                <div class="form-group form-control-line">
-                                    <label for="house" class="col-md-3"><span style="color: red">*</span>发放标准(元)</label>
-                                    <input type="text" placeholder="发放标准(元)"
-                                           class="form-control col-md-8" name="issuStandard" readonly id="issuStandard">
-                                </div>
+
 
                                 <div class="form-group form-control-line" style="display: none" id="communityIdDiv">
                                     <label for="communityId" class="col-md-3"><span
@@ -350,7 +364,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-12">
-                                        <button type="button" class="btn btn-success" id="submit">提交审核</button>
+                                        <button type="button" class="btn btn-success" id="submit">确定</button>
                                     </div>
                                 </div>
                             </form>
@@ -376,7 +390,6 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
-<input type="hidden" id="respectType">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -410,6 +423,17 @@
         $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimeStr'
+            ,type:'month'
+            , done: function (value, date, endDate) {
+                var desc = "";
+                if(value != null && value != ""){
+                    var current = fmtmatDate(new Date());
+                    if(!CompareDate(value , current)){
+                        desc = getBetweenMonthStr(fmtmatDate(value),current);
+                    }
+                }
+                $("#dynamicYearMonth").val(desc);
+            }
         });
         laydate.render({
             elem: '#birthday' //指定元素
@@ -418,7 +442,7 @@
                 var age = jsMyGetAge(value);
                 var respectType = $("#respectType").val();
                 $("#age").val(age);
-                setIssuStandard(age,respectType);
+                $("#issuStandard").val(setIssuStandard(age,respectType));
             }
         });
 
@@ -436,8 +460,8 @@
                     findAllCommunity();
                 }
                 getRespectById();
-            }else if(data.code == -1) {
-                window.location.href = "<%=basePath%>/login.jsp";
+            } else if (data.code == -1) {
+                window.location.href = "../login.jsp";
             }
 
         });
@@ -468,14 +492,18 @@
         var house = $("#house").val();
         var communityId = $("#communityId").val();
         var grantTimeStr = $("#grantTimeStr").val();
-        var dynamicYearMonth = $("#dynamicYearMonth").val();
+        //var dynamicYearMonth = $("#dynamicYearMonth").val();
         var changeState = $("#changeState").val();
-        var issuStandard = $("#issuStandard").val();
+        // var issuStandard = $("#issuStandard").val();
         var remark = $("#remark").val();
         var grantState = $("#grantState").val();
         var respectId = $("#respectId").val();
         var communityName = $("#communityId option:selected").text();
         var type = $("#respectType").val();
+        if (type == null || type == "") {
+            popup({type: 'error', msg: "长寿金类型必传", delay: 2000, bg: true, clickDomCancel: true});
+            return;
+        }
         if (idCard == null || idCard == "") {
             popup({type: 'error', msg: "请输入身份证号", delay: 2000, bg: true, clickDomCancel: true});
             return;
@@ -496,54 +524,57 @@
             popup({type: 'error', msg: "请输入常住地址", delay: 2000, bg: true, clickDomCancel: true});
             return;
         }
-
-        $.post("<%=basePath%>respect/updateRespectData", {
-            "respectId":respectId,
-            "idCard": idCard,
-            "name": name,
-            "gender": gender,
-            "birthday": birthday,
-            "type": type,
-            "phone": phone,
-            "house": house,
-            "communityName":communityName,
-            "communityId": communityId,
-            "grantTime": grantTimeStr,
-            "dynamicYearMonth": dynamicYearMonth,
-            "changeState": changeState,
-            "issuStandard": issuStandard,
-            "remark": remark,
-            "grantState":grantState,
-            "loginId":$("#loginId").val()
-        }, function (data) {
-            if (data.code == 0) {
-                popup({type: "success", msg: "提交成功", delay: 1000});
-                window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        })
+        if (confirm("是否确认提交？")) {
+            $.post("<%=basePath%>respect/updateRespectData", {
+                "respectId": respectId,
+                "idCard": idCard,
+                "name": name,
+                "gender": gender,
+                "birthday": birthday,
+                "type": type,
+                "phone": phone,
+                "house": house,
+                "communityName": communityName,
+                "communityId": communityId,
+                "grantTime": grantTimeStr,
+                //"dynamicYearMonth": dynamicYearMonth,
+                "changeState": changeState,
+                //"issuStandard": issuStandard,
+                "remark": remark,
+                "grantState": grantState,
+                "loginId": $("#loginId").val()
+            }, function (data) {
+                if (data.code == 0) {
+                    popup({type: "success", msg: "提交成功", delay: 1000});
+                    window.location.href = "<%=basePath%>respect/longevityPager?loginId=${loginId}";
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            })
+        }
     })
 
     function getRespectById() {
         var respectId = $("#respectId").val();
-        $.post("<%=basePath%>respect/getRespectById",{"respectId":respectId},function (data) {
+        $.post("<%=basePath%>respect/getRespectById", {"respectId": respectId}, function (data) {
             var object = data.data;
             $("#name").val(object.name);
             $("#gender").val(object.gender);
             $("#idCard").val(object.idCard);
             $("#birthday").val(object.birthday);
-            if(object.birthday){
+            if (object.birthday) {
                 var age = jsMyGetAge(object.birthday);
                 $("#age").val(age);
-                var issuStandard = setIssuStandard(age,object.type);
+                var issuStandard = setIssuStandard(age, object.type);
                 $("#issuStandard").val(issuStandard);
             }
             $("#phone").val(object.phone);
             $("#house").val(object.house);
             $("#communityId").val(object.communityId);
-            $("#grantTimeStr").val(object.grantTime);
-            if(object.grantTime){
+            if (object.grantTime) {
+                if (object.grantTime.length >= 10) {
+                    $("#grantTimeStr").val(object.grantTime.substring(0, 7));
+                }
                 $("#dynamicYearMonth").val(getBetweenMonthStr(object.grantTime));
             }
             $("#changeState").val(object.changeState);

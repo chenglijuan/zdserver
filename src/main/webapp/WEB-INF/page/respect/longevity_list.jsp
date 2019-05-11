@@ -341,6 +341,7 @@
         laydate.render({
             elem: '#grantTimes'
             ,range: true
+            ,type:'month'
         });
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -358,7 +359,7 @@
                 selectExamine(1, pageSize);
             }else{
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href="../login.jsp";
             }
         });
     }
@@ -663,35 +664,6 @@
 
     function auditById(respectId) {
         window.location.href="<%=basePath%>respect/auditRespect?pageType=3&loginId="+$("#loginId").val()+"&respectId="+respectId;
-    }
-
-    function uploadData(fileObj) {
-        var allowExtention = ".xlsx,.xls";
-        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        if(allowExtention.indexOf(extention) > -1){
-            $.ajaxFileUpload({
-                url: '<%=basePath%>respect/importRespect',
-                type: 'post',
-                data : {
-                    "loginId":$("#loginId").val(),
-                    "pageType":$("#pageType").val()
-                },
-                secureuri: false,
-                fileElementId: "file",
-                dataType: 'json',
-                success: function(data, status){
-                    console.log(data);
-                    if(status){
-                        alert("操作成功");
-                        selectExamine(1, pageSize);
-                    }
-
-                }
-            });
-        }else{
-            alert("仅支持" + allowExtention + "为后缀名的文件!");
-            fileObj.value = "";
-        }
     }
 
     function remarkDetail(respectId) {
