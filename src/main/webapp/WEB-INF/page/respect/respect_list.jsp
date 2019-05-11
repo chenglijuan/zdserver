@@ -305,7 +305,9 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
-<input type="text" id="pageType" value="${pageType}">
+<input type="hidden" id="pageType" value="${pageType}">
+<%--待处理的数据--%>
+<input type="text" id="dealAuditState" value="${dealAuditState}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -352,6 +354,12 @@
             $("#changeStateDiv").hide();
             $("#auditStateDiv").hide();
         }
+        //待处理的数据
+        var dealAuditState = $("#dealAuditState").val();
+        if(dealAuditState){
+            $("#auditState").val( dealAuditState);
+        }
+
         initDesc();
          var loginId = $("#loginId").val();
          verification(loginId);

@@ -60,11 +60,12 @@ public class RespectController {
      * @return
      */
     @RequestMapping(value = "respectPager")
-    public ModelAndView respectPager(Integer loginId,Integer pageType) {
+    public ModelAndView respectPager(Integer loginId,Integer pageType,Integer dealAuditState) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/respect_list");
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("pageType", pageType);
+        modelAndView.addObject("dealAuditState", dealAuditState);
         return modelAndView;
     }
 

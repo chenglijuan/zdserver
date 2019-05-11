@@ -470,12 +470,6 @@
                 }
                 initDesc();
                 getRespectById();
-                /*// var pageType = $("#pageType").val();
-                 if(pageType == 3){
-                     $("#longevity").show();
-                 }else{
-                     $("#respect").show();
-                 }*/
             } else if (data.code == -1) {
                 window.location.href = "../login.jsp";
             }
@@ -512,7 +506,6 @@
             $("#house").val(object.house);
             $("#communityId").val(object.communityId);
             $("#grantTimeStr").val(object.grantTime);
-            //$("#dynamicYearMonth").val(object.dynamicYearMonth);
             $("#changeState").val(object.changeState);
             $("#grantState").val(object.grantState);
             $("#remark").val(object.remark);
