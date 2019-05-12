@@ -282,6 +282,9 @@
       <if test="auditState != null">
         and audit_state = #{auditState}
       </if>
+      <if test="grantState != null">
+        and grant_state = #{grantState}
+      </if>
       <if test="type != null">
         and type = #{type}
       </if>
@@ -326,6 +329,9 @@
       </if>
       <if test="auditState != null">
         and audit_state = #{auditState}
+      </if>
+      <if test="grantState != null">
+        and grant_state = #{grantState}
       </if>
       <if test="name != null">
         and name like '%${name}%'

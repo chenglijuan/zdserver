@@ -2,6 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
+
     <display-name>cmbcserver</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
@@ -28,24 +29,32 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
     <filter>
-        <filter-name>cors</filter-name>
-        <filter-class>com.lemi.msloan.filter.CORSFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>cors</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>com.lemi.msloan.filter.HandFilter</filter-class>
         <init-param>
             <param-name>excludedPages</param-name>
-            <param-value>/user/login,/user/loginOut,/respect/exportRespect,/user/userLoginPage</param-value>
+            <param-value>/user/userLoginPage,/user/login</param-value>
         </init-param>
     </filter>
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/community/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/roster/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/examine/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/page/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/respect/*</url-pattern>
     </filter-mapping>
 
     <filter>

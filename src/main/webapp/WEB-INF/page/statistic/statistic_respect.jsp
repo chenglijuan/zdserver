@@ -76,62 +76,6 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <%--<header class="topbar">--%>
-        <%--<nav class="navbar top-navbar navbar-toggleable-sm navbar-light">--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-header">--%>
-                <%--<a class="navbar-brand" href="index.html">--%>
-                    <%--<!-- Logo icon -->--%>
-                    <%--<b>--%>
-                        <%--<!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->--%>
-                        <%--<!-- Dark Logo icon -->--%>
-                        <%--<img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>--%>
-
-                    <%--</b>--%>
-                    <%--<!--End Logo icon -->--%>
-                    <%--<!-- Logo text -->--%>
-                    <%--<span>--%>
-                            <%--<!-- dark Logo text -->--%>
-                            <%--<img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>--%>
-                        <%--</span>--%>
-                <%--</a>--%>
-            <%--</div>--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<!-- End Logo -->--%>
-            <%--<!-- ============================================================== -->--%>
-            <%--<div class="navbar-collapse">--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- toggle and nav items -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav mr-auto mt-md-0 ">--%>
-                    <%--<!-- This is  -->--%>
-                    <%--<li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"--%>
-                                            <%--href="javascript:void(0)"><i class="ti-menu"></i></a></li>--%>
-                    <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<!-- User profile and search -->--%>
-                <%--<!-- ============================================================== -->--%>
-                <%--<ul class="navbar-nav my-lg-0">--%>
-                    <%--<li class="nav-item dropdown">--%>
-                        <%--<a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""--%>
-                           <%--data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img--%>
-                                <%--src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>--%>
-                    <%--</li>--%>
-                <%--</ul>--%>
-            <%--</div>--%>
-        <%--</nav>--%>
-    <%--</header>--%>
     <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
@@ -196,14 +140,13 @@
                             </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
-                                   class="waves-effect"><i class="fa fa-user m-r-10"
-                                                           aria-hidden="true"></i>农村居民尊老金</a>
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
                             </li>
-
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -236,24 +179,81 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
             <!-- End Sidebar navigation -->
         </div>
         <!-- End Sidebar scroll-->
     </aside>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
     <div class="page-wrapper">
+        <!-- ============================================================== -->
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
         <div class="container-fluid">
             <fieldset class="layui-elem-field layui-field-title">
-                <legend>社区管理</legend>
+                <legend><span id="pageDesc"></span></legend>
             </fieldset>
+            <%-- <div class="row">
+                 <form class="form-inline">
+                     <div class="form-group col-md-3" style="margin-top: 20px">
+                         <label for="name">姓名：</label>
+                         <input type="text" class="form-control" id="name" placeholder="请输姓名">
+                     </div>
+                     <div class="form-group col-md-3" style="margin-top: 20px" id="changeStateDiv">
+                         <label for="changeState">变动情况：</label>
+                         <select class="form-control" id="changeState">
+                             <option selected value="">==请选择==</option>
+                             <option value="1">迁出</option>
+                             <option value="2">死亡</option>
+                         </select>
+                     </div>
+                     <div class="form-group col-md-3" style="margin-top: 20px" id="auditStateDiv">
+                         <label for="auditState">审核状态：</label>
+                         <select class="form-control" id="auditState">
+                             <option selected value="">==请选择==</option>
+                             <option value="1">待审核</option>
+                             <option value="2">通过</option>
+                             <option value="3">未通过</option>
+                         </select>
+                     </div>
+                     <div class="form-group col-md-3" style="margin-top: 20px;display: none" id="communityIdDiv">
+                         <label for="communityId">所属社区：</label>
+                         <select class="form-control" id="communityId">
+                             <option selected value="">==请选择==</option>
+                         </select>
+                     </div>
+                     <div class="form-group col-md-3" style="margin-top: 20px">
+                         <button type="button" class="btn btn-info" id="search">搜索</button>
+                         <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
+                     </div>
+                 </form>
+             </div>--%>
+
             <div class="row">
                 <!-- column -->
                 <div class="col-sm-12">
                     <div class="card">
-                        <div class="card-block" id="operatorBtn">
-                            <button type="button" class="btn btn-info" id="addUser"><span class=" fa fa-plus-square"></span> 新增</button>
-                        </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
                             </table>
@@ -268,6 +268,7 @@
             <!-- End PAge Content -->
             <!-- ============================================================== -->
         </div>
+
     </div>
     <!-- ============================================================== -->
     <!-- End Page wrapper  -->
@@ -277,6 +278,7 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
+<input type="hidden" id="pageType" value="${pageType}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -307,16 +309,30 @@
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 
 <script>
-    var pageSize = 5;
+    var pageSize = 10;
+    var pageType = 1;
     $(function () {
         $("#headerpage").load("page/header");
+        pageType = $("#pageType").val();
+        console.log("pageType="+pageType);
+        initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
+
     })
+
+    function initDesc() {
+        if (pageType == 1) {
+            $("#pageDesc").append("城镇居民尊老金报表");
+        } else if (pageType == 2) {
+            $("#pageDesc").append("农村居民尊老金报表");
+        }
+    }
 
     function verification(loginId) {
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == 0) {
+                roleType = data.data.type;
                 selectExamine(1, pageSize);
             } else {
                 alert(data.message);
@@ -325,7 +341,6 @@
         });
     }
 
-
     $("#search").on("click", function () {
         selectExamine(1, 10);
     })
@@ -333,65 +348,136 @@
     function selectExamine(pageNum, pageSize) {
         var columns = [];
         var a = {
-            field: 'name',
-            title: '社区名称',
+            field: 'communityName',
+            title: '社区名',
             align: 'center',
             valign: 'middle',
-            width: 180,
+            width: 90,
             formatter: function (value, row, index) {
-                return row.name;
+                return row.communityName;
             }
         };
+
         var b = {
-            field: 'linkman',
-            title: '社区联系人',
+            field: 'summaryMonth',
+            title: '发放年月',
             align: 'center',
             valign: 'middle',
-            width: 180,
+            width: 120,
             formatter: function (value, row, index) {
-                return row.linkman;
+                return fmtDate(value);
             }
         };
         var c = {
-            field: 'phone',
-            title: '联系电话',
+            field: 'range1Count',
+            title: '70-79(周岁)',
             align: 'center',
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.phone ? row.phone : "-";
+                return row.range1Count;
             }
         };
+
         var d = {
-            field: 'address',
-            title: '社区地址',
+            field: 'range1Money',
+            title: '发放金额（元）',
             align: 'center',
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                return row.address ? row.address : "-";
+                return row.range1Money;
             }
         };
         var e = {
-            field: 'cz',
-            title: '操作',
+            field: 'range2Count',
+            title: '80-89(周岁)',
             align: 'center',
             valign: 'middle',
-            width: 240,
+            width: 180,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateUserById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;"+
-                    "<a class='btn btn-info' style='color: #fff' onclick='deleteById(" + row.id + ")'><span class='fa fa-edit'></span> 删除</a>";
+                return row.range2Count;
+            }
+        };
+        var f = {
+            field: 'range2Money',
+            title: '发放金额（元）',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.range2Money;
+            }
+        };
+        var g = {
+            field: 'range3Count',
+            title: '90-99(周岁)',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.range3Count;
+            }
+        };
+        var h = {
+            field: 'range3Money',
+            title: '发放金额（元）',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.range3Money;
+            }
+        };
+        var i = {
+            field: 'range4Count',
+            title: '100(周岁)或以上',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.range4Count;
+            }
+        };
+        var j = {
+            field: 'range4Money',
+            title: '发放金额（元）',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.range4Money;
+            }
+        };
+        var k = {
+            field: 'totalMoney',
+            title: '总金额(元)',
+            align: 'center',
+            valign: 'middle',
+            width: 180,
+            formatter: function (value, row, index) {
+                return row.totalMoney;
             }
         };
         columns.push(a);
         columns.push(b);
-        columns.push(c);
-        columns.push(d);
+        if(pageType == 2){
+            columns.push(c);
+            columns.push(d);
+        }
         columns.push(e);
+        columns.push(f);
+        columns.push(g);
+        columns.push(h);
+        columns.push(i);
+        columns.push(j);
+        columns.push(k);
 
-        $.post("<%=basePath%>community/selectCommunity", {
+        $.post("<%=basePath%>respect/getRespectStatistic", {
             "pageNum": pageNum,
             "pageSize": pageSize,
+            //"communityId":communityId,
+            "type": $("#pageType").val(),
             "loginId": $("#loginId").val()
         }, function (data) {
             var list = data.data.list;
@@ -402,7 +488,7 @@
                 cache: false,
                 pagination: false,
                 fixedColumns: true,
-                //fixedNumber: 3,
+                fixedNumber: 3,
                 columns: columns
             })
 
@@ -435,26 +521,23 @@
             onPageClicked: function (event, originalEvent, type, page) {
                 selectExamine(page, pageSize);
             }
+
         });
     }
 
-    $("#addUser").on("click", function () {
-        window.location.href = "<%=basePath%>community/addCommunityForm?loginId=" + $("#loginId").val();
+    $("#addRespect").on("click", function () {
+        var pageType = $("#pageType").val();
+        window.location.href = "<%=basePath%>respect/addRespect?pageType=" + pageType + "&loginId=" + $("#loginId").val();
     })
 
-    function updateUserById(communityId) {
-        window.location.href = "<%=basePath%>community/updateCommunityForm?loginId=" + $("#loginId").val() + "&communityId=" + communityId;
+    function fmtDate(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月";
     }
 
-    function deleteById(communityId) {
-        $.post("<%=basePath%>community/deleteById", {"communityId": communityId}, function (data) {
-            if (data.code == 0) {
-                window.location.href = "<%=basePath%>community/communityPage?loginId=${loginId}";
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        });
-    }
 
 </script>
 </body>

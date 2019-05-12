@@ -432,7 +432,7 @@
                 }
             }else{
                 alert(data.message);
-                window.location.href="../login.jsp";
+                window.location.href="../login/login.jsp";
             }
         });
     }

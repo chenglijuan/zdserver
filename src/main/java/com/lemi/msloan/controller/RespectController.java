@@ -2,9 +2,11 @@ package com.lemi.msloan.controller;
 
 import com.lemi.msloan.entity.AuditRemark;
 import com.lemi.msloan.entity.Respect;
+import com.lemi.msloan.entity.RespectStatistic;
 import com.lemi.msloan.entity.User;
 import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
+import com.lemi.msloan.response.RespectSummayResult;
 import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +22,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -48,7 +52,7 @@ public class RespectController {
     private UserService userService;
 
     @Autowired
-    private CommunityService communityService;
+    private RespectStatisticService respectStatisticService;
 
     @Autowired
     private AuditRemarkService auditRemarkService;
@@ -120,6 +124,23 @@ public class RespectController {
         modelAndView.setViewName("page/respect/audit_respect");
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("respectId", respectId);
+        modelAndView.addObject("pageType", pageType);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "respectSummaryList")
+    public ModelAndView respectSummaryList(Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/respect/respect_summary_list");
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "respectStatistic")
+    public ModelAndView respectStatistic(Integer loginId,Integer pageType) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/statistic/statistic_respect");
+        modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("pageType", pageType);
         return modelAndView;
     }
@@ -870,6 +891,44 @@ public class RespectController {
             POIExcelUtil.writerDataInExcelIo(strsList, os, excelTitle, 15);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    @RequestMapping(value = "getRespectStatistic")
+    @ResponseBody
+    public ApiResult getRespectSummary(Integer communityId,Integer type, HttpSession session,Integer pageSize,Integer pageNum) {
+        try {
+            String loginId = (String) session.getAttribute("loginId");
+            if(StringUtils.isBlank(loginId)){
+                return new ApiResult(false, "登录用户异常", -1, null);
+            }
+            User user = userService.getByUserId(Integer.parseInt(loginId));
+            RespectRequest respectRequest = new RespectRequest();
+            // 1. 管理员  2. 社区管理员
+            if(user.getType().intValue() == 1){
+
+            }else if(user.getType().intValue() == 2){
+                communityId = user.getCommunityId();
+            }
+            respectRequest.setCommunityId(communityId);
+            respectRequest.setType(type);
+            respectRequest.setPager(pageNum, pageSize);
+            List<RespectStatistic> list = respectStatisticService.getRespectStatisticPager(respectRequest);
+            int count = respectStatisticService.getRespectStatisticCount(respectRequest);
+            Map<String, Object> map = new HashMap<>();
+            map.put("list", list);
+            map.put("count", count);
+            if (count > 0) {
+                Float totalPage = count * 1.0f / pageSize;
+                map.put("totalPage", Math.ceil(totalPage));
+            } else {
+                map.put("totalPage", 1);
+            }
+            return new ApiResult(true, "操作成功", 0, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1, null);
         }
     }
 

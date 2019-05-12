@@ -26,6 +26,9 @@ public class RespectRequest extends BaseRequest {
 
     private String birthdayEnd;
 
+    //发放状态1.已暂停 2.发放
+    private Integer grantState;
+
     public String getIdCard() {
         return idCard;
     }
@@ -112,5 +115,13 @@ public class RespectRequest extends BaseRequest {
 
     public void setAuditState(Integer auditState) {
         this.auditState = auditState;
+    }
+
+    public Integer getGrantState() {
+        return grantState;
+    }
+
+    public void setGrantState(Integer grantState) {
+        this.grantState = grantState;
     }
 }

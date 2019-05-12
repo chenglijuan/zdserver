@@ -35,7 +35,7 @@ public class UserController {
     @RequestMapping(value = "userLoginPage")
     public ModelAndView userLoginPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/login");
+        modelAndView.setViewName("page/login/login");
         return modelAndView;
     }
 

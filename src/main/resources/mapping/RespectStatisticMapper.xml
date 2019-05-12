@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tbl_respectstatistic" >
+  <resultMap id="BaseResultMap" type="com.lemi.msloan.entity.RespectStatistic" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="summary_month" property="summaryMonth" jdbcType="DATE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="community_id" property="communityId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="range1_count" property="range1Count" jdbcType="INTEGER" />
+    <result column="range2_count" property="range2Count" jdbcType="INTEGER" />
+    <result column="range3_count" property="range3Count" jdbcType="INTEGER" />
+    <result column="range4_count" property="range4Count" jdbcType="INTEGER" />
+    <result column="range1_money" property="range1Money" jdbcType="DECIMAL" />
+    <result column="range2_money" property="range2Money" jdbcType="DECIMAL" />
+    <result column="range3_money" property="range3Money" jdbcType="DECIMAL" />
+    <result column="range4_money" property="range4Money" jdbcType="DECIMAL" />
+    <result column="total_money" property="totalMoney" jdbcType="DECIMAL" />
+    <result column="community_name" property="communityName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, summary_month, create_time, community_id, type, range1_count, range2_count, range3_count, 
+    range4_count, range1_money, range2_money, range3_money, range4_money,total_money,community_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from zd_respect_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from zd_respect_statistic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lemi.msloan.entity.RespectStatistic" >
+    insert into zd_respect_statistic (id, summary_month, create_time, 
+      community_id, type, range1_count, 
+      range2_count, range3_count, range4_count, 
+      range1_money, range2_money, range3_money, 
+      range4_money,total_money,community_name)
+    values (#{id,jdbcType=INTEGER}, #{summaryMonth,jdbcType=DATE}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{communityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{range1Count,jdbcType=INTEGER}, 
+      #{range2Count,jdbcType=INTEGER}, #{range3Count,jdbcType=INTEGER}, #{range4Count,jdbcType=INTEGER}, 
+      #{range1Money,jdbcType=DECIMAL}, #{range2Money,jdbcType=DECIMAL}, #{range3Money,jdbcType=DECIMAL}, 
+      #{range4Money,jdbcType=DECIMAL},#{totalMoney,jdbcType=DECIMAL},#{communityName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lemi.msloan.entity.RespectStatistic" >
+    insert into zd_respect_statistic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="summaryMonth != null" >
+        summary_month,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="communityId != null" >
+        community_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="range1Count != null" >
+        range1_count,
+      </if>
+      <if test="range2Count != null" >
+        range2_count,
+      </if>
+      <if test="range3Count != null" >
+        range3_count,
+      </if>
+      <if test="range4Count != null" >
+        range4_count,
+      </if>
+      <if test="range1Money != null" >
+        range1_money,
+      </if>
+      <if test="range2Money != null" >
+        range2_money,
+      </if>
+      <if test="range3Money != null" >
+        range3_money,
+      </if>
+      <if test="range4Money != null" >
+        range4_money,
+      </if>
+      <if test="totalMoney != null" >
+        total_money,
+      </if>
+      <if test="communityName != null" >
+        community_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="summaryMonth != null" >
+        #{summaryMonth,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communityId != null" >
+        #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="range1Count != null" >
+        #{range1Count,jdbcType=INTEGER},
+      </if>
+      <if test="range2Count != null" >
+        #{range2Count,jdbcType=INTEGER},
+      </if>
+      <if test="range3Count != null" >
+        #{range3Count,jdbcType=INTEGER},
+      </if>
+      <if test="range4Count != null" >
+        #{range4Count,jdbcType=INTEGER},
+      </if>
+      <if test="range1Money != null" >
+        #{range1Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range2Money != null" >
+        #{range2Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range3Money != null" >
+        #{range3Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range4Money != null" >
+        #{range4Money,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null" >
+        #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="communityName != null" >
+        #{communityName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lemi.msloan.entity.RespectStatistic" >
+    update zd_respect_statistic
+    <set >
+      <if test="summaryMonth != null" >
+        summary_month = #{summaryMonth,jdbcType=DATE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="communityId != null" >
+        community_id = #{communityId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="range1Count != null" >
+        range1_count = #{range1Count,jdbcType=INTEGER},
+      </if>
+      <if test="range2Count != null" >
+        range2_count = #{range2Count,jdbcType=INTEGER},
+      </if>
+      <if test="range3Count != null" >
+        range3_count = #{range3Count,jdbcType=INTEGER},
+      </if>
+      <if test="range4Count != null" >
+        range4_count = #{range4Count,jdbcType=INTEGER},
+      </if>
+      <if test="range1Money != null" >
+        range1_money = #{range1Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range2Money != null" >
+        range2_money = #{range2Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range3Money != null" >
+        range3_money = #{range3Money,jdbcType=DECIMAL},
+      </if>
+      <if test="range4Money != null" >
+        range4_money = #{range4Money,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMoney != null" >
+        total_money = #{totalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="communityName != null" >
+        community_name = #{communityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lemi.msloan.entity.RespectStatistic" >
+    update zd_respect_statistic
+    set summary_month = #{summaryMonth,jdbcType=DATE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      community_id = #{communityId,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      range1_count = #{range1Count,jdbcType=INTEGER},
+      range2_count = #{range2Count,jdbcType=INTEGER},
+      range3_count = #{range3Count,jdbcType=INTEGER},
+      range4_count = #{range4Count,jdbcType=INTEGER},
+      range1_money = #{range1Money,jdbcType=DECIMAL},
+      range2_money = #{range2Money,jdbcType=DECIMAL},
+      range3_money = #{range3Money,jdbcType=DECIMAL},
+      range4_money = #{range4Money,jdbcType=DECIMAL},
+      total_money = #{totalMoney,jdbcType=DECIMAL},
+      community_name = #{communityName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <!-- =========================================================================-->
+  <insert id="insertBatchData" parameterType="java.util.List">
+    insert into zd_respect_statistic ( summary_month, create_time,
+    community_id, type, range1_count,range2_count, range3_count, range4_count,
+    range1_money, range2_money, range3_money,range4_money,total_money,community_name)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.summaryMonth,jdbcType=DATE},#{item.createTime,jdbcType=TIMESTAMP},#{item.communityId,jdbcType=INTEGER},#{item.type,jdbcType=INTEGER},
+      #{item.range1Count,jdbcType=INTEGER},#{item.range2Count,jdbcType=INTEGER},#{item.range3Count,jdbcType=INTEGER},#{item.range4Count,jdbcType=INTEGER},
+      #{item.range1Money,jdbcType=DECIMAL},#{item.range2Money,jdbcType=DECIMAL},#{item.range3Money,jdbcType=DECIMAL},#{item.range4Money,jdbcType=DECIMAL},
+      #{item.totalMoney,jdbcType=DECIMAL},#{item.communityName,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <select id="getRespectStatisticPager" parameterType="com.lemi.msloan.request.RespectRequest" resultMap="BaseResultMap">
+    select * from zd_respect_statistic
+    <where>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="birthdayBegin != null">
+        <![CDATA[  AND summary_month = #{birthdayBegin}]]>
+      </if>
+    </where>
+    order by create_time desc
+    <if test="start != null and end != null">
+      limit #{start},#{end}
+    </if>
+  </select>
+  <select id="getRespectStatisticCount" parameterType="com.lemi.msloan.request.RespectRequest" resultType="int">
+    select count(*) from zd_respect_statistic
+    <where>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="birthdayBegin != null">
+        <![CDATA[  AND summary_month = #{birthdayBegin}]]>
+      </if>
+    </where>
+  </select>
+</mapper>

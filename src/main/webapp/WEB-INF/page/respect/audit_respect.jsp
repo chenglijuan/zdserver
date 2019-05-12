@@ -471,7 +471,7 @@
                 initDesc();
                 getRespectById();
             } else if (data.code == -1) {
-                window.location.href = "../login.jsp";
+                window.location.href = "../login/login.jsp";
             }
         });
     }

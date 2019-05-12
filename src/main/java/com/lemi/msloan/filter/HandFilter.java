@@ -20,7 +20,7 @@ public class HandFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         excludedPage = filterConfig.getInitParameter("excludedPages");
-        if (excludedPage != null && excludedPage.length() > 0){
+        if (excludedPage != null && excludedPage.length() > 0) {
             excludedPages = excludedPage.split(",");
         }
     }
@@ -32,19 +32,19 @@ public class HandFilter implements Filter {
         HttpSession session = request.getSession();
 
         boolean flag = false;
-        for (String page:excludedPages) {
-            if (request.getServletPath().equals(page)){
+        for (String page : excludedPages) {
+            if (request.getServletPath().equals(page)) {
                 flag = true;
             }
         }
-        if (flag){
+        if (flag) {
             filterChain.doFilter(servletRequest, servletResponse);
-        }else {
-            String userId= (String) session.getAttribute("loginId");
-            System.out.println("当前登录用户loginId"+userId);
-            if (!StringUtils.isBlank(userId)){
+        } else {
+            String userId = (String) session.getAttribute("loginId");
+            System.out.println("当前登录用户loginId" + userId);
+            if (!StringUtils.isBlank(userId)) {
                 filterChain.doFilter(servletRequest, servletResponse);
-            }else {
+            } else {
                 response.sendRedirect("/user/userLoginPage");
                 return;
             }

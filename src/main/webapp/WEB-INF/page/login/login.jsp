@@ -4,12 +4,12 @@
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html >
 <head>
        
     <base href="<%=basePath%>">
         
-        <title>后台管理</title>
+        <title>尊老金后台管理</title>
         
         
     <meta http-equiv="pragma" content="no-cache">
@@ -23,7 +23,7 @@
         
     <meta http-equiv="description" content="This is my page">
 
-    <link rel="stylesheet" type="text/css" href="<%=basePath%>/css/login/style.css">
+    <link rel="stylesheet" href="<%=basePath%>/css/login/style.css">
 
     <script type="text/javascript" src="<%=basePath%>/js/jquery.min.js"></script>
     <script type="text/javascript" src="<%=basePath%>/js/vector.js"></script>
