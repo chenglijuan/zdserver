@@ -149,7 +149,7 @@
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == -1) {
                 alert(data.message);
-                window.location.href = "../login/login.jsp";
+                window.location.href = "<%=basePath%>/user/userLoginPage";
             } else {
                 $("#userType").val(data.data.type);
                 $("#username").html(data.data.username);
