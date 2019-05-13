@@ -49,6 +49,9 @@ public class ExamineController {
     @Autowired
     private RespectService respectService;
 
+    @Autowired
+    private ExamineStatisticService examineStatisticService;
+
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
         ModelAndView modelAndView = new ModelAndView();
@@ -1356,6 +1359,12 @@ public class ExamineController {
         return new ApiResult(true, "查询成功", 0, map);
     }
 
+    @RequestMapping(value = "getExamineStatistic")
+    @ResponseBody
+    public ApiResult getExamineStatistic(String beginTime,String endTime){
+
+        return null;
+    }
 
 }
 
