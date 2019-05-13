@@ -89,6 +89,36 @@ public class Examine {
 
     private Date time4;
 
+    private Integer exitType;
+
+    private Date inTime;
+
+    private Date outTime;
+
+    public Integer getExitType() {
+        return exitType;
+    }
+
+    public void setExitType(Integer exitType) {
+        this.exitType = exitType;
+    }
+
+    public Date getInTime() {
+        return inTime;
+    }
+
+    public void setInTime(Date inTime) {
+        this.inTime = inTime;
+    }
+
+    public Date getOutTime() {
+        return outTime;
+    }
+
+    public void setOutTime(Date outTime) {
+        this.outTime = outTime;
+    }
+
     public Date getNextOut() {
         return nextOut;
     }

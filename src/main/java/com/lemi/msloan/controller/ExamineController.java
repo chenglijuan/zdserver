@@ -151,7 +151,7 @@ public class ExamineController {
     @RequestMapping(value = "addExamine")
     @ResponseBody
     public ApiResult addExamine(String phone, String unStart, String unEnd, Integer stopType, String stopReason, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
-                                String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState) {
+                                String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState, Integer exitType) {
         if (isInsured == null) {
             return new ApiResult(false, "请选择是否参保", -1);
         }
@@ -244,6 +244,10 @@ public class ExamineController {
         examine.setRemark(remark);
         examine.setBatch(batch);
         examine.setState(5);
+        if (status.intValue() == 4){
+            examine.setExitType(exitType);
+            examine.setOutTime(new Date());
+        }
         examine.setIdCard(idCard);
         examine.setName(name);
         examine.setGender(gender);
@@ -336,7 +340,7 @@ public class ExamineController {
     @RequestMapping(value = "updateExamineById")
     @ResponseBody
     public ApiResult updateExamineById(Integer loginId, String phone, String unStart, String unEnd, Integer stopType, String stopReason, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
-                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState) {
+                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState,Integer exitType) {
         User user = userService.get(loginId);
         if (user != null) {
             if (user.getType().intValue() == 2) {
@@ -436,6 +440,11 @@ public class ExamineController {
                 return new ApiResult(false, "身份证号已存在", -1);
             }
         }
+        if (status.intValue() == 4){
+            if (exitType == null){
+                return new ApiResult(false, "请选择退出类型", -1);
+            }
+        }
         examine.setStartTime(DateUtil.getDateToString(startTime, "yyyy-MM-dd"));
         examine.setStopTime(DateUtil.getDateToString(stopTime, "yyyy-MM-dd"));
         examine.setDtxsny(dtxsny);
@@ -462,6 +471,10 @@ public class ExamineController {
         examine.setVillageAge(villageAge);
         examine.setCdState(cdState);
         examine.setTime(new Date());
+        if (status.intValue() == 4){
+            examine.setExitType(exitType);
+            examine.setOutTime(new Date());
+        }
         examineService.update(examine);
         Roster roster = rosterService.getByExamineId(examineId);
         roster.setIdCard(idCard);
@@ -1165,7 +1178,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "endExamine")
     @ResponseBody
-    public ApiResult endExamine(Integer examineId, Integer loginId,String remark) {
+    public ApiResult endExamine(Integer examineId, Integer loginId,String remark,Integer exitType) {
 
         if (examineId == null) {
             return new ApiResult(false, "ID为空", -1);
@@ -1182,6 +1195,7 @@ public class ExamineController {
                     examine.setRemark2(remark);
                 }
                 examine.setTime2(new Date());
+                examine.setExitType(exitType);
                 examineService.update(examine);
             } else {
                 if (!StringUtils.isBlank(remark)){
@@ -1189,6 +1203,8 @@ public class ExamineController {
                 }
                 examine.setTime4(new Date());
                 examine.setStatus(4);
+                examine.setOutTime(new Date());
+                examine.setExitType(exitType);
                 examineService.update(examine);
                 Roster roster = rosterService.getByExamineId(examineId);
                 if (roster != null) {
@@ -1319,6 +1335,11 @@ public class ExamineController {
         return new ApiResult(true, "查询成功", 0, map);
     }
 
+    /**
+     * 查询待处理数量
+     * @param loginId
+     * @return
+     */
     @RequestMapping(value = "getTotalCount")
     @ResponseBody
     public ApiResult getTotalCount(Integer loginId){
@@ -1364,6 +1385,12 @@ public class ExamineController {
     public ApiResult getExamineStatistic(String beginTime,String endTime){
 
         return null;
+    }
+
+    @RequestMapping(value = "exportExit")
+    @ResponseBody
+    public void  exportExit(Integer examineId){
+
     }
 
 }

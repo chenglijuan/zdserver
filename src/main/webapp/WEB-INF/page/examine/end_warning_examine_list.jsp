@@ -70,9 +70,11 @@
         padding: 0;
         overflow: visible;
     }
+
     #navbar_ul li {
         float: left;
     }
+
     #navbar_ul li a, .dropbtn {
         display: inline-block;
         color: #5e5e5e;
@@ -80,12 +82,15 @@
         padding: 14px 16px;
         text-decoration: none;
     }
+
     #navbar_ul li a:hover, .dropdown:hover .dropbtn {
         background-color: #1f75cf;
     }
+
     #navbar_ul li.dropdown {
         display: inline-block;
     }
+
     .dropdown-content {
         display: none;
         position: absolute;
@@ -93,6 +98,7 @@
         min-width: 220px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     }
+
     #navbar_ul .dropdown-content a {
 
         padding: 12px 16px;
@@ -100,10 +106,12 @@
         display: block;
         text-align: left;
     }
+
     #navbar_ul .dropdown-content a:hover {
         color: white;
         background-color: #1f75cf;
     }
+
     .show {
         display: block;
     }
@@ -158,10 +166,10 @@
                     <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
                                             href="javascript:void(0)"><i class="ti-menu"></i></a></li>
                     <%--<li class="nav-item hidden-sm-down">--%>
-                        <%--<form class="app-search p-l-20">--%>
-                            <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
-                                <%--class="ti-search"></i></a>--%>
-                        <%--</form>--%>
+                    <%--<form class="app-search p-l-20">--%>
+                    <%--<input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i--%>
+                    <%--class="ti-search"></i></a>--%>
+                    <%--</form>--%>
                     <%--</li>--%>
                 </ul>
                 <!-- ============================================================== -->
@@ -170,18 +178,35 @@
                 <ul class="navbar-nav my-lg-0" id="navbar_ul">
                     <li class="nav-item dropdown">
                         <a id="a" class="nav-link dropdown-toggle text-muted waves-effect waves-dark dropbtn" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="dropdownContent()">
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                           onclick="dropdownContent()">
                             <img src="<%=basePath%>assets/images/buling.png" alt="user" class="profile-pic m-r-5"/>
                             <span style="font-size:11px;position:absolute;left:33px;top:10px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;">
-                            <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="total_count"></span>
+                            <span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                  id="total_count"></span>
                             </span>&nbsp;
                         </a>
                         <div class="dropdown-content" id="dropdown-a">
-                            <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}">征地进入待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="start_count"></span></span></a>
-                            <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}">征地退出待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="end_count"></span></span></a>
-                            <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" id="navbar_tab">征地进入/退出待复审 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="again_examine_count"></span></span></a>
-                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1">尊老金城镇居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_town_count"></span></span></a>
-                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2">尊老金农村居民待处理 <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center" id="respect_country_count"></span></span></a>
+                            <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}">征地进入待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="start_count"></span></span></a>
+                            <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}">征地退出待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="end_count"></span></span></a>
+                            <a href="<%=basePath%>roster/examineListPage?loginId=${loginId}" id="navbar_tab">征地进入/退出待复审
+                                <span style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                        style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                        id="again_examine_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1">尊老金城镇居民待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="respect_town_count"></span></span></a>
+                            <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2">尊老金农村居民待处理 <span
+                                    style="font-size:11px;border-radius: 50%;height: 20px;width: 20px;display: inline-block;background: #f20c55;vertical-align: top;"><span
+                                    style="display: block;color: #FFFFFF;height: 20px;line-height: 20px;text-align: center"
+                                    id="respect_country_count"></span></span></a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -258,15 +283,19 @@
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村征地人员尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10"
+                                                           aria-hidden="true"></i>农村征地人员尊老金</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -274,10 +303,13 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
                             </li>
                         </ul>
                     </li>
@@ -607,6 +639,20 @@
                         </div>
                     </div>
                     <div class="form-inline" style="padding-top: 20px">
+                        <div class="col-md-6 form-inline">
+                            <label class="">退出类型：</label>
+                            <select class="form-control" id="exit_type_tab">
+                                <option value="">请选择</option>
+                                <option value="1">就业退出</option>
+                                <option value="2">并轨退出</option>
+                                <option value="3">5560退出</option>
+                                <option value="4">退休退出</option>
+                                <option value="5">死亡退出</option>
+                                <option value="6">其它退出</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-inline" style="padding-top: 20px">
                         <div class="col-md-12 form-inline">
                             <label class="">备注：</label>
                             <textarea class="form-control" id="remark_tab" cols="70" rows="3"></textarea>
@@ -619,7 +665,7 @@
                     通过
                 </button>
                 <%--<button type="button" class="btn btn-info" id="unSubmit">--%>
-                    <%--不通过--%>
+                <%--不通过--%>
                 <%--</button>--%>
                 <button type="button" class="btn btn-primary" id="daiding">
                     待定
@@ -929,7 +975,7 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" :row.status == 5 ? "进入待复审" :row.status == 6 ? "退出待复审" :row.status == 7 ? "进入待定" :row.status == 8 ? "退出待定" : "";
+                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" : row.status == 5 ? "进入待复审" : row.status == 6 ? "退出待复审" : row.status == 7 ? "进入待定" : row.status == 8 ? "退出待定" : "";
             }
         };
         var w = {
@@ -967,7 +1013,7 @@
         columns.push(w);
         var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/getExamineWillStop", {
-            "loginId":loginId,
+            "loginId": loginId,
             "name": name,
             "idCard": idCard,
             "house": house,
@@ -1094,10 +1140,10 @@
             } else if (object.isMove == 2) {
                 $("#isMove_tab").html("是");
             }
-            if (object.startTime != null){
+            if (object.startTime != null) {
                 $("#startTime_tab").val(fmtDate1(object.startTime));
             }
-            if (object.stopTime != null){
+            if (object.stopTime != null) {
                 $("#stopTime_tab").val(fmtDate1(object.stopTime));
             }
             $("#dtxsny_tab").val(object.dtxsny);
@@ -1105,21 +1151,21 @@
             $("#batch_tab").val(object.batch);
 
 
-            if(object.isInsured == 1){
+            if (object.isInsured == 1) {
                 $("#isInsured_tab").html("是");
-            }else if(object.isInsured == 2){
+            } else if (object.isInsured == 2) {
                 $("#isInsured_tab").html("否");
             }
-            if (object.unemployment == 1){
+            if (object.unemployment == 1) {
                 $("#unemployment_tab").html("领取失业金");
-            }else if (object.unemployment == 2){
+            } else if (object.unemployment == 2) {
                 $("#unemployment_tab").html("未领取失业金");
             }
 
-            if (object.unStart != null){
+            if (object.unStart != null) {
                 $("#unStart_tab").val(fmtDate1(object.unStart));
             }
-            if (object.unEnd != null){
+            if (object.unEnd != null) {
                 $("#unEnd_tab").val(fmtDate1(object.unEnd));
             }
             if (object.unemployment == 1) {
@@ -1128,43 +1174,56 @@
                 $("#unemploymentDom").css("display", "none");
             }
 
-            if (object.comping == 1){
+            if (object.comping == 1) {
                 $("#comping_tab").html("是");
-            }else if (object.comping == 2){
+            } else if (object.comping == 2) {
                 $("#comping_tab").html("否");
             }
-            if (object.changes == 1){
+            if (object.changes == 1) {
                 $("#changes_tab").html("迁出");
-            }else if (object.changes == 2){
+            } else if (object.changes == 2) {
                 $("#changes_tab").html("新增");
-            }else if (object.changes == 3){
+            } else if (object.changes == 3) {
                 $("#changes_tab").html("死亡");
+            }
+
+            if (object.exitType != null && object.exitType != "") {
+                $("#exit_type_tab").val(object.exitType);
             }
         })
 
         $("#examineModal").modal('toggle');
     }
 
-    $("#submit").on("click",function () {
-        var examineId = $("#examineId").val();
-        var loginId = $("#loginId").val();
-        var remark = $("#remark_tab").val();
-        $.post("<%=basePath%>examine/endExamine", {
-            "examineId": examineId,
-            "loginId":loginId,
-            "remark":remark
-        },function (data) {
-            if (data.code == 0) {
-                $("#examineModal").modal('toggle');
-                popup({type: "success", msg: "操作成功", delay: 1000});
-                selectStartWarning(1, 10);
-            } else {
-                popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
-            }
-        })
+    $("#submit").on("click", function () {
+
+        var exitType = $("#exit_type_tab").val();
+        if (exitType == null || exitType == ""){
+            popup({type: 'error', msg: "请选择退出类型", delay: 2000, bg: true, clickDomCancel: true});
+            return;
+        }
+        if (confirm("是否确认提交？")) {
+            var examineId = $("#examineId").val();
+            var loginId = $("#loginId").val();
+            var remark = $("#remark_tab").val();
+            $.post("<%=basePath%>examine/endExamine", {
+                "examineId": examineId,
+                "loginId": loginId,
+                "remark": remark,
+                "exitType":exitType
+            }, function (data) {
+                if (data.code == 0) {
+                    $("#examineModal").modal('toggle');
+                    popup({type: "success", msg: "操作成功", delay: 1000});
+                    selectStartWarning(1, 10);
+                } else {
+                    popup({type: 'error', msg: data.message, delay: 2000, bg: true, clickDomCancel: true});
+                }
+            })
+        }
     })
 
-    $("#daiding").on("click",function () {
+    $("#daiding").on("click", function () {
 
         $("#nextTimeModel").modal('show');
         $("#examineModal").modal('hide');
@@ -1174,12 +1233,16 @@
         if (confirm("是否确认提交？")) {
             var examineId = $("#examineId").val();
             var nextTime = $("#nextTime_tab").val();
-            if(nextTime == null || nextTime == ""){
+            if (nextTime == null || nextTime == "") {
                 popup({type: 'error', msg: "请选择下次预警时间", delay: 3000, bg: true, clickDomCancel: true});
                 return;
             }
 
-            $.post("<%=basePath%>examine/toDaiDing", {"examineId": examineId,"status":8,"nextTime":nextTime}, function (data) {
+            $.post("<%=basePath%>examine/toDaiDing", {
+                "examineId": examineId,
+                "status": 8,
+                "nextTime": nextTime
+            }, function (data) {
                 if (data.code == 0) {
                     $("#nextTimeModel").modal('hide');
                     popup({type: "success", msg: "操作成功", delay: 1000});
@@ -1193,15 +1256,15 @@
 </script>
 <script type="text/javascript">
     function dropdownContent() {
-        if ($("#dropdown-a").hasClass("show")){
+        if ($("#dropdown-a").hasClass("show")) {
             $("#dropdown-a").removeClass("show");
-        }else {
+        } else {
             $("#dropdown-a").addClass("show");
         }
     }
 
-    window.onclick = function(e) {
-        if ($("#dropdown-a").hasClass("show")){
+    window.onclick = function (e) {
+        if ($("#dropdown-a").hasClass("show")) {
             $("#dropdown-a").removeClass("show");
         }
     }
@@ -1211,9 +1274,9 @@
     });
     function getTotalCount() {
         var loginId = $("#loginId").val();
-        $.post("<%=basePath%>examine/getTotalCount",{"loginId":loginId},function (data) {
+        $.post("<%=basePath%>examine/getTotalCount", {"loginId": loginId}, function (data) {
 
-            if (data.code == 0){
+            if (data.code == 0) {
                 var json = data.data;
                 var startCount = json.startCount;
                 var endCount = json.endCount;
