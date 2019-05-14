@@ -251,7 +251,7 @@ public class ExamineController {
         examine.setState(5);
         if (status.intValue() == 4) {
             examine.setExitType(exitType);
-            examine.setOutTime(new Date());
+            examine.setExitTime(new Date());
         }
         examine.setIdCard(idCard);
         examine.setName(name);
@@ -478,7 +478,7 @@ public class ExamineController {
         examine.setTime(new Date());
         if (status.intValue() == 4) {
             examine.setExitType(exitType);
-            examine.setOutTime(new Date());
+            examine.setExitTime(new Date());
         }
         examineService.update(examine);
         Roster roster = rosterService.getByExamineId(examineId);
@@ -1208,7 +1208,7 @@ public class ExamineController {
                 }
                 examine.setTime4(new Date());
                 examine.setStatus(4);
-                examine.setOutTime(new Date());
+                examine.setExitTime(new Date());
                 examine.setExitType(exitType);
                 examineService.update(examine);
                 Roster roster = rosterService.getByExamineId(examineId);
@@ -1409,6 +1409,7 @@ public class ExamineController {
         XwpfTUtil xwpfTUtil = new XwpfTUtil();
         XWPFDocument doc = null;
         InputStream is = null;
+        FileOutputStream os = null;
         try {
 
             is = new FileInputStream(path);
@@ -1416,17 +1417,17 @@ public class ExamineController {
             xwpfTUtil.replaceInPara(doc, params);
 
             File dir = new File(request.getSession().getServletContext().getRealPath("/model/upload/"));
-            if (!dir.exists()) {// 判断文件目录是否存在
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
-            FileOutputStream os = new FileOutputStream(request.getSession().getServletContext().getRealPath("/model/upload/" + fileName + ".docx"));
+            os = new FileOutputStream(request.getSession().getServletContext().getRealPath("/model/upload/" + fileName + ".docx"));
             doc.write(os);
-            xwpfTUtil.close(is);
-            xwpfTUtil.close(os);
-            return "/model/upload/" + fileName + ".docx";
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+        } finally {
+            xwpfTUtil.close(is);
+            xwpfTUtil.close(os);
+            return "model/upload/" + fileName + ".docx";
         }
     }
 

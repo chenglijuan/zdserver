@@ -93,7 +93,15 @@ public class Examine {
 
     private Date inTime;
 
-    private Date outTime;
+    private Date exitTime;
+
+    public Date getExitTime() {
+        return exitTime;
+    }
+
+    public void setExitTime(Date exitTime) {
+        this.exitTime = exitTime;
+    }
 
     public Integer getExitType() {
         return exitType;
@@ -109,14 +117,6 @@ public class Examine {
 
     public void setInTime(Date inTime) {
         this.inTime = inTime;
-    }
-
-    public Date getOutTime() {
-        return outTime;
-    }
-
-    public void setOutTime(Date outTime) {
-        this.outTime = outTime;
     }
 
     public Date getNextOut() {

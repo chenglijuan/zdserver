@@ -1199,7 +1199,11 @@
 
         var exitType = $("#exit_type_tab").val();
         if (exitType == null || exitType == ""){
+            $("#examineModal").modal('hide');
             popup({type: 'error', msg: "请选择退出类型", delay: 2000, bg: true, clickDomCancel: true});
+            setTimeout(function () {
+                $("#examineModal").modal('show');
+            },2000)
             return;
         }
         if (confirm("是否确认提交？")) {

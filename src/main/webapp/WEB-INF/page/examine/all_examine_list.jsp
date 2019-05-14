@@ -586,6 +586,7 @@
 
 <script src="<%=basePath%>myjs/zepto.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
+<a href="http://localhost:8080/model/upload/8a43f07859a74f25b3e27f48013cf367.docx" id="temp_a"></a>
 <script>
     $(function () {
         selectRosterExamine(1, 10);
@@ -872,7 +873,12 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+
+                    if (row.status ==4){
+                        return "<a class='btn btn-info' style='color: #fff' onclick='exportExamine(" + row.id + ")'><span class='fa fa-download'></span> 退出通知单</a>";
+                    }else{
+                        return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+                    }
             }
         };
         columns.push(a);
@@ -1127,6 +1133,19 @@
                 $("#again_examine_count").html(againExamineCount);
             }
 
+        })
+    }
+    
+    function exportExamine(id) {
+
+        $.post("<%=basePath%>/examine/exportExit",{"examineId":id},function (data) {
+            if(data != null && data != ""){
+                $("#temp_a").attr("href","<%=basePath%>"+data);
+                popup({type: "load", msg: "正在生成文件，请稍后!", delay: 5000});
+                setTimeout(function () {
+                    $("#temp_a")[0].click();
+                },5000);
+            }
         })
     }
 </script>
