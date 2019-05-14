@@ -1393,6 +1393,14 @@ public class ExamineController {
         return null;
     }
 
+    /**
+     * 退出单导出
+     *
+     * @param examineId
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "exportExit")
     @ResponseBody
     public String exportExit(Integer examineId, HttpServletRequest request, HttpServletResponse response) {
@@ -1402,10 +1410,31 @@ public class ExamineController {
         String path = request.getSession().getServletContext().getRealPath("/model/农村征地人员社会救济金退出通知单.docx");
 
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("${name}", examine.getName());
-        params.put("${sex}", examine.getGender() == null ? "" : examine.getGender().intValue() == 1 ? "男" : "女");
-        params.put("${card}", examine.getIdCard());
+        params.put("name", examine.getName());
+        params.put("sex", examine.getGender() == null ? "" : examine.getGender().intValue() == 1 ? "男" : "女");
+        params.put("card", examine.getIdCard());
 
+
+        if (examine.getExitTime() != null) {
+            try {
+                params.put("year", DateUtil.formatDate(examine.getExitTime(), "yyyy"));
+                params.put("month", DateUtil.formatDate(examine.getExitTime(), "MM"));
+                params.put("day", DateUtil.formatDate(examine.getExitTime(), "dd"));
+                params.put("age", examine.getAge());
+                params.put("year1", DateUtil.formatDate(examine.getExitTime(), "yyyy"));
+                params.put("month1", DateUtil.formatDate(examine.getExitTime(), "MM"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            params.put("year2", DateUtil.formatDate(new Date(), "yyyy"));
+            params.put("month2", DateUtil.formatDate(new Date(), "MM"));
+            params.put("day2", DateUtil.formatDate(new Date(), "dd"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         XwpfTUtil xwpfTUtil = new XwpfTUtil();
         XWPFDocument doc = null;
         InputStream is = null;

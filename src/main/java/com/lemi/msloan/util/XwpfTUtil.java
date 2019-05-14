@@ -32,7 +32,6 @@ public class XwpfTUtil {
             para = iterator.next();
             this.replaceInPara(para, params);
         }
-
     }
 
     /**
@@ -42,48 +41,27 @@ public class XwpfTUtil {
      * @param params 参数
      */
     public void replaceInPara(XWPFParagraph para, Map<String, Object> params) {
+
         List<XWPFRun> runs;
         Matcher matcher;
-        if (this.matcher(para.getParagraphText()).find()) {
+        if (matcher(para.getParagraphText()).find()) {
             runs = para.getRuns();
-            int start = -1;
-            int end = -1;
-            String str = "";
-            for (int i = 0; i < runs.size(); i++) {
+            for (int i=0; i<runs.size(); i++) {
                 XWPFRun run = runs.get(i);
-                String runText = run.toString().trim();
-                if (!"".equals(runText)) {
-                    if ('$' == runText.charAt(0) && '{' == runText.charAt(1)) {
-                        start = i;
+                String runText = run.toString();
+                matcher = matcher(runText);
+                if (matcher.find()) {
+                    while ((matcher = this.matcher(runText)).find()) {
+                        runText = matcher.replaceFirst(String.valueOf(params.get(matcher.group(1))));
                     }
-                    if ((start != -1)) {
-                        str += runText;
-                    }
-                    if ('}' == runText.charAt(runText.length() - 1)) {
-                        if (start != -1) {
-                            end = i;
-                            break;
-                        }
-                    }
+                    para.removeRun(i);
+                    XWPFRun createRun = para.insertNewRun(i);
+                    createRun.setText(runText);
+                    createRun.setFontSize(16);
                 }
             }
-            if (start != -1) {
-                for (int i = start; i < end + 1; i++) {
-                    para.removeRun(start);
-                }
-                XWPFRun createRun = para.insertNewRun(start);
-                for (String key : params.keySet()) {
-                    if (str.equals(key)) {
-                        createRun.setText((String) params.get(key));
-                        createRun.setFontSize(16);
-                        createRun.addBreak();
-                        break;
-                    }
-                }
-            }
-
-
         }
+
     }
 
     /**
@@ -128,3 +106,4 @@ public class XwpfTUtil {
         }
     }
 }
+
