@@ -4,16 +4,17 @@ import com.lemi.msloan.entity.Community;
 import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.entity.User;
-import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.service.*;
-import com.lemi.msloan.util.DateUtil;
-import com.lemi.msloan.util.FileUtil;
-import com.lemi.msloan.util.PoiTest;
+import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.lang.reflect.Type;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2019/4/19.
@@ -244,7 +249,7 @@ public class ExamineController {
         examine.setRemark(remark);
         examine.setBatch(batch);
         examine.setState(5);
-        if (status.intValue() == 4){
+        if (status.intValue() == 4) {
             examine.setExitType(exitType);
             examine.setOutTime(new Date());
         }
@@ -340,7 +345,7 @@ public class ExamineController {
     @RequestMapping(value = "updateExamineById")
     @ResponseBody
     public ApiResult updateExamineById(Integer loginId, String phone, String unStart, String unEnd, Integer stopType, String stopReason, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, Integer isInsured, Integer unemployment, Integer comping, Integer changes, String remark, String batch, Integer state, String idCard,
-                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState,Integer exitType) {
+                                       String name, Integer gender, String birthday, String address, String village, Integer isMove, Integer communityId, String house, Integer status, String villageTime, Integer villageAge, Integer cdState, Integer exitType) {
         User user = userService.get(loginId);
         if (user != null) {
             if (user.getType().intValue() == 2) {
@@ -440,8 +445,8 @@ public class ExamineController {
                 return new ApiResult(false, "身份证号已存在", -1);
             }
         }
-        if (status.intValue() == 4){
-            if (exitType == null){
+        if (status.intValue() == 4) {
+            if (exitType == null) {
                 return new ApiResult(false, "请选择退出类型", -1);
             }
         }
@@ -471,7 +476,7 @@ public class ExamineController {
         examine.setVillageAge(villageAge);
         examine.setCdState(cdState);
         examine.setTime(new Date());
-        if (status.intValue() == 4){
+        if (status.intValue() == 4) {
             examine.setExitType(exitType);
             examine.setOutTime(new Date());
         }
@@ -835,13 +840,13 @@ public class ExamineController {
                             }
                             if ("开始发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date startTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
+                                    Date startTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
                                     temp.setStartTime(startTime);
                                 }
                             }
                             if ("停止发放时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date stopTime = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
+                                    Date stopTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
                                     temp.setStopTime(stopTime);
                                 }
                             }
@@ -875,13 +880,13 @@ public class ExamineController {
                             }
                             if ("领取失业金开始时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unStart = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
+                                    Date unStart = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
                                     temp.setUnStart(unStart);
                                 }
                             }
                             if ("领取失业金截止时间".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unEnd = DateUtil.getDateToString(cellData.trim()+"-01", "yyyy-MM-dd");
+                                    Date unEnd = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
                                     temp.setUnEnd(unEnd);
                                 }
                             }
@@ -1098,7 +1103,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "startExamine")
     @ResponseBody
-    public ApiResult startExamine(Integer loginId, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, String batch, Integer isInsured, Integer unemployment, String unStart, String unEnd, Integer comping, Integer changes,String remark) {
+    public ApiResult startExamine(Integer loginId, Integer examineId, String startTime, String stopTime, String dtxsny, String ffbj, String batch, Integer isInsured, Integer unemployment, String unStart, String unEnd, Integer comping, Integer changes, String remark) {
 
         if (examineId != null) {
             Examine examine = examineService.get(examineId);
@@ -1140,13 +1145,13 @@ public class ExamineController {
                     User user = userService.get(loginId);
                     if (user.getType() == 2) {
                         examine.setStatus(5);
-                        if (!StringUtils.isBlank(remark)){
+                        if (!StringUtils.isBlank(remark)) {
                             examine.setRemark1(remark);
                         }
                         examine.setTime1(new Date());
                         examineService.update(examine);
                     } else {
-                        if (!StringUtils.isBlank(remark)){
+                        if (!StringUtils.isBlank(remark)) {
                             examine.setRemark3(remark);
                         }
                         examine.setTime3(new Date());
@@ -1178,7 +1183,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "endExamine")
     @ResponseBody
-    public ApiResult endExamine(Integer examineId, Integer loginId,String remark,Integer exitType) {
+    public ApiResult endExamine(Integer examineId, Integer loginId, String remark, Integer exitType) {
 
         if (examineId == null) {
             return new ApiResult(false, "ID为空", -1);
@@ -1191,14 +1196,14 @@ public class ExamineController {
             User user = userService.get(loginId);
             if (user.getType() == 2) {
                 examine.setStatus(6);
-                if (!StringUtils.isBlank(remark)){
+                if (!StringUtils.isBlank(remark)) {
                     examine.setRemark2(remark);
                 }
                 examine.setTime2(new Date());
                 examine.setExitType(exitType);
                 examineService.update(examine);
             } else {
-                if (!StringUtils.isBlank(remark)){
+                if (!StringUtils.isBlank(remark)) {
                     examine.setRemark4(remark);
                 }
                 examine.setTime4(new Date());
@@ -1234,11 +1239,11 @@ public class ExamineController {
             return new ApiResult(false, "不存在", -1);
         }
         examine.setStatus(status);
-        if (!StringUtils.isBlank(nextTime)){
-            if (status.intValue() == 7){
-                examine.setNextTime(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
-            }else if (status.intValue() == 8){
-                examine.setNextOut(DateUtil.getDateToString(nextTime,"yyyy-MM-dd"));
+        if (!StringUtils.isBlank(nextTime)) {
+            if (status.intValue() == 7) {
+                examine.setNextTime(DateUtil.getDateToString(nextTime, "yyyy-MM-dd"));
+            } else if (status.intValue() == 8) {
+                examine.setNextOut(DateUtil.getDateToString(nextTime, "yyyy-MM-dd"));
             }
 
         }
@@ -1337,12 +1342,13 @@ public class ExamineController {
 
     /**
      * 查询待处理数量
+     *
      * @param loginId
      * @return
      */
     @RequestMapping(value = "getTotalCount")
     @ResponseBody
-    public ApiResult getTotalCount(Integer loginId){
+    public ApiResult getTotalCount(Integer loginId) {
         Integer communityId = null;
         User user = userService.get(loginId);
         if (user != null) {
@@ -1361,36 +1367,67 @@ public class ExamineController {
         //征地待复审的数量
         Integer againExamineCount = examineService.findAgainExamineCount(null, null, null, null, null, null, null, null, null, communityId);
         //尊老金城市待审核的数量
-        Integer respectTownCount = respectService.selectRemindRespectCount(communityId,1,1);
+        Integer respectTownCount = respectService.selectRemindRespectCount(communityId, 1, 1);
         //尊老金农村待审核的数量
-        Integer respectCountryCount = respectService.selectRemindRespectCount(communityId,2,1);
+        Integer respectCountryCount = respectService.selectRemindRespectCount(communityId, 2, 1);
 
 
         //长寿金待审核的数量
 //        Integer respectLongCount = respectService.selectRemindRespectCount(communityId,3,1);
 
-        Map<String,Integer> map = new HashMap();
+        Map<String, Integer> map = new HashMap();
 
-        map.put("startCount",startCount);
-        map.put("endCount",endCount);
-        map.put("respectTownCount",respectTownCount);
-        map.put("respectCountryCount",respectCountryCount);
-        map.put("againExamineCount",againExamineCount);
-        map.put("total",startCount+endCount+respectTownCount+respectCountryCount+againExamineCount);
+        map.put("startCount", startCount);
+        map.put("endCount", endCount);
+        map.put("respectTownCount", respectTownCount);
+        map.put("respectCountryCount", respectCountryCount);
+        map.put("againExamineCount", againExamineCount);
+        map.put("total", startCount + endCount + respectTownCount + respectCountryCount + againExamineCount);
         return new ApiResult(true, "查询成功", 0, map);
     }
 
     @RequestMapping(value = "getExamineStatistic")
     @ResponseBody
-    public ApiResult getExamineStatistic(String beginTime,String endTime){
+    public ApiResult getExamineStatistic(String beginTime, String endTime) {
 
         return null;
     }
 
     @RequestMapping(value = "exportExit")
     @ResponseBody
-    public void  exportExit(Integer examineId){
+    public String exportExit(Integer examineId, HttpServletRequest request, HttpServletResponse response) {
 
+        Examine examine = examineService.get(examineId);
+        String fileName = UUIDUtile.getUUID();
+        String path = request.getSession().getServletContext().getRealPath("/model/农村征地人员社会救济金退出通知单.docx");
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("${name}", examine.getName());
+        params.put("${sex}", examine.getGender() == null ? "" : examine.getGender().intValue() == 1 ? "男" : "女");
+        params.put("${card}", examine.getIdCard());
+
+        XwpfTUtil xwpfTUtil = new XwpfTUtil();
+        XWPFDocument doc = null;
+        InputStream is = null;
+        try {
+
+            is = new FileInputStream(path);
+            doc = new XWPFDocument(is);
+            xwpfTUtil.replaceInPara(doc, params);
+
+            File dir = new File(request.getSession().getServletContext().getRealPath("/model/upload/"));
+            if (!dir.exists()) {// 判断文件目录是否存在
+                dir.mkdirs();
+            }
+            FileOutputStream os = new FileOutputStream(request.getSession().getServletContext().getRealPath("/model/upload/" + fileName + ".docx"));
+            doc.write(os);
+            xwpfTUtil.close(is);
+            xwpfTUtil.close(os);
+            return "/model/upload/" + fileName + ".docx";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }
