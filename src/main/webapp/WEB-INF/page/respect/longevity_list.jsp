@@ -449,19 +449,14 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                var current = fmtmatDate(new Date());
-                var between = 0;
+                var desc = "-";
                 if(row.grantTime != null && row.grantTime != ""){
-                    between = getMonthBetween(fmtmatDate(row.grantTime),current);
+                    var current = fmtmatDate(new Date());
+                    if(!CompareDate(row.grantTime , current)){
+                        desc = getBetweenMonthStr(fmtmatDate(row.grantTime),current);
+                    }
                 }
-                var year = 0;
-                var month = 0;
-                if(between > 0){
-                    year =  Math.floor(between / 12);
-                    month = between % 12;
-                }
-                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
-                return between == 0 ? "-" : desc;
+                return desc;
             }
         };
         var i = {

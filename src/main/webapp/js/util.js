@@ -121,16 +121,20 @@ function setIssuStandard(age,roleType) {
 function getBetweenMonthStr(grantTime) {
 
     //起始发放时间是否大于当前时间
+    // var current = fmtmatDate(new Date());
+    // var between = getMonthBetween(fmtmatDate(grantTime),current);
+    // var year = 0;
+    // var month = 0;
+    // if(between > 0){
+    //     year =  Math.floor(between / 12);
+    //     month = between % 12;
+    // }
+    // var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
+    // return between == 0 ? "-" : desc;
+
     var current = fmtmatDate(new Date());
     var between = getMonthBetween(fmtmatDate(grantTime),current);
-    var year = 0;
-    var month = 0;
-    if(between > 0){
-        year =  Math.floor(between / 12);
-        month = between % 12;
-    }
-    var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
-    return between == 0 ? "-" : desc;
+    return between == 0 ? "-" : between+"月";
 }
 
 
