@@ -214,59 +214,27 @@
             <fieldset class="layui-elem-field layui-field-title">
                 <legend><span id="pageDesc"></span></legend>
             </fieldset>
-            <%-- <div class="row">
-                 <form class="form-inline">
-                     <div class="form-group col-md-3" style="margin-top: 20px">
-                         <label for="name">姓名：</label>
-                         <input type="text" class="form-control" id="name" placeholder="请输姓名">
-                     </div>
-                     <div class="form-group col-md-3" style="margin-top: 20px" id="changeStateDiv">
-                         <label for="changeState">变动情况：</label>
-                         <select class="form-control" id="changeState">
-                             <option selected value="">==请选择==</option>
-                             <option value="1">迁出</option>
-                             <option value="2">死亡</option>
-                         </select>
-                     </div>
-                     <div class="form-group col-md-3" style="margin-top: 20px" id="auditStateDiv">
-                         <label for="auditState">审核状态：</label>
-                         <select class="form-control" id="auditState">
-                             <option selected value="">==请选择==</option>
-                             <option value="1">待审核</option>
-                             <option value="2">通过</option>
-                             <option value="3">未通过</option>
-                         </select>
-                     </div>
-                     <div class="form-group col-md-3" style="margin-top: 20px;display: none" id="communityIdDiv">
-                         <label for="communityId">所属社区：</label>
-                         <select class="form-control" id="communityId">
-                             <option selected value="">==请选择==</option>
-                         </select>
-                     </div>
-                     <div class="form-group col-md-3" style="margin-top: 20px">
-                         <button type="button" class="btn btn-info" id="search">搜索</button>
-                         <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
-                     </div>
-                 </form>
-             </div>--%>
-
             <div class="row">
-                <!-- column -->
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="table-responsive">
-                            <table class="table" id="table">
-                            </table>
+                <form class="form-inline">
+                    <div class="form-group form-control-line">
+                        <label for="grantTimes">查询时间:</label>
+                        <input type="text" placeholder=""
+                               class="form-control col-md-8 date_picker"
+                               name="grantTimes" id="grantTimes" readonly="readonly">
+                        <div class="form-group " style="margin-top: 20px">
+                            <button type="button" class="btn btn-info" id="search">搜索</button>
+                            <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
                         </div>
                     </div>
-                </div>
+
+                </form>
             </div>
             <div class="row">
                 <!-- column -->
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="table-responsive">
-                            <table class="table" id="table1">
+                            <table class="table" id="table">
                             </table>
                         </div>
                     </div>
@@ -325,11 +293,14 @@
     $(function () {
         $("#headerpage").load("page/header");
         pageType = $("#pageType").val();
-        console.log("pageType="+pageType);
         initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
-
+        laydate.render({
+            elem: '#grantTimes'
+            ,type:'month'
+            ,range: true
+        });
     })
 
     function initDesc() {
@@ -347,7 +318,7 @@
                 selectExamine(1, pageSize);
             } else {
                 alert(data.message);
-                window.location.href = "../login/login.jsp";
+                window.location.href = "<%=basePath%>/user/userLoginPage";
             }
         });
     }
@@ -368,7 +339,6 @@
                 return row.communityName;
             }
         };
-
         var b = {
             field: 'summaryMonth',
             title: '发放年月',
@@ -389,7 +359,6 @@
                 return row.range1Count;
             }
         };
-
         var d = {
             field: 'range1Money',
             title: '发放金额（元）',
@@ -487,9 +456,9 @@
         $.post("<%=basePath%>respect/getRespectStatistic", {
             "pageNum": pageNum,
             "pageSize": pageSize,
-            //"communityId":communityId,
             "type": $("#pageType").val(),
-            "loginId": $("#loginId").val()
+            "loginId": $("#loginId").val(),
+            "grantTimes":$("#grantTimes").val()
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;

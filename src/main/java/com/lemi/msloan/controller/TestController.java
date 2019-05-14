@@ -158,7 +158,7 @@ public class TestController {
                             range4Money = range4Money.add(new BigDecimal(issuStandard));
                         }
                     }
-                    if(townList != null && townList.size() > 0){
+                   // if(townList != null && townList.size() > 0){
                         totalMoney = range2Money.add(range3Money).add(range4Money);
                         townStatistic.setRange1Count(range1Count);
                         townStatistic.setRange1Money(range1Money);
@@ -175,7 +175,7 @@ public class TestController {
                         townStatistic.setCommunityId(communityId);
                         townStatistic.setCommunityName(community.getName());
                         insertList.add(townStatistic);
-                    }
+                    //}
 
                     //农村
 
@@ -210,7 +210,7 @@ public class TestController {
                             range4Money = range4Money.add(new BigDecimal(issuStandard));
                         }
                     }
-                    if(countryList != null && countryList.size() > 0){
+                    //if(countryList != null && countryList.size() > 0){
                         totalMoney = range1Money.add(range2Money).add(range3Money).add(range4Money);
                         countryStatistic.setRange1Count(range1Count);
                         countryStatistic.setRange1Money(range1Money);
@@ -227,7 +227,7 @@ public class TestController {
                         countryStatistic.setCommunityId(communityId);
                         countryStatistic.setCommunityName(community.getName());
                         insertList.add(countryStatistic);
-                    }
+                   // }
                 }
                 if(insertList != null && insertList.size() > 0 ){
                     respectStatisticService.insertBatchData(insertList);

@@ -32,7 +32,8 @@ public class RespectTaskJob {
     @Autowired
     private RespectSummaryService respectSummaryService;
 
-    //@Scheduled(cron = "0 0 0 1/1 * ?") // 每天执行一次
+    //"0 15 10 L * ?"	每月最后一天10:15分运行。
+   // @Scheduled(cron = "0 15 10 L * ?") // 每天执行一次
     public void insertRespectSummary() {
         try {
             RespectRequest respectRequest = new RespectRequest();

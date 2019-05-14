@@ -139,7 +139,8 @@ public class RespectController {
     @RequestMapping(value = "respectStatistic")
     public ModelAndView respectStatistic(Integer loginId,Integer pageType) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/statistic/statistic_respect");
+        //modelAndView.setViewName("page/statistic/statistic_respect");
+        modelAndView.setViewName("page/statistic/respect_statistic");
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("pageType", pageType);
         return modelAndView;
@@ -895,8 +896,8 @@ public class RespectController {
     }
 
 
-    @RequestMapping(value = "getRespectStatistic")
-    @ResponseBody
+   /* @RequestMapping(value = "getRespectStatistic")
+    @ResponseBody*/
     public ApiResult getRespectSummary(Integer communityId,Integer type, HttpSession session,Integer pageSize,Integer pageNum) {
         try {
             String loginId = (String) session.getAttribute("loginId");
@@ -904,6 +905,52 @@ public class RespectController {
                 return new ApiResult(false, "登录用户异常", -1, null);
             }
             User user = userService.getByUserId(Integer.parseInt(loginId));
+            RespectRequest respectRequest = new RespectRequest();
+            // 1. 管理员  2. 社区管理员
+            if(user.getType().intValue() == 1){
+
+            }else if(user.getType().intValue() == 2){
+                communityId = user.getCommunityId();
+            }
+            respectRequest.setCommunityId(communityId);
+            respectRequest.setType(type);
+            respectRequest.setPager(pageNum, pageSize);
+            List<RespectStatistic> list = respectStatisticService.getRespectStatisticPager(respectRequest);
+            int count = respectStatisticService.getRespectStatisticCount(respectRequest);
+            Map<String, Object> map = new HashMap<>();
+            map.put("list", list);
+            map.put("count", count);
+            if (count > 0) {
+                Float totalPage = count * 1.0f / pageSize;
+                map.put("totalPage", Math.ceil(totalPage));
+            } else {
+                map.put("totalPage", 1);
+            }
+            return new ApiResult(true, "操作成功", 0, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1, null);
+        }
+    }
+
+    @RequestMapping(value = "getStatisticRespect")
+    @ResponseBody
+    public ApiResult getStatisticRespect(Integer communityId,Integer type,String grantTimes, HttpSession session,Integer pageSize,Integer pageNum) {
+        try {
+            String loginId = (String) session.getAttribute("loginId");
+            if(StringUtils.isBlank(loginId)){
+                return new ApiResult(false, "登录用户异常", -1, null);
+            }
+            User user = userService.getByUserId(Integer.parseInt(loginId));
+            List<String> months = new ArrayList<String>();
+            //查询近半年
+            if(StringUtils.isBlank(grantTimes)){
+                months =  DateUtil.getHalfLastMonth();
+            }else{
+
+            }
+
+
             RespectRequest respectRequest = new RespectRequest();
             // 1. 管理员  2. 社区管理员
             if(user.getType().intValue() == 1){
