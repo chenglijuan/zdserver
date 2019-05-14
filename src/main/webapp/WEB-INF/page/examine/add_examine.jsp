@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>新增征地人员社会救济金</title>
-        
-        
+
+        <title>新增征地人员社会救济金</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
     <!-- Favicon icon -->
@@ -579,6 +579,20 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group" id="exitTypeDom" style="display: none;">
+                                    <label class="col-sm-12"><span style="color: red">*</span>退出类型</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" id="exitType">
+                                            <option value="">请选择</option>
+                                            <option value="1">就业退出</option>
+                                            <option value="2">并轨退出</option>
+                                            <option value="3">5560退出</option>
+                                            <option value="4">退休退出</option>
+                                            <option value="5">死亡退出</option>
+                                            <option value="6">其它退出</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" id="stopTypeDom" style="display: none;">
                                     <label class="col-sm-12"><span style="color: red">*</span>暂停原因</label>
                                     <div class="col-sm-12">
@@ -756,6 +770,12 @@
             $("#stopTypeDom").css("display", "none");
             $("#stopReasonDom").css("display", "none");
         }
+
+        if (status == 4) {
+            $("#exitTypeDom").css("display", "block");
+        } else {
+            $("#exitTypeDom").css("display", "none");
+        }
     })
 
     $("#unemployment").on("change", function () {
@@ -772,7 +792,7 @@
     $("#submit").on("click", function () {
 
         if (confirm("是否确认提交？")){
-
+            var exitType = $("#exitType").val();
             var name = $("#name").val();
             var gender = $("#gender").val();
             var birthday = $("#birthday").val();
@@ -812,7 +832,14 @@
             if (unEnd!=null&&unEnd!=""){
                 unEnd = unEnd+"-01";
             }
+            if (status == 4){
+                if (exitType == null || exitType == ""){
+                    popup({type: 'error', msg: "请选择退出类型", delay: 2000, bg: true, clickDomCancel: true});
+                    return;
+                }
+            }
             $.post("<%=basePath%>examine/addExamine", {
+                "exitType":exitType,
                 "name": name,
                 "gender": gender,
                 "birthday": birthday,

@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>后台管理</title>
-        
-        
+
+        <title>后台管理</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
 
@@ -586,6 +586,7 @@
 
 <script src="<%=basePath%>myjs/zepto.min.js"></script>
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
+<a href="http://localhost:8080/model/upload/8a43f07859a74f25b3e27f48013cf367.docx" id="temp_a"></a>
 <script>
     $(function () {
         selectRosterExamine(1, 10);
@@ -872,7 +873,12 @@
             valign: 'middle',
             width: 240,
             formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+
+                    if (row.status ==4){
+                        return "<a class='btn btn-info' style='color: #fff' onclick='exportExamine(" + row.id + ")'><span class='fa fa-download'></span> 退出通知单</a>";
+                    }else{
+                        return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
+                    }
             }
         };
         columns.push(a);
@@ -1127,6 +1133,19 @@
                 $("#again_examine_count").html(againExamineCount);
             }
 
+        })
+    }
+    
+    function exportExamine(id) {
+
+        $.post("<%=basePath%>/examine/exportExit",{"examineId":id},function (data) {
+            if(data != null && data != ""){
+                $("#temp_a").attr("href","<%=basePath%>"+data);
+                popup({type: "load", msg: "正在生成文件，请稍后!", delay: 5000});
+                setTimeout(function () {
+                    $("#temp_a")[0].click();
+                },5000);
+            }
         })
     }
 </script>
