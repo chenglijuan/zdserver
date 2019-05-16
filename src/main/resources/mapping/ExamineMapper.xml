@@ -1019,4 +1019,40 @@
         FROM zd_examine
         WHERE status = 2
     </select>
+
+    <select id="getExitCountByCommunityId" parameterType="com.lemi.msloan.request.ExamineRequest" resultType="int">
+        SELECT
+        count(*)
+        FROM zd_examine
+        WHERE
+        status = 4
+        <if test="communityId != null">
+            AND community_id = #{communityId}
+        </if>
+        <if test="beginTime != null">
+            <![CDATA[  AND exit_time >= #{beginTime}]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[  AND exit_time <= #{endTime}]]>
+        </if>
+        <if test="exitType != null">
+            AND exit_type = #{exitType}
+        </if>
+    </select>
+    <select id="getAddedCountByCommunityId" parameterType="com.lemi.msloan.request.ExamineRequest" resultType="int">
+        SELECT
+        count(*)
+        FROM zd_examine
+        <where>
+            <if test="communityId != null">
+                AND community_id = #{communityId}
+            </if>
+            <if test="beginTime != null">
+                <![CDATA[  AND in_time >= #{beginTime}]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[  AND in_time <= #{endTime}]]>
+            </if>
+        </where>
+    </select>
 </mapper>

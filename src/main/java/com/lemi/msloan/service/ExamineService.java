@@ -30,4 +30,8 @@ public interface ExamineService extends BaseService<Examine> {
     Integer findUndeterminedExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId);
 
     List<Examine> getByStatus();
+
+    Integer getAddedCountByCommunityId(Integer communityId, String beginTime, String endTime);
+
+    Integer getExitCountByCommunityId(Integer communityId, String beginTime, String endTime, Integer exitType);
 }

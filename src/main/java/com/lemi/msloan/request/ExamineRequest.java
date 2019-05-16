@@ -1,5 +1,7 @@
 package com.lemi.msloan.request;
 
+import java.util.Date;
+
 public class ExamineRequest extends BaseRequest {
 
     private String idCard;
@@ -27,6 +29,36 @@ public class ExamineRequest extends BaseRequest {
     private String house;
 
     private Integer state;
+
+    private Date beginTime;
+
+    private Date endTime;
+
+    private Integer exitType;
+
+    public Integer getExitType() {
+        return exitType;
+    }
+
+    public void setExitType(Integer exitType) {
+        this.exitType = exitType;
+    }
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Integer getState() {
         return state;
