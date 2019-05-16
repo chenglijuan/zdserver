@@ -327,34 +327,6 @@
         selectExamine(1, 10);
     })
 
-
-    /*function selectExamine() {
-        $.post("<%=basePath%>respect/getStatisticRespect", {
-            "type": $("#pageType").val(),
-            "loginId": $("#loginId").val(),
-            "grantTimes":$("#grantTimes").val()
-        }, function (data) {
-            var list = data.data.statisticResults;
-            var month = data.data.months;
-            var columns = [];
-            /!*for (var i = 0; i < ; i++) {
-
-            }
-           *!/
-
-
-
-            $('#table').bootstrapTable('destroy').bootstrapTable({
-                data: list,
-                cache: false,
-                pagination: false,
-                fixedColumns: true,
-                fixedNumber: 3,
-                columns: columns
-            })
-        })
-    }*/
-
     function selectExamine() {
         $.post("<%=basePath%>respect/getStatisticRespect", {
             "type": $("#pageType").val(),
@@ -366,21 +338,26 @@
             var code = "<thead border='8'><tr ><th width='100px'>社区</th>";
             var length = month.length;
             for (var i = 0; i < length; i++) {
-                code += "<th colspan='2'>" + month[i].replace("-","") + "</th>";
+                code += "<th >" + month[i].replace("-","") + "</th>";
             }
+            code += "<th >合计</th>";
             code += "</tr></thead>";
             code += "<tbody>";
             for (var i = 0; i < list.length; i++) {
                 var community = list[i].community;
                 var statistic = list[i].respectStatisticList;
                 var statisticLength = statistic.length;
-
-               code += "<tr><td>" + community.name + "</td>";
-
+                var allMoney = 0;
+                var allCount= 0;
+                code += "<tr><td>" + community.name + "</td>";
                 for (var j = 0; j < statisticLength; j++) {
-                    code += "<td> "+statistic[j].totalCount+"（人）</td>";
-                    code += "<td> "+statistic[j].totalMoney+"（元）</td>";
+                    code += "<td> "+statistic[j].totalCount+"（人）";
+                    code += statistic[j].totalMoney+"（元）</td>";
+
+                    allMoney += statistic[j].totalMoney;
+                    allCount += statistic[j].totalCount;
                 }
+                code += "<td> "+allCount+"（人）"+allMoney+"（元）</td>";
             }
             code += "</tbody>";
             $("#table").html(code);
