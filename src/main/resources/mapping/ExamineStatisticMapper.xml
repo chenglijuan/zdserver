@@ -90,4 +90,38 @@
       time = #{time,jdbcType=DATE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getTotalMoneyByCommunity" parameterType="com.lemi.msloan.request.ExamineStatisticRequest" resultType="int">
+    SELECT 
+    sum(money)
+    FROM zd_examine_statistic
+    <where>
+      <if test="communityId != null">
+        AND community_id = #{communityId}
+      </if>
+      <if test="startDate != null">
+        <![CDATA[  AND time >= #{startDate}]]>
+      </if>
+      <if test="endDate != null">
+        <![CDATA[  AND time <= #{endDate}]]>
+      </if>
+    </where>
+  </select>
+  <select id="getTotalCountByCommunity" parameterType="com.lemi.msloan.request.ExamineStatisticRequest" resultType="int">
+    SELECT
+    count(*)
+    FROM zd_examine_statistic
+    <where>
+      <if test="communityId != null">
+        AND community_id = #{communityId}
+      </if>
+      <if test="startDate != null">
+        <![CDATA[  AND time >= #{startDate}]]>
+      </if>
+      <if test="endDate != null">
+        <![CDATA[  AND time <= #{endDate}]]>
+      </if>
+    </where>
+    GROUP BY examine_id
+  </select>
 </mapper>

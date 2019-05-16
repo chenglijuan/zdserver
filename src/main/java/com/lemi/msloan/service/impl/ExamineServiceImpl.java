@@ -4,10 +4,12 @@ import com.lemi.msloan.dao.ExamineDao;
 import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.request.ExamineRequest;
 import com.lemi.msloan.service.ExamineService;
+import com.lemi.msloan.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -426,5 +428,41 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     @Override
     public List<Examine> getByStatus() {
         return examineDao.getByStatus();
+    }
+
+    @Override
+    public Integer getAddedCountByCommunityId(Integer communityId, String beginTime, String endTime) {
+        ExamineRequest examineRequest = new ExamineRequest();
+
+        if (communityId != null){
+            examineRequest.setCommunityId(communityId);
+        }
+        if (!StringUtils.isBlank(beginTime)){
+            examineRequest.setBeginTime(DateUtil.getDateToString(beginTime,"yyyy-MM-dd"));
+        }
+        if (!StringUtils.isBlank(endTime)){
+            examineRequest.setEndTime(DateUtil.getDateToString(endTime,"yyyy-MM-dd"));
+        }
+
+        return examineDao.getAddedCountByCommunityId(examineRequest);
+    }
+
+    @Override
+    public Integer getExitCountByCommunityId(Integer communityId, String beginTime, String endTime, Integer exitType) {
+        ExamineRequest examineRequest = new ExamineRequest();
+
+        if (communityId != null){
+            examineRequest.setCommunityId(communityId);
+        }
+        if (!StringUtils.isBlank(beginTime)){
+            examineRequest.setBeginTime(DateUtil.getDateToString(beginTime,"yyyy-MM-dd"));
+        }
+        if (!StringUtils.isBlank(endTime)){
+            examineRequest.setEndTime(DateUtil.getDateToString(endTime,"yyyy-MM-dd"));
+        }
+        if (exitType != null){
+            examineRequest.setExitType(exitType);
+        }
+        return examineDao.getExitCountByCommunityId(examineRequest);
     }
 }

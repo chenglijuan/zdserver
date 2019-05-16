@@ -5,6 +5,9 @@ import com.lemi.msloan.entity.Examine;
 import com.lemi.msloan.entity.Roster;
 import com.lemi.msloan.entity.User;
 import com.lemi.msloan.response.ApiResult;
+import com.lemi.msloan.response.CommunityInfoResponse;
+import com.lemi.msloan.response.CommunityMoneyInfoResponse;
+import com.lemi.msloan.response.CommunityMoneyItemResponse;
 import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
@@ -13,8 +16,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2019/4/19.
@@ -56,6 +56,7 @@ public class ExamineController {
 
     @Autowired
     private ExamineStatisticService examineStatisticService;
+
 
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
@@ -1390,8 +1391,168 @@ public class ExamineController {
     @ResponseBody
     public ApiResult getExamineStatistic(String beginTime, String endTime) {
 
+
         return null;
     }
+
+
+    /**
+     * 增减明细查询
+     *
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping(value = "getCommunityInfo")
+    @ResponseBody
+    public ApiResult getCommunityInfo(String beginTime, String endTime) {
+        List<Community> communities = communityService.findAll();
+
+        Map<String, Object> map = new HashMap<>();
+
+        //新增人员
+        int added_total = 0;
+        //就业退出
+        int job_total = 0;
+        //并轨退出
+        int comping_total = 0;
+        //5560退出
+        int _total = 0;
+        //退休退出
+        int retire_total = 0;
+        //死亡退出
+        int death_total = 0;
+        //其它退出
+        int other_total = 0;
+
+        Integer exitType = null;
+
+        List<CommunityInfoResponse> list = new ArrayList<>();
+
+        for (Community community : communities) {
+            Integer communityId = community.getId();
+            //社区时间段内新增的人数
+            Integer added_count = examineService.getAddedCountByCommunityId(communityId, beginTime, endTime);
+            added_total += added_count;
+            //社区时间段内就业退出的人数
+            exitType = 1;
+            Integer job_count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            job_total += job_count;
+            //社区时间段内并轨退出的人数
+            exitType = 2;
+            Integer comping_count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            comping_total += comping_count;
+            //社区时间段内5560退出的人数
+            exitType = 3;
+            Integer _count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            _total += _count;
+            //社区时间段内退休退出的人数
+            exitType = 4;
+            Integer retire_count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            retire_total += retire_count;
+            //社区时间段内死亡退出的人数
+            exitType = 5;
+            Integer death_count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            death_total += death_count;
+            //社区时间段内其他退出的人数
+            exitType = 6;
+            Integer other_count = examineService.getExitCountByCommunityId(communityId, beginTime, endTime, exitType);
+            other_total += other_count;
+
+
+            CommunityInfoResponse communityInfoResponse = new CommunityInfoResponse();
+            communityInfoResponse.setCommunity(community);
+            communityInfoResponse.setAddedCount(added_count);
+            communityInfoResponse.setJobCount(job_count);
+            communityInfoResponse.setCompingCount(comping_count);
+            communityInfoResponse.set_count(_count);
+            communityInfoResponse.setRetireCount(retire_count);
+            communityInfoResponse.setDeathCount(death_count);
+            communityInfoResponse.setOtherCount(other_count);
+            list.add(communityInfoResponse);
+
+        }
+
+        map.put("list", list);
+        map.put("addedTotal", added_total);
+        map.put("jobTotal", job_total);
+        map.put("compingTotal", comping_total);
+        map.put("_total", _total);
+        map.put("retireTotal", retire_total);
+        map.put("deathTotal", death_total);
+        map.put("otherTotal", other_total);
+        return new ApiResult(true, "查询成功", 0, map);
+    }
+
+    /**
+     * 发放统计
+     *
+     * @param beginTime
+     * @param endTime
+     * @return
+     */
+    @RequestMapping(value = "getCommunityMoneyInfo")
+    @ResponseBody
+    public ApiResult getCommunityMoneyInfo(String beginTime, String endTime) {
+        List<CommunityMoneyInfoResponse> list = new ArrayList<>();
+        List<Community> communities = communityService.findAll();
+        try {
+            List<String> monthList = getMonthBetween(beginTime, endTime);
+            for (Community community : communities) {
+                Integer communityId = community.getId();
+                CommunityMoneyInfoResponse communityMoneyInfoResponse = new CommunityMoneyInfoResponse();
+                List<CommunityMoneyItemResponse> itemList = new ArrayList<>();
+                for (String month : monthList) {
+
+                    CommunityMoneyItemResponse communityMoneyItemResponse = new CommunityMoneyItemResponse();
+
+                    Map<String, String> dateItem = DateUtil.getFirstdayLastdayMonth(DateUtil.getDateToString(month + "-01", "yyyy-MM-dd"));
+                    String first = dateItem.get("first");
+                    String last = dateItem.get("last");
+                    Date startDate = DateUtil.getDateToString(first, "yyyy-MM-dd");
+                    Date endDate = DateUtil.getDateToString(last, "yyyy-MM-dd");
+//                    Integer total_money = examineStatisticService.getTotalMoneyByCommunity(communityId, startDate, endDate);
+                    Integer total_count = examineStatisticService.getTotalCountByCommunity(communityId, startDate, endDate);
+                    Integer total_money = total_count.intValue() * 180;
+                    communityMoneyItemResponse.setDate(month);
+                    communityMoneyItemResponse.setTotalCount(total_count);
+                    communityMoneyItemResponse.setTotalMoney(total_money);
+                    itemList.add(communityMoneyItemResponse);
+                }
+                communityMoneyInfoResponse.setCommunity(community);
+                communityMoneyInfoResponse.setList(itemList);
+                list.add(communityMoneyInfoResponse);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ApiResult(true, "查询成功", 0, list);
+    }
+
+
+    private static List<String> getMonthBetween(String beginTime, String endTime) throws ParseException {
+        ArrayList<String> result = new ArrayList<String>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");//格式化为年月
+
+        Calendar min = Calendar.getInstance();
+        Calendar max = Calendar.getInstance();
+
+        min.setTime(sdf.parse(beginTime));
+        min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+        max.setTime(sdf.parse(endTime));
+        max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+        Calendar curr = min;
+        while (curr.before(max)) {
+            result.add(sdf.format(curr.getTime()));
+            curr.add(Calendar.MONTH, 1);
+        }
+
+        return result;
+    }
+
 
     /**
      * 退出单导出
@@ -1458,6 +1619,21 @@ public class ExamineController {
             xwpfTUtil.close(os);
             return "model/upload/" + fileName + ".docx";
         }
+    }
+
+
+    /**
+     * 征地统计页面
+     *
+     * @param loginId
+     * @return
+     */
+    @RequestMapping(value = "examineStatisticPage")
+    public ModelAndView examineStatisticPage(Integer loginId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/statistic/examine_statistic");
+        modelAndView.addObject("loginId", loginId);
+        return modelAndView;
     }
 
 }
