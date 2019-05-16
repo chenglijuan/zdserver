@@ -368,7 +368,6 @@
                 return row.communityName;
             }
         };
-
         var b = {
             field: 'summaryMonth',
             title: '发放年月',
@@ -389,7 +388,6 @@
                 return row.range1Count;
             }
         };
-
         var d = {
             field: 'range1Money',
             title: '发放金额（元）',
@@ -484,7 +482,7 @@
         columns.push(j);
         columns.push(k);
 
-        $.post("<%=basePath%>respect/getRespectStatistic", {
+        $.post("<%=basePath%>respect/getStatistic", {
             "pageNum": pageNum,
             "pageSize": pageSize,
             //"communityId":communityId,

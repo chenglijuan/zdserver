@@ -11,6 +11,7 @@
     <result column="range2_count" property="range2Count" jdbcType="INTEGER" />
     <result column="range3_count" property="range3Count" jdbcType="INTEGER" />
     <result column="range4_count" property="range4Count" jdbcType="INTEGER" />
+    <result column="total_count" property="totalCount" jdbcType="INTEGER" />
     <result column="range1_money" property="range1Money" jdbcType="DECIMAL" />
     <result column="range2_money" property="range2Money" jdbcType="DECIMAL" />
     <result column="range3_money" property="range3Money" jdbcType="DECIMAL" />
@@ -20,7 +21,7 @@
   </resultMap>
   <sql id="Base_Column_List" >
     id, summary_month, create_time, community_id, type, range1_count, range2_count, range3_count, 
-    range4_count, range1_money, range2_money, range3_money, range4_money,total_money,community_name
+    range4_count, range1_money, range2_money, range3_money, range4_money,total_money,community_name,total_count
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -37,12 +38,12 @@
       community_id, type, range1_count, 
       range2_count, range3_count, range4_count, 
       range1_money, range2_money, range3_money, 
-      range4_money,total_money,community_name)
+      range4_money,total_money,community_name,total_count)
     values (#{id,jdbcType=INTEGER}, #{summaryMonth,jdbcType=DATE}, #{createTime,jdbcType=TIMESTAMP}, 
       #{communityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{range1Count,jdbcType=INTEGER}, 
       #{range2Count,jdbcType=INTEGER}, #{range3Count,jdbcType=INTEGER}, #{range4Count,jdbcType=INTEGER}, 
       #{range1Money,jdbcType=DECIMAL}, #{range2Money,jdbcType=DECIMAL}, #{range3Money,jdbcType=DECIMAL}, 
-      #{range4Money,jdbcType=DECIMAL},#{totalMoney,jdbcType=DECIMAL},#{communityName,jdbcType=VARCHAR})
+      #{range4Money,jdbcType=DECIMAL},#{totalMoney,jdbcType=DECIMAL},#{communityName,jdbcType=VARCHAR},#{totalCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.lemi.msloan.entity.RespectStatistic" >
     insert into zd_respect_statistic
@@ -92,6 +93,9 @@
       <if test="communityName != null" >
         community_name,
       </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -138,6 +142,9 @@
       </if>
       <if test="communityName != null" >
         #{communityName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -186,6 +193,9 @@
       <if test="communityName != null" >
         community_name = #{communityName,jdbcType=VARCHAR},
       </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -199,6 +209,7 @@
       range2_count = #{range2Count,jdbcType=INTEGER},
       range3_count = #{range3Count,jdbcType=INTEGER},
       range4_count = #{range4Count,jdbcType=INTEGER},
+      total_count = #{totalCount,jdbcType=INTEGER},
       range1_money = #{range1Money,jdbcType=DECIMAL},
       range2_money = #{range2Money,jdbcType=DECIMAL},
       range3_money = #{range3Money,jdbcType=DECIMAL},
@@ -213,13 +224,13 @@
   <insert id="insertBatchData" parameterType="java.util.List">
     insert into zd_respect_statistic ( summary_month, create_time,
     community_id, type, range1_count,range2_count, range3_count, range4_count,
-    range1_money, range2_money, range3_money,range4_money,total_money,community_name)
+    range1_money, range2_money, range3_money,range4_money,total_money,community_name,total_count)
     values
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.summaryMonth,jdbcType=DATE},#{item.createTime,jdbcType=TIMESTAMP},#{item.communityId,jdbcType=INTEGER},#{item.type,jdbcType=INTEGER},
       #{item.range1Count,jdbcType=INTEGER},#{item.range2Count,jdbcType=INTEGER},#{item.range3Count,jdbcType=INTEGER},#{item.range4Count,jdbcType=INTEGER},
       #{item.range1Money,jdbcType=DECIMAL},#{item.range2Money,jdbcType=DECIMAL},#{item.range3Money,jdbcType=DECIMAL},#{item.range4Money,jdbcType=DECIMAL},
-      #{item.totalMoney,jdbcType=DECIMAL},#{item.communityName,jdbcType=VARCHAR})
+      #{item.totalMoney,jdbcType=DECIMAL},#{item.communityName,jdbcType=VARCHAR},#{item.totalCount,jdbcType=INTEGER})
     </foreach>
   </insert>
   <select id="getRespectStatisticPager" parameterType="com.lemi.msloan.request.RespectRequest" resultMap="BaseResultMap">
@@ -253,5 +264,43 @@
         <![CDATA[  AND summary_month = #{birthdayBegin}]]>
       </if>
     </where>
+  </select>
+
+  <select id="getStatistic" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
+    select * from zd_respect_statistic
+    <where>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="beginTime != null">
+        <![CDATA[  AND summary_month >= #{beginTime}]]>
+      </if>
+      <if test="endTime != null">
+        <![CDATA[  AND summary_month <= #{endTime}]]>
+      </if>
+    </where>
+    order by summary_month
+  </select>
+
+  <select id="getStatisticByMonth" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
+    select * from zd_respect_statistic
+    <where>
+      <if test="type != null">
+        and type = #{type}
+      </if>
+      <if test="communityId != null">
+        and community_id = #{communityId}
+      </if>
+      <if test="beginTime != null">
+        <![CDATA[  AND summary_month >= #{beginTime}]]>
+      </if>
+      <if test="endTime != null">
+        <![CDATA[  AND summary_month <= #{endTime}]]>
+      </if>
+    </where>
+   limit 1
   </select>
 </mapper>

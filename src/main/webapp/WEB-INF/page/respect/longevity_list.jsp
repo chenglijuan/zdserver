@@ -466,7 +466,7 @@
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
-                return row.grantTime == null ? "-" : fmtDate(row.grantTime);
+                return row.grantTime == null ? "-" : fmtDate1(row.grantTime);
             }
         };
         var j = {
@@ -651,6 +651,14 @@
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
+    }
+
+    function fmtDate1(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月" ;
     }
 
     function updateExamineById(respectId) {

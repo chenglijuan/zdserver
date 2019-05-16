@@ -2,6 +2,7 @@ package com.lemi.msloan.service;
 
 import com.lemi.msloan.entity.RespectStatistic;
 import com.lemi.msloan.request.RespectRequest;
+import com.lemi.msloan.request.StatisticRequest;
 
 import java.util.List;
 
@@ -17,5 +18,8 @@ public interface RespectStatisticService extends BaseService<RespectStatistic> {
 
     int getRespectStatisticCount(RespectRequest request);
 
+    List<RespectStatistic> getStatistic(StatisticRequest request);
+
+    RespectStatistic getStatisticByMonth(StatisticRequest request);
 
 }

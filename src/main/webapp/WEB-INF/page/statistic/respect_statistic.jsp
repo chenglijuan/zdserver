@@ -305,9 +305,9 @@
 
     function initDesc() {
         if (pageType == 1) {
-            $("#pageDesc").append("城镇居民尊老金报表");
+            $("#pageDesc").append("城镇居民尊老金报表111");
         } else if (pageType == 2) {
-            $("#pageDesc").append("农村居民尊老金报表");
+            $("#pageDesc").append("农村居民尊老金报表111");
         }
     }
 
@@ -327,141 +327,22 @@
         selectExamine(1, 10);
     })
 
-    function selectExamine(pageNum, pageSize) {
-        var columns = [];
-        var a = {
-            field: 'communityName',
-            title: '社区名',
-            align: 'center',
-            valign: 'middle',
-            width: 90,
-            formatter: function (value, row, index) {
-                return row.communityName;
-            }
-        };
-        var b = {
-            field: 'summaryMonth',
-            title: '发放年月',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return fmtDate(value);
-            }
-        };
-        var c = {
-            field: 'range1Count',
-            title: '70-79(周岁)',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range1Count;
-            }
-        };
-        var d = {
-            field: 'range1Money',
-            title: '发放金额（元）',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range1Money;
-            }
-        };
-        var e = {
-            field: 'range2Count',
-            title: '80-89(周岁)',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range2Count;
-            }
-        };
-        var f = {
-            field: 'range2Money',
-            title: '发放金额（元）',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range2Money;
-            }
-        };
-        var g = {
-            field: 'range3Count',
-            title: '90-99(周岁)',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range3Count;
-            }
-        };
-        var h = {
-            field: 'range3Money',
-            title: '发放金额（元）',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range3Money;
-            }
-        };
-        var i = {
-            field: 'range4Count',
-            title: '100(周岁)或以上',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range4Count;
-            }
-        };
-        var j = {
-            field: 'range4Money',
-            title: '发放金额（元）',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.range4Money;
-            }
-        };
-        var k = {
-            field: 'totalMoney',
-            title: '总金额(元)',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.totalMoney;
-            }
-        };
-        columns.push(a);
-        columns.push(b);
-        if(pageType == 2){
-            columns.push(c);
-            columns.push(d);
-        }
-        columns.push(e);
-        columns.push(f);
-        columns.push(g);
-        columns.push(h);
-        columns.push(i);
-        columns.push(j);
-        columns.push(k);
 
-        $.post("<%=basePath%>respect/getRespectStatistic", {
-            "pageNum": pageNum,
-            "pageSize": pageSize,
+    /*function selectExamine() {
+        $.post("<%=basePath%>respect/getStatisticRespect", {
             "type": $("#pageType").val(),
             "loginId": $("#loginId").val(),
             "grantTimes":$("#grantTimes").val()
         }, function (data) {
-            var list = data.data.list;
-            var totalPage = data.data.totalPage;
+            var list = data.data.statisticResults;
+            var month = data.data.months;
+            var columns = [];
+            /!*for (var i = 0; i < ; i++) {
+
+            }
+           *!/
+
+
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
@@ -471,54 +352,40 @@
                 fixedNumber: 3,
                 columns: columns
             })
+        })
+    }*/
 
-            selectByPager(pageNum, totalPage);
+    function selectExamine() {
+        $.post("<%=basePath%>respect/getStatisticRespect", {
+            "type": $("#pageType").val(),
+            "loginId": $("#loginId").val(),
+            "grantTimes":$("#grantTimes").val()
+        }, function (data) {
+            var list = data.data.statisticResults;
+            var month = data.data.months;
+            var code = "<thead border='8'><tr ><th width='100px'>社区</th>";
+            var length = month.length;
+            for (var i = 0; i < length; i++) {
+                code += "<th colspan='2'>" + month[i].replace("-","") + "</th>";
+            }
+            code += "</tr></thead>";
+            code += "<tbody>";
+            for (var i = 0; i < list.length; i++) {
+                var community = list[i].community;
+                var statistic = list[i].respectStatisticList;
+                var statisticLength = statistic.length;
+
+               code += "<tr><td>" + community.name + "</td>";
+
+                for (var j = 0; j < statisticLength; j++) {
+                    code += "<td> "+statistic[j].totalCount+"（人）</td>";
+                    code += "<td> "+statistic[j].totalMoney+"（元）</td>";
+                }
+            }
+            code += "</tbody>";
+            $("#table").html(code);
         })
     }
-
-    function selectByPager(pageNum, totalPage) {
-        $('#pageLimit').bootstrapPaginator({
-            currentPage: pageNum,//当前的请求页面。
-            totalPages: totalPage,//一共多少页。
-            size: "normal",//应该是页眉的大小。
-            bootstrapMajorVersion: 3,//bootstrap的版本要求。
-            alignment: "right",
-            numberOfPages: pageSize,//一页列出多少数据。
-            itemTexts: function (type, page, current) {//如下的代码是将页眉显示的中文显示我们自定义的中文。
-                switch (type) {
-                    case "first":
-                        return "首页";
-                    case "prev":
-                        return "上一页";
-                    case "next":
-                        return "下一页";
-                    case "last":
-                        return "末页";
-                    case "page":
-                        return page;
-                }
-            },
-            onPageClicked: function (event, originalEvent, type, page) {
-                selectExamine(page, pageSize);
-            }
-
-        });
-    }
-
-    $("#addRespect").on("click", function () {
-        var pageType = $("#pageType").val();
-        window.location.href = "<%=basePath%>respect/addRespect?pageType=" + pageType + "&loginId=" + $("#loginId").val();
-    })
-
-    function fmtDate(birthday) {
-        var date = new Date(birthday);
-        var y = 1900 + date.getYear();
-        var m = "0" + (date.getMonth() + 1);
-        var d = "0" + date.getDate();
-        return y + "年" + m.substring(m.length - 2, m.length) + "月";
-    }
-
-
 </script>
 </body>
 </html>

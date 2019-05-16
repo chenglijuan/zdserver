@@ -119,6 +119,7 @@ public class TestController {
                 int range2Count = 0;
                 int range3Count = 0;
                 int range4Count = 0;
+                int totalCount = 0;
 
                 BigDecimal range1Money = new BigDecimal(0);
                 BigDecimal range2Money = new BigDecimal(0);
@@ -138,6 +139,7 @@ public class TestController {
                      range2Count = 0;
                      range3Count = 0;
                      range4Count = 0;
+                     totalCount = 0;
                      range1Money = new BigDecimal(0);
                      range2Money = new BigDecimal(0);
                      range3Money = new BigDecimal(0);
@@ -157,6 +159,7 @@ public class TestController {
                             range4Count++;
                             range4Money = range4Money.add(new BigDecimal(issuStandard));
                         }
+                        totalCount++;
                     }
                    // if(townList != null && townList.size() > 0){
                         totalMoney = range2Money.add(range3Money).add(range4Money);
@@ -168,6 +171,7 @@ public class TestController {
                         townStatistic.setRange3Money(range3Money);
                         townStatistic.setRange4Count(range4Count);
                         townStatistic.setRange4Money(range4Money);
+                        townStatistic.setTotalCount(totalCount);
                         townStatistic.setTotalMoney(totalMoney);
                         townStatistic.setType(1);
                         townStatistic.setCreateTime(current);
@@ -186,6 +190,7 @@ public class TestController {
                     range2Count = 0;
                     range3Count = 0;
                     range4Count = 0;
+                    totalCount = 0;
                     range1Money = new BigDecimal(0);
                     range2Money = new BigDecimal(0);
                     range3Money = new BigDecimal(0);
@@ -209,6 +214,7 @@ public class TestController {
                             range4Count++;
                             range4Money = range4Money.add(new BigDecimal(issuStandard));
                         }
+                        totalCount++;
                     }
                     //if(countryList != null && countryList.size() > 0){
                         totalMoney = range1Money.add(range2Money).add(range3Money).add(range4Money);
@@ -219,6 +225,7 @@ public class TestController {
                         countryStatistic.setRange3Count(range3Count);
                         countryStatistic.setRange3Money(range3Money);
                         countryStatistic.setRange4Count(range4Count);
+                        countryStatistic.setTotalCount(totalCount);
                         countryStatistic.setRange4Money(range4Money);
                         countryStatistic.setTotalMoney(totalMoney);
                         countryStatistic.setType(2);

@@ -3,6 +3,7 @@ package com.lemi.msloan.dao;
 import com.lemi.msloan.entity.Respect;
 import com.lemi.msloan.entity.RespectStatistic;
 import com.lemi.msloan.request.RespectRequest;
+import com.lemi.msloan.request.StatisticRequest;
 
 import java.util.List;
 
@@ -19,5 +20,9 @@ public interface RespectStatisticDao extends BaseDao<RespectStatistic> {
     int getRespectStatisticCount(RespectRequest request);
 
 
+    List<RespectStatistic> getStatistic(StatisticRequest request);
+
+
+    RespectStatistic getStatisticByMonth(StatisticRequest request);
 
 }

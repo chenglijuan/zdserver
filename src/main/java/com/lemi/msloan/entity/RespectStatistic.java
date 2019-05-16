@@ -22,6 +22,8 @@ public class RespectStatistic {
 
     private Integer range4Count;
 
+    private Integer totalCount;
+
     private BigDecimal range1Money;
 
     private BigDecimal range2Money;
@@ -152,5 +154,13 @@ public class RespectStatistic {
 
     public void setCommunityName(String communityName) {
         this.communityName = communityName;
+    }
+
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 }

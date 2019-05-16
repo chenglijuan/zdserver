@@ -3,6 +3,7 @@ package com.lemi.msloan.dao.impl;
 import com.lemi.msloan.dao.RespectStatisticDao;
 import com.lemi.msloan.entity.RespectStatistic;
 import com.lemi.msloan.request.RespectRequest;
+import com.lemi.msloan.request.StatisticRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +28,15 @@ public class RespectStatisticDaoImpl extends BaseDaoImpl<RespectStatistic> imple
     @Override
     public int getRespectStatisticCount(RespectRequest request) {
         return sqlSessionTemplate.selectOne("tbl_respectstatistic.getRespectStatisticCount",request);
+    }
+
+    @Override
+    public List<RespectStatistic> getStatistic(StatisticRequest request) {
+        return sqlSessionTemplate.selectList("tbl_respectstatistic.getStatistic",request);
+    }
+
+    @Override
+    public RespectStatistic getStatisticByMonth(StatisticRequest request) {
+        return sqlSessionTemplate.selectOne("tbl_respectstatistic.getStatisticByMonth",request);
     }
 }

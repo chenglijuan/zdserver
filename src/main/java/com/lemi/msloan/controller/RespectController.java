@@ -1,12 +1,11 @@
 package com.lemi.msloan.controller;
 
-import com.lemi.msloan.entity.AuditRemark;
-import com.lemi.msloan.entity.Respect;
-import com.lemi.msloan.entity.RespectStatistic;
-import com.lemi.msloan.entity.User;
+import com.lemi.msloan.entity.*;
 import com.lemi.msloan.request.RespectRequest;
+import com.lemi.msloan.request.StatisticRequest;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.response.RespectSummayResult;
+import com.lemi.msloan.response.StatisticResult;
 import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.*;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -57,14 +57,16 @@ public class RespectController {
     @Autowired
     private AuditRemarkService auditRemarkService;
 
+    @Autowired
+    private CommunityService communityService;
+
     /**
-     *
      * @param loginId
      * @param pageType 1. 城镇  2.农村
      * @return
      */
     @RequestMapping(value = "respectPager")
-    public ModelAndView respectPager(Integer loginId,Integer pageType,Integer dealAuditState) {
+    public ModelAndView respectPager(Integer loginId, Integer pageType, Integer dealAuditState) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/respect_list");
         modelAndView.addObject("loginId", loginId);
@@ -74,7 +76,7 @@ public class RespectController {
     }
 
     @RequestMapping(value = "addRespect")
-    public ModelAndView addRespect(Integer loginId,Integer pageType) {
+    public ModelAndView addRespect(Integer loginId, Integer pageType) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/add_respect");
         modelAndView.addObject("loginId", loginId);
@@ -83,7 +85,7 @@ public class RespectController {
     }
 
     @RequestMapping(value = "updateRespect")
-    public ModelAndView updateRespect(Integer respectId, Integer loginId,Integer pageType) {
+    public ModelAndView updateRespect(Integer respectId, Integer loginId, Integer pageType) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/update_respect");
         modelAndView.addObject("loginId", loginId);
@@ -110,7 +112,7 @@ public class RespectController {
     }
 
     @RequestMapping(value = "updateLongevity")
-    public ModelAndView updateLongevity(Integer loginId,Integer respectId) {
+    public ModelAndView updateLongevity(Integer loginId, Integer respectId) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/update_longevity");
         modelAndView.addObject("loginId", loginId);
@@ -119,7 +121,7 @@ public class RespectController {
     }
 
     @RequestMapping(value = "auditRespect")
-    public ModelAndView auditRespect(Integer loginId,Integer respectId,Integer pageType) {
+    public ModelAndView auditRespect(Integer loginId, Integer respectId, Integer pageType) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/respect/audit_respect");
         modelAndView.addObject("loginId", loginId);
@@ -137,7 +139,7 @@ public class RespectController {
     }
 
     @RequestMapping(value = "respectStatistic")
-    public ModelAndView respectStatistic(Integer loginId,Integer pageType) {
+    public ModelAndView respectStatistic(Integer loginId, Integer pageType) {
         ModelAndView modelAndView = new ModelAndView();
         //modelAndView.setViewName("page/statistic/statistic_respect");
         modelAndView.setViewName("page/statistic/respect_statistic");
@@ -190,7 +192,7 @@ public class RespectController {
             return new ApiResult(false, "登录用户异常", -1);
         }
         Respect idCardRespect = respectService.getDataByIdCard(idCard);
-        if(idCardRespect != null){
+        if (idCardRespect != null) {
             return new ApiResult(false, "身份证号码已经存在", -1);
         }
         try {
@@ -202,16 +204,16 @@ public class RespectController {
             respect.setHouse(house);
             respect.setBirthday(birthday);
             //街道 1  社区 2
-            if(user.getType().intValue() == 1){
+            if (user.getType().intValue() == 1) {
                 respect.setCommunityId(communityId);
                 respect.setCommunityName(communityName);
-            }else{
+            } else {
                 respect.setCommunityId(user.getCommunityId());
                 respect.setCommunityName(user.getCommunityName());
             }
             //respect.setDynamicYearMonth(dynamicYearMonth);
-            if(!StringUtils.isBlank(grantTime)){
-                respect.setGrantTime(grantTime+"-01");
+            if (!StringUtils.isBlank(grantTime)) {
+                respect.setGrantTime(grantTime + "-01");
             }
             respect.setPhone(phone);
             respect.setRemark(remark);
@@ -277,7 +279,7 @@ public class RespectController {
                 return new ApiResult(false, "记录不存在", -1);
             }
             Respect idCardRespect = respectService.getDataByIdCard(idCard);
-            if(idCardRespect != null && idCardRespect.getId().intValue() != respect.getId()){
+            if (idCardRespect != null && idCardRespect.getId().intValue() != respect.getId()) {
                 return new ApiResult(false, "身份证号码已经存在", -1);
             }
             respect.setIdCard(idCard);
@@ -287,18 +289,18 @@ public class RespectController {
             respect.setHouse(house);
             respect.setBirthday(birthday);
             //街道 1  社区 2
-            if(user.getType().intValue() == 1){
+            if (user.getType().intValue() == 1) {
                 respect.setCommunityId(communityId);
                 respect.setCommunityName(communityName);
-            }else{
+            } else {
                 respect.setCommunityId(user.getCommunityId());
                 respect.setCommunityName(user.getCommunityName());
             }
-           // respect.setDynamicYearMonth(dynamicYearMonth);
-            if(!StringUtils.isBlank(grantTime)){
-                if(grantTime.length()  < 10){
-                    respect.setGrantTime(grantTime +"-01");
-                }else{
+            // respect.setDynamicYearMonth(dynamicYearMonth);
+            if (!StringUtils.isBlank(grantTime)) {
+                if (grantTime.length() < 10) {
+                    respect.setGrantTime(grantTime + "-01");
+                } else {
                     respect.setGrantTime(grantTime);
                 }
             }
@@ -336,7 +338,7 @@ public class RespectController {
     @RequestMapping(value = "selectRespect")
     @ResponseBody
     public ApiResult selectRespect(String name, String idCard, Integer communityId, String phone, Integer pageNum, Integer pageSize,
-                                  Integer changeState, String grantTimes, Integer type,Integer auditState,Integer loginId) {
+                                   Integer changeState, String grantTimes, Integer type, Integer auditState, Integer loginId) {
         try {
             User user = userService.getByUserId(loginId);
             if (user == null) {
@@ -355,26 +357,26 @@ public class RespectController {
             respectRequest.setAuditState(auditState);
             if (!StringUtils.isBlank(grantTimes)) {
                 grantTimes = grantTimes.replaceAll(" ", "");
-                String beginTimes = grantTimes.substring(0, 7)+"-01";
-                String endTimes = grantTimes.substring(8, grantTimes.length())+"-01";
+                String beginTimes = grantTimes.substring(0, 7) + "-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length()) + "-01";
                 respectRequest.setGrantBeginTime(beginTimes);
                 respectRequest.setGrantEndTime(endTimes);
             }
             Date nowDate = new Date();
             //type 1 城镇  2.农村  type =3  查询长寿金  90岁 或者下个月90岁  4 已故人员名单  5查询全部
-            if(type != null && type.intValue() == 3){
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+            if (type != null && type.intValue() == 3) {
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 String birthdayEnd = DateUtil.getYearsbefore(nextMonth, 90);
                 respectRequest.setType(null);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setChangeState(changeState);
                 //respectRequest.setChangeState(1);
-            }else if (type != null && type.intValue() == 4){
+            } else if (type != null && type.intValue() == 4) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(2);
-            } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
+            } else if (type != null && (type.intValue() == 1 || type.intValue() == 2)) {
                 //大于70周岁都算 小于90
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
                 respectRequest.setBirthdayBegin(birthdayBegin);
@@ -382,14 +384,14 @@ public class RespectController {
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
                 //respectRequest.setChangeState(1);
-            }else if (type != null && type.intValue() == 5){
+            } else if (type != null && type.intValue() == 5) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(changeState);
             }
             //如果是社区管理员  只能查看 该社区的数据
-            if(user.getType().intValue() == 1){
+            if (user.getType().intValue() == 1) {
                 respectRequest.setCommunityId(communityId);
-            }else if(user.getType().intValue() == 2){
+            } else if (user.getType().intValue() == 2) {
                 respectRequest.setCommunityId(user.getCommunityId());
             }
             respectRequest.setPager(pageNum, pageSize);
@@ -441,7 +443,7 @@ public class RespectController {
      */
     @RequestMapping(value = "importRespect")
     @ResponseBody
-    public ApiResult importRespect(@RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session,Integer loginId) {
+    public ApiResult importRespect(@RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session, Integer loginId) {
         try {
             if (file == null) {
                 return new ApiResult(false, "请上传文件", -1, null);
@@ -599,14 +601,15 @@ public class RespectController {
 
     /**
      * 审核
+     *
      * @param respectId
      * @param remark
-     * @param state 2  通过  3 未通过
+     * @param state     2  通过  3 未通过
      * @return
      */
     @RequestMapping(value = "auditReaspectById")
     @ResponseBody
-    public ApiResult auditReaspectById(Integer respectId,String remark,Integer state,Integer loginId,Integer pageType) {
+    public ApiResult auditReaspectById(Integer respectId, String remark, Integer state, Integer loginId, Integer pageType) {
         try {
             User user = userService.getByUserId(loginId);
             if (user == null) {
@@ -635,13 +638,14 @@ public class RespectController {
 
     /**
      * 根据记录id获取审核记录
+     *
      * @param respectId
      * @param loginId
      * @return
      */
     @RequestMapping(value = "getRemarksByRespectId")
     @ResponseBody
-    public ApiResult getRemarksByRespectId(Integer respectId,Integer loginId) {
+    public ApiResult getRemarksByRespectId(Integer respectId, Integer loginId) {
         try {
             User user = userService.getByUserId(loginId);
             if (user == null) {
@@ -658,11 +662,12 @@ public class RespectController {
 
     /**
      * 导出
+     *
      * @param response
      */
     @RequestMapping(value = "exportRespect")
-    public void exportOrder(HttpServletResponse response,String name, String idCard, Integer communityId, String phone,
-                            Integer changeState, String grantTimes, Integer type,Integer auditState,Integer loginId) {
+    public void exportOrder(HttpServletResponse response, String name, String idCard, Integer communityId, String phone,
+                            Integer changeState, String grantTimes, Integer type, Integer auditState, Integer loginId) {
         try {
             User user = userService.getByUserId(loginId);
             if (user == null) {
@@ -686,26 +691,26 @@ public class RespectController {
             if (!StringUtils.isBlank(grantTimes)) {
                 grantTimes = new String(grantTimes.getBytes("ISO-8859-1"), "UTF-8");
                 grantTimes = grantTimes.replaceAll(" ", "");
-                String beginTimes = grantTimes.substring(0, 7)+"-01";
-                String endTimes = grantTimes.substring(8, grantTimes.length())+"-01";
+                String beginTimes = grantTimes.substring(0, 7) + "-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length()) + "-01";
                 respectRequest.setGrantBeginTime(beginTimes);
                 respectRequest.setGrantEndTime(endTimes);
             }
             Date nowDate = new Date();
             //type 1 城镇  2.农村  type =3  查询长寿金  90岁 或者下个月90岁  4 已故人员名单  5查询全部
-            if(type != null && type.intValue() == 3){
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+            if (type != null && type.intValue() == 3) {
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 String birthdayEnd = DateUtil.getYearsbefore(nextMonth, 90);
                 respectRequest.setType(null);
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setChangeState(changeState);
                 //respectRequest.setChangeState(1);
-            }else if (type != null && type.intValue() == 4){
+            } else if (type != null && type.intValue() == 4) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(2);
-            } else if(type != null && (type.intValue() == 1 || type.intValue() == 2)){
+            } else if (type != null && (type.intValue() == 1 || type.intValue() == 2)) {
                 //大于70周岁都算 小于90
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate,1);
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
                 respectRequest.setBirthdayBegin(birthdayBegin);
@@ -713,14 +718,14 @@ public class RespectController {
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
                 //respectRequest.setChangeState(1);
-            }else if (type != null && type.intValue() == 5){
+            } else if (type != null && type.intValue() == 5) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(changeState);
             }
             //如果是社区管理员  只能查看 该社区的数据
-            if(user.getType().intValue() == 1){
+            if (user.getType().intValue() == 1) {
                 respectRequest.setCommunityId(communityId);
-            }else if(user.getType().intValue() == 2){
+            } else if (user.getType().intValue() == 2) {
                 respectRequest.setCommunityId(user.getCommunityId());
             }
             List<Respect> list = respectService.selectRespectPager(respectRequest);
@@ -788,9 +793,9 @@ public class RespectController {
                     strings.add("");
                 }
                 //联系方式
-                if(!StringUtils.isBlank(respect.getPhone())){
+                if (!StringUtils.isBlank(respect.getPhone())) {
                     strings.add(respect.getPhone());
-                }else{
+                } else {
                     strings.add("");
                 }
                 //类型1.城镇 2.农村
@@ -806,38 +811,38 @@ public class RespectController {
                     strings.add("");
                 }
                 //现户籍所在地
-                if(!StringUtils.isBlank(respect.getHouse())){
+                if (!StringUtils.isBlank(respect.getHouse())) {
                     strings.add(respect.getHouse());
-                }else{
+                } else {
                     strings.add("");
                 }
                 //社区名称
-                if(!StringUtils.isBlank(respect.getCommunityName())){
+                if (!StringUtils.isBlank(respect.getCommunityName())) {
                     strings.add(respect.getCommunityName());
-                }else{
+                } else {
                     strings.add("");
                 }
                 //动态享受年月
-                if(!StringUtils.isBlank(respect.getGrantTime())){
+                if (!StringUtils.isBlank(respect.getGrantTime())) {
                     String end = respect.getGrantTime();
                     Date current = new Date();
-                    int betweenMonth = DateUtil.getMonthBetween(sdf.parse(end),current);
+                    int betweenMonth = DateUtil.getMonthBetween(sdf.parse(end), current);
                     /*int year = betweenMonth / 12;
                     int month = betweenMonth % 12;*/
-                    strings.add( betweenMonth +"月");
-                }else{
+                    strings.add(betweenMonth + "月");
+                } else {
                     strings.add("");
                 }
                 //起始发放时间
-                if(!StringUtils.isBlank(respect.getGrantTime())){
+                if (!StringUtils.isBlank(respect.getGrantTime())) {
                     strings.add(respect.getGrantTime());
-                }else{
+                } else {
                     strings.add("");
                 }
-                if(respectAge > 0 && respect.getType() != null){
-                    strings.add(AgeUtils.getIssuStandard(respectAge,respect.getType())+"");
-                }else{
-                    strings.add(0+"");
+                if (respectAge > 0 && respect.getType() != null) {
+                    strings.add(AgeUtils.getIssuStandard(respectAge, respect.getType()) + "");
+                } else {
+                    strings.add(0 + "");
                 }
                 //审核状态 1.待审核2.审核通过 3.审核未通过
                 if (respect.getAuditState() != null) {
@@ -845,7 +850,7 @@ public class RespectController {
                         strings.add("待审核");
                     } else if (respect.getAuditState().intValue() == 2) {
                         strings.add("审核通过");
-                    }else if (respect.getAuditState().intValue() == 3) {
+                    } else if (respect.getAuditState().intValue() == 3) {
                         strings.add("审核未通过");
                     } else {
                         strings.add("");
@@ -896,20 +901,20 @@ public class RespectController {
     }
 
 
-   /* @RequestMapping(value = "getRespectStatistic")
-    @ResponseBody*/
-    public ApiResult getRespectSummary(Integer communityId,Integer type, HttpSession session,Integer pageSize,Integer pageNum) {
+    /* @RequestMapping(value = "getRespectSummary")
+     @ResponseBody*/
+    public ApiResult getRespectSummary(Integer communityId, Integer type, HttpSession session, Integer pageSize, Integer pageNum) {
         try {
             String loginId = (String) session.getAttribute("loginId");
-            if(StringUtils.isBlank(loginId)){
+            if (StringUtils.isBlank(loginId)) {
                 return new ApiResult(false, "登录用户异常", -1, null);
             }
             User user = userService.getByUserId(Integer.parseInt(loginId));
             RespectRequest respectRequest = new RespectRequest();
             // 1. 管理员  2. 社区管理员
-            if(user.getType().intValue() == 1){
+            if (user.getType().intValue() == 1) {
 
-            }else if(user.getType().intValue() == 2){
+            } else if (user.getType().intValue() == 2) {
                 communityId = user.getCommunityId();
             }
             respectRequest.setCommunityId(communityId);
@@ -935,44 +940,60 @@ public class RespectController {
 
     @RequestMapping(value = "getStatisticRespect")
     @ResponseBody
-    public ApiResult getStatisticRespect(Integer communityId,Integer type,String grantTimes, HttpSession session,Integer pageSize,Integer pageNum) {
+    public ApiResult getStatisticRespect(Integer type, String grantTimes, HttpSession session) {
         try {
             String loginId = (String) session.getAttribute("loginId");
-            if(StringUtils.isBlank(loginId)){
+            if (StringUtils.isBlank(loginId)) {
                 return new ApiResult(false, "登录用户异常", -1, null);
             }
+            System.out.println("grantTimes=" + grantTimes);
             User user = userService.getByUserId(Integer.parseInt(loginId));
             List<String> months = new ArrayList<String>();
             //查询近半年
-            if(StringUtils.isBlank(grantTimes)){
-                months =  DateUtil.getHalfLastMonth();
-            }else{
-
-            }
-
-
-            RespectRequest respectRequest = new RespectRequest();
-            // 1. 管理员  2. 社区管理员
-            if(user.getType().intValue() == 1){
-
-            }else if(user.getType().intValue() == 2){
-                communityId = user.getCommunityId();
-            }
-            respectRequest.setCommunityId(communityId);
-            respectRequest.setType(type);
-            respectRequest.setPager(pageNum, pageSize);
-            List<RespectStatistic> list = respectStatisticService.getRespectStatisticPager(respectRequest);
-            int count = respectStatisticService.getRespectStatisticCount(respectRequest);
-            Map<String, Object> map = new HashMap<>();
-            map.put("list", list);
-            map.put("count", count);
-            if (count > 0) {
-                Float totalPage = count * 1.0f / pageSize;
-                map.put("totalPage", Math.ceil(totalPage));
+            if (StringUtils.isBlank(grantTimes)) {
+                months = DateUtil.getHalfLastMonth();
             } else {
-                map.put("totalPage", 1);
+                grantTimes = grantTimes.replaceAll(" ", "");
+                String beginTimes = grantTimes.substring(0, 7) + "-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length()) + "-31";
+                months = DateUtil.getMonthListBetween(beginTimes,endTimes);
             }
-            return new ApiResult(true, "操作成功", 0, map);
+            List<Community> communityIds = new ArrayList<Community>();
+            if (user.getType().intValue() == 1) {
+                communityIds = communityService.findAll();
+            } else if (user.getType().intValue() == 2) {
+                //communityIds.add(user.getCommunityId());
+                //如果是管理员查询所有的社区的数据
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            StatisticRequest request = new StatisticRequest();
+            List<StatisticResult> statisticResults = new ArrayList<StatisticResult>();
+            for (Community community: communityIds) {
+                StatisticResult statisticResult = new StatisticResult();
+                statisticResult.setCommunity(community);
+                List<RespectStatistic> statistics = new ArrayList<RespectStatistic>();
+                //查询
+                for (String month:months) {
+                    request.setCommunityId(community.getId());
+                    request.setType(type);
+                    request.setBeginTime(month+"-01");
+                    request.setEndTime(month+"-31");
+                    RespectStatistic monthStatistic = respectStatisticService.getStatisticByMonth(request);
+                    if(monthStatistic == null){
+                        monthStatistic = new RespectStatistic();
+                        monthStatistic.setTotalCount(0);
+                        monthStatistic.setTotalMoney(new BigDecimal(0));
+                        monthStatistic.setSummaryMonth(sdf.parse(month+"-01"));
+                    }
+                    statistics.add(monthStatistic);
+                }
+                statisticResult.setRespectStatisticList(statistics);
+                statisticResults.add(statisticResult);
+            }
+            Map<String,Object> result = new HashMap<String,Object>();
+            result.put("statisticResults",statisticResults);
+            result.put("months",months);
+            return new ApiResult(true, "操作成功", 0, result);
         } catch (Exception e) {
             e.printStackTrace();
             return new ApiResult(false, "操作失败", -1, null);
