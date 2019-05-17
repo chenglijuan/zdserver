@@ -167,6 +167,26 @@
                     <li>
                         <a class="waves-effect"><i
                                 class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>账号设置</a>
                         <ul>
                             <li>
@@ -176,21 +196,6 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="waves-effect"><i
-                                class="fa fa-address-card m-r-10"
-                                aria-hidden="true"></i>报表分析</a>
-                        <ul>
-                            <li>
-                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
-                            </li>
-                            <li>
-                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
-                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
                             </li>
                         </ul>
                     </li>
