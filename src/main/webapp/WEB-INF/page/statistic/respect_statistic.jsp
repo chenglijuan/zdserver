@@ -310,9 +310,9 @@
 
     function initDesc() {
         if (pageType == 1) {
-            $("#pageDesc").append("城镇居民尊老金报表111");
+            $("#pageDesc").append("城镇居民尊老金报表");
         } else if (pageType == 2) {
-            $("#pageDesc").append("农村居民尊老金报表111");
+            $("#pageDesc").append("农村居民尊老金报表");
         }
     }
 
