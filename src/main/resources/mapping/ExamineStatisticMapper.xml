@@ -122,6 +122,6 @@
         <![CDATA[  AND time <= #{endDate}]]>
       </if>
     </where>
-    GROUP BY examine_id
+--     GROUP BY examine_id
   </select>
 </mapper>
