@@ -25,4 +25,6 @@ public interface RespectStatisticDao extends BaseDao<RespectStatistic> {
 
     RespectStatistic getStatisticByMonth(StatisticRequest request);
 
+    RespectStatistic getSumStatistics(StatisticRequest request);
+
 }

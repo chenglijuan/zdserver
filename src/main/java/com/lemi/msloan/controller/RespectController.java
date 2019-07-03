@@ -498,10 +498,10 @@ public class RespectController {
                                     }
                                 }
                             }
-                            if ("出生年月".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim()))
-                                    temp.setBirthday(cellData.trim());
-                            }
+//                            if ("出生年月".equals(cloumns[j])) {
+//                                if (!StringUtils.isBlank(cellData.trim()))
+//                                    temp.setBirthday(cellData.trim());
+//                            }
                             if ("身份证号".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
                                     temp.setIdCard(cellData.trim());
@@ -525,6 +525,9 @@ public class RespectController {
                     }
                 }
             }
+            String year = "";
+            String month = "";
+            String day = "";
             if (respects != null && respects.size() > 0) {
                 Date current = new Date();
                 List<Respect> saveRespects = new ArrayList<Respect>();
@@ -548,6 +551,13 @@ public class RespectController {
                         respect.setType(1);
                     }
                     idCards.add(idCard);
+
+                    year = idCard.substring(6, 10);
+                    month = idCard.substring(10, 12);
+                    day = idCard.substring(12, 14);
+
+                    respect.setBirthday(year + "-" + month + "-" + day);
+
                     respect.setAuditState(1);
                     respect.setCreateTime(current);
                     respect.setCommunityName(user.getCommunityName());
@@ -946,7 +956,7 @@ public class RespectController {
             if (StringUtils.isBlank(loginId)) {
                 return new ApiResult(false, "登录用户异常", -1, null);
             }
-            System.out.println("grantTimes=" + grantTimes);
+            //System.out.println("grantTimes=" + grantTimes);
             User user = userService.getByUserId(Integer.parseInt(loginId));
             List<String> months = new ArrayList<String>();
             //查询近半年
@@ -956,7 +966,7 @@ public class RespectController {
                 grantTimes = grantTimes.replaceAll(" ", "");
                 String beginTimes = grantTimes.substring(0, 7) + "-01";
                 String endTimes = grantTimes.substring(8, grantTimes.length()) + "-31";
-                months = DateUtil.getMonthListBetween(beginTimes,endTimes);
+                months = DateUtil.getMonthListBetween(beginTimes, endTimes);
             }
             List<Community> communityIds = new ArrayList<Community>();
             if (user.getType().intValue() == 1) {
@@ -968,31 +978,31 @@ public class RespectController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             StatisticRequest request = new StatisticRequest();
             List<StatisticResult> statisticResults = new ArrayList<StatisticResult>();
-            for (Community community: communityIds) {
+            for (Community community : communityIds) {
                 StatisticResult statisticResult = new StatisticResult();
                 statisticResult.setCommunity(community);
                 List<RespectStatistic> statistics = new ArrayList<RespectStatistic>();
                 //查询
-                for (String month:months) {
+                for (String month : months) {
                     request.setCommunityId(community.getId());
                     request.setType(type);
-                    request.setBeginTime(month+"-01");
-                    request.setEndTime(month+"-31");
+                    request.setBeginTime(month + "-01");
+                    request.setEndTime(month + "-31");
                     RespectStatistic monthStatistic = respectStatisticService.getStatisticByMonth(request);
-                    if(monthStatistic == null){
+                    if (monthStatistic == null) {
                         monthStatistic = new RespectStatistic();
                         monthStatistic.setTotalCount(0);
                         monthStatistic.setTotalMoney(new BigDecimal(0));
-                        monthStatistic.setSummaryMonth(sdf.parse(month+"-01"));
+                        monthStatistic.setSummaryMonth(sdf.parse(month + "-01"));
                     }
                     statistics.add(monthStatistic);
                 }
                 statisticResult.setRespectStatisticList(statistics);
                 statisticResults.add(statisticResult);
             }
-            Map<String,Object> result = new HashMap<String,Object>();
-            result.put("statisticResults",statisticResults);
-            result.put("months",months);
+            Map<String, Object> result = new HashMap<String, Object>();
+            result.put("statisticResults", statisticResults);
+            result.put("months", months);
             return new ApiResult(true, "操作成功", 0, result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -1000,5 +1010,137 @@ public class RespectController {
         }
     }
 
+    @RequestMapping(value = "exportStatistic")
+    public void exportStatistic(HttpServletResponse response, String grantTimes, Integer loginId,Integer type) {
+        try {
+            User user = userService.getByUserId(loginId);
+            if (user == null) {
+                return;
+            }
+            String str = "";
+            // 1 城镇  2 农村
+            if(type.intValue() == 1){
+                str = "城镇居民尊老金报表";
+            }else{
+                str = "农村居民尊老金报表";
+            }
+            List<String> months = new ArrayList<String>();
+            //查询近半年
+            if (StringUtils.isBlank(grantTimes)) {
+                months = DateUtil.getHalfLastMonth();
+            } else {
+                grantTimes = grantTimes.replaceAll(" ", "");
+                String beginTimes = grantTimes.substring(0, 7) + "-01";
+                String endTimes = grantTimes.substring(8, grantTimes.length()) + "-31";
+                months = DateUtil.getMonthListBetween(beginTimes, endTimes);
+            }
+            List<RespectStatistic> list = new ArrayList<RespectStatistic>();
+            StatisticRequest request = new StatisticRequest();
+            if (user.getType().intValue() == 2) {
+                //如果是管理员查询所有的社区的数据
+                request.setCommunityId(user.getCommunityId());
+            }
+
+            Integer count1 = 0;
+            Integer count2 = 0;
+            Integer count3 = 0;
+            Integer count4 = 0;
+            Integer totalCount = 0;
+            BigDecimal totalMoney = new BigDecimal(0);
+           // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            for (String month : months) {
+                request.setType(type);
+                request.setBeginTime(month + "-01");
+                request.setEndTime(month + "-31");
+                RespectStatistic monthStatistic = respectStatisticService.getSumStatistics(request);
+                if (monthStatistic == null) {
+                    monthStatistic = new RespectStatistic();
+                    monthStatistic.setTotalCount(0);
+                    monthStatistic.setTotalMoney(new BigDecimal(0));
+                    //monthStatistic.setSummaryMonth(sdf.parse(month + "-01"));
+                }
+                count1 = count1 + (monthStatistic.getRange1Count() == null ? 0 : monthStatistic.getRange1Count());
+                count2 = count2 + (monthStatistic.getRange2Count() == null ? 0 : monthStatistic.getRange2Count());
+                count3 = count3 + (monthStatistic.getRange3Count() == null ? 0 : monthStatistic.getRange3Count());
+                count4 = count4 + (monthStatistic.getRange4Count() == null ? 0 : monthStatistic.getRange4Count());
+                totalCount = totalCount + monthStatistic.getTotalCount();
+                totalMoney = totalMoney.add(monthStatistic.getTotalMoney());
+                monthStatistic.setMonthStr(month);
+                list.add(monthStatistic);
+            }
+
+            RespectStatistic totalStatistic = new RespectStatistic();
+            totalStatistic.setMonthStr("总计");
+            totalStatistic.setRange1Count(count1);
+            totalStatistic.setRange2Count(count2);
+            totalStatistic.setRange3Count(count3);
+            totalStatistic.setRange4Count(count4);
+            totalStatistic.setTotalCount(totalCount);
+            totalStatistic.setTotalMoney(totalMoney);
+            list.add(totalStatistic);
+
+            List<List<String>> strsList = new ArrayList<List<String>>();
+            List<String> title = new ArrayList<String>();
+            title.add("");
+            title.add("70至79岁(人)");
+            title.add("80至89岁(人)");
+            title.add("90至99岁(人)");
+            title.add("100岁(人)");
+            title.add("70岁以上(人)");
+            title.add("发放金额(元)");
+            strsList.add(title);
+
+            for (int i = 0, length = list.size(); i < length; i++) {
+                List<String> strings = new ArrayList<>();
+                RespectStatistic statistic = list.get(i);
+                //姓名
+                strings.add(statistic.getMonthStr());
+                if (statistic.getRange1Count() != null) {
+                    strings.add(statistic.getRange1Count()+"");
+                } else {
+                    strings.add("0");
+                }
+                if (statistic.getRange2Count() != null) {
+                    strings.add(statistic.getRange2Count()+"");
+                } else {
+                    strings.add("0");
+                }
+                if (statistic.getRange3Count() != null) {
+                    strings.add(statistic.getRange3Count()+"");
+                } else {
+                    strings.add("0");
+                }
+                if (statistic.getRange4Count() != null) {
+                    strings.add(statistic.getRange4Count()+"");
+                } else {
+                    strings.add("0");
+                }
+                if (statistic.getTotalCount() != null) {
+                    strings.add(statistic.getTotalCount()+"");
+                } else {
+                    strings.add("0");
+                }
+                if (statistic.getTotalMoney() != null) {
+                    strings.add(statistic.getTotalMoney()+"");
+                } else {
+                    strings.add("0");
+                }
+                strsList.add(strings);
+            }
+            String fileName = str + DateUtil.getDateString("yyyy-MM-dd", new Date());
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename="
+                    + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+            ServletOutputStream out = response.getOutputStream();
+            OutputStream os = out;
+            String excelTitle = str + grantTimes;
+
+            POIExcelUtil.writerDataInExcelIo(strsList, os, excelTitle, 6);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

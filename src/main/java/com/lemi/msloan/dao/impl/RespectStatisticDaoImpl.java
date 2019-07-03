@@ -39,4 +39,9 @@ public class RespectStatisticDaoImpl extends BaseDaoImpl<RespectStatistic> imple
     public RespectStatistic getStatisticByMonth(StatisticRequest request) {
         return sqlSessionTemplate.selectOne("tbl_respectstatistic.getStatisticByMonth",request);
     }
+
+    @Override
+    public RespectStatistic getSumStatistics(StatisticRequest request) {
+        return sqlSessionTemplate.selectOne("tbl_respectstatistic.getSumStatistics",request);
+    }
 }

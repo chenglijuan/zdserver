@@ -54,5 +54,10 @@ public class RespectStatisticServiceImpl extends BaseServiceImpl<RespectStatisti
         return respectStatisticDao.getStatisticByMonth(request);
     }
 
+    @Override
+    public RespectStatistic getSumStatistics(StatisticRequest request) {
+        return respectStatisticDao.getSumStatistics(request);
+    }
+
 
 }

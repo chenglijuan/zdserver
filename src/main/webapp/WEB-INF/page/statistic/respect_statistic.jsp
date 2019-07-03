@@ -228,7 +228,9 @@
                                name="grantTimes" id="grantTimes" readonly="readonly">
                         <div class="form-group " style="margin-top: 20px">
                             <button type="button" class="btn btn-info" id="search">搜索</button>
-                            <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
+                            <button type="button" class="btn btn-primary" style="margin-left: 5px;">重置</button>
+                            <%--<button type="button" class="btn btn-warning" id="downLoad"  style="margin-left: 5px;">下载</button>--%>
+                            <a class="btn btn-info" id="exportData" style="color: #fff;margin-left: 5px" onclick="exportStatistic()" ><span>导出</span></a>
                         </div>
                     </div>
 
@@ -368,6 +370,16 @@
             $("#table").html(code);
         })
     }
+
+    function exportStatistic() {
+        var loginId = $("#loginId").val();
+        var type = $("#pageType").val();
+        var grantTimes  = $("#grantTimes").val();
+        var href = '<%=basePath%>respect/exportStatistic?loginId='+loginId+"&grantTimes="+grantTimes+"&type="+type;
+        $('#exportData').attr('href',href);
+        $('#exportData span').trigger('click');
+    };
+
 </script>
 </body>
 </html>

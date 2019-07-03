@@ -77,7 +77,7 @@ public class AgeUtils {
 
 
     public static void main(String[] args) {
-        System.out.println("age="+getAgeFromBirthTime("1991-03-10"));
+        System.out.println("32051119260909102X".substring(6,14));
     }
 }
 

@@ -266,7 +266,7 @@
     </where>
   </select>
 
-  <select id="getStatistic" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
+  <select id="getStatisticByMonth" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
     select * from zd_respect_statistic
     <where>
       <if test="type != null">
@@ -285,8 +285,10 @@
     order by summary_month
   </select>
 
-  <select id="getStatisticByMonth" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
-    select * from zd_respect_statistic
+  <select id="getSumStatistics" parameterType="com.lemi.msloan.request.StatisticRequest" resultMap="BaseResultMap">
+    select sum(range1_count) as range1_count,sum(range2_count) as range2_count,sum(range3_count) as range3_count,
+    sum(range4_count) as range4_count,sum(total_count) as total_count, sum(total_money) as total_money
+    from zd_respect_statistic
     <where>
       <if test="type != null">
         and type = #{type}
@@ -301,6 +303,5 @@
         <![CDATA[  AND summary_month <= #{endTime}]]>
       </if>
     </where>
-   limit 1
   </select>
 </mapper>

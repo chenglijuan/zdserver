@@ -22,4 +22,6 @@ public interface RespectStatisticService extends BaseService<RespectStatistic> {
 
     RespectStatistic getStatisticByMonth(StatisticRequest request);
 
+    RespectStatistic getSumStatistics(StatisticRequest request);
+
 }

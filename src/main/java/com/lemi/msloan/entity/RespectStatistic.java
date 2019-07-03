@@ -8,6 +8,8 @@ public class RespectStatistic {
 
     private Date summaryMonth;
 
+    private String monthStr;
+
     private Date createTime;
 
     private Integer communityId;
@@ -162,5 +164,13 @@ public class RespectStatistic {
 
     public void setTotalCount(Integer totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public String getMonthStr() {
+        return monthStr;
+    }
+
+    public void setMonthStr(String monthStr) {
+        this.monthStr = monthStr;
     }
 }
