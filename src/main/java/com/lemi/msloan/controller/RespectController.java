@@ -1010,6 +1010,7 @@ public class RespectController {
         }
     }
 
+
     @RequestMapping(value = "exportStatistic")
     public void exportStatistic(HttpServletResponse response, String grantTimes, Integer loginId,Integer type) {
         try {
@@ -1142,5 +1143,28 @@ public class RespectController {
             e.printStackTrace();
         }
     }
+
+    @RequestMapping(value = "batchDeleteRespect")
+    @ResponseBody
+    public ApiResult batchDeleteRespect(HttpServletResponse response, String ids, Integer loginId) {
+        try {
+            User user = userService.getByUserId(loginId);
+            if (user == null) {
+                return new ApiResult(false, "用户不存", -1, null);
+            }
+            if(StringUtils.isBlank(ids)){
+                return new ApiResult(false, "请选择要删除的数据", -1, null);
+            }
+            String[] idArray = ids.split(",");
+            for (String id : idArray) {
+                respectService.delete(Integer.parseInt(id));
+            }
+            return new ApiResult(true, "操作成功", 0, null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1, null);
+        }
+    }
+
 
 }
