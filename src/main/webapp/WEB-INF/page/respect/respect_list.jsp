@@ -292,6 +292,7 @@
                             <a class="btn btn-info" id="exportRespect" style="color: #fff"
                                onclick="exportRespect()"><span>导出</span></a>
                             <a class="btn btn-info" id="batchDelete" style="color: #fff" onclick="batchDelete()"><span>批量删除</span></a>
+                            <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -380,7 +381,7 @@
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 
 <script>
-    var pageSize = 10;
+    var pageSize = 50;
     var roleType = 2;
     var pageType = 1;
     $(function () {
@@ -441,7 +442,7 @@
     }
 
     $("#search").on("click", function () {
-        selectExamine(1, 10);
+        selectExamine(1, 50);
     })
 
     function selectExamine(pageNum, pageSize) {
@@ -454,6 +455,17 @@
             width: 90,
             formatter: function (value, row, index) {
                 return "<input type=\"checkbox\" idValue=\"" + row.id + "\" name=\"checkItem\" />";
+            }
+        };
+        var q = {
+            field: 'dataIndex',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                var dataIndex = (pageSize * (pageNum - 1)) + (index + 1);
+                return dataIndex;
             }
         };
         var id = {
@@ -620,12 +632,12 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                // console.log("row.type="+row.type);
                 return row.type == null ? "-" : row.type == 1 ? "城镇" : "农村";
             }
         };
         columns.push(id);
         columns.push(box);
+        columns.push(q);
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -641,6 +653,7 @@
         columns.push(l);
         columns.push(m);
         columns.push(n);
+
         if (pageType != 4) {
             var o = {
                 field: 'cz',
@@ -680,6 +693,7 @@
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;
+            $("#totalCount").html(data.data.count);
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
@@ -809,15 +823,18 @@
                 type: 'post',
                 data: {
                     "loginId": $("#loginId").val(),
-                    "pageType": $("#pageType").val()
+                    "type": $("#pageType").val()
                 },
                 secureuri: false,
                 fileElementId: "file",
                 dataType: 'json',
                 success: function (data, status) {
-                    console.log(data);
                     if (status) {
-                        alert("操作成功");
+                        var begin = data.indexOf("{");
+                        var end = data.indexOf("}");
+                        var object = data.substring(begin,end+1);
+                        var message = JSON.parse(object).message;
+                        alert(message);
                         selectExamine(1, pageSize);
                     }
 

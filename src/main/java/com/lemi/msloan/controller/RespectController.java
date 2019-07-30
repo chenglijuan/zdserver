@@ -1,6 +1,7 @@
 package com.lemi.msloan.controller;
 
 import com.lemi.msloan.entity.*;
+import com.lemi.msloan.request.CommunityRequest;
 import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.request.StatisticRequest;
 import com.lemi.msloan.response.ApiResult;
@@ -443,7 +444,7 @@ public class RespectController {
      */
     @RequestMapping(value = "importRespect")
     @ResponseBody
-    public ApiResult importRespect(@RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session, Integer loginId) {
+    public ApiResult importRespect(@RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession session, Integer loginId,Integer type) {
         try {
             if (file == null) {
                 return new ApiResult(false, "请上传文件", -1, null);
@@ -466,7 +467,7 @@ public class RespectController {
             Sheet sheet = null;
             Row row = null;
             String cellData = null;
-            String cloumns[] = {"姓名", "性别", "出生年月", "身份证号", "户籍所在地", "联系电话"};
+            String cloumns[] = {"姓名", "性别", "出生年月", "身份证号", "户籍所在地", "联系电话","所属社区"};
             wb = PoiTest.readExcel(source.getPath());
             if (wb != null) {
                 //获取第一个sheet
@@ -475,14 +476,14 @@ public class RespectController {
                 int rownum = sheet.getPhysicalNumberOfRows();
                 //获取第一行
                 labe:
-                for (int i = 1; i < rownum; i++) {
+                for (int i = 2; i < rownum; i++) {
                     row = sheet.getRow(i);
                     if (row != null) {
                         Respect temp = new Respect();
-                        for (int j = 0; j < 6; j++) {
+                        for (int j = 0; j < 7; j++) {
                             cellData = (String) PoiTest.getCellFormatValue(row.getCell(j));
                             if ("姓名".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
+                                if (!StringUtils.isBlank(cellData)) {
                                     temp.setName(cellData.trim());
                                 } else {
                                     continue labe;
@@ -498,19 +499,15 @@ public class RespectController {
                                     }
                                 }
                             }
-//                            if ("出生年月".equals(cloumns[j])) {
-//                                if (!StringUtils.isBlank(cellData.trim()))
-//                                    temp.setBirthday(cellData.trim());
-//                            }
                             if ("身份证号".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
+                                if (!StringUtils.isBlank(cellData)) {
                                     temp.setIdCard(cellData.trim());
                                 } else {
                                     continue labe;
                                 }
                             }
                             if ("户籍所在地".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim()))
+                                if (!StringUtils.isBlank(cellData))
                                     temp.setHouse(cellData.trim());
                             }
                             if ("联系电话".equals(cloumns[j])) {
@@ -518,7 +515,13 @@ public class RespectController {
                                     temp.setPhone(cellData.trim());
                                 }
                             }
+                            if ("所属社区".equals(cloumns[j])) {
+                                if (!StringUtils.isBlank(cellData)) {
+                                    temp.setCommunityName(cellData.trim());
+                                }
+                            }
                         }
+                        temp.setType(type);
                         respects.add(temp);
                     } else {
                         return new ApiResult(false, "文件格式有误", -1, null);
@@ -528,6 +531,15 @@ public class RespectController {
             String year = "";
             String month = "";
             String day = "";
+            int successCount = 0 ;
+            CommunityRequest request = new CommunityRequest();
+            List<Community> communityList = communityService.selectCommunityPager(request);
+            List<String> communityName =  new ArrayList<String>();
+            List<Integer> communityIds =  new ArrayList<Integer>();
+            for (Community community : communityList) {
+                communityName.add(community.getName());
+                communityIds.add(community.getId());
+            }
             if (respects != null && respects.size() > 0) {
                 Date current = new Date();
                 List<Respect> saveRespects = new ArrayList<Respect>();
@@ -545,31 +557,36 @@ public class RespectController {
                         continue;
                     }
                     //如果身份证号码存在  设置为农村
-                    if (rosterIdCards.contains(idCard)) {
-                        respect.setType(2);
-                    } else {
-                        respect.setType(1);
+                    if(respect.getType() == null  || (respect.getType().intValue() != 1 && respect.getType().intValue() != 2)) {
+                        if (rosterIdCards.contains(idCard)) {
+                            respect.setType(2);
+                        } else {
+                            respect.setType(1);
+                        }
+                    }
+                    // 社区名称
+                    if(communityName.contains(respect.getCommunityName())){
+                        int communityId = communityName.indexOf(respect.getCommunityName());
+                        respect.setCommunityId(communityId);
+                        respect.setCommunityName(respect.getCommunityName());
                     }
                     idCards.add(idCard);
-
                     year = idCard.substring(6, 10);
                     month = idCard.substring(10, 12);
                     day = idCard.substring(12, 14);
-
                     respect.setBirthday(year + "-" + month + "-" + day);
-
                     respect.setAuditState(1);
                     respect.setCreateTime(current);
-                    respect.setCommunityName(user.getCommunityName());
-                    respect.setCommunityId(user.getCommunityId());
+                    /*respect.setCommunityName(user.getCommunityName());
+                    respect.setCommunityId(user.getCommunityId());*/
                     saveRespects.add(respect);
                 }
                 if (saveRespects != null && saveRespects.size() > 0) {
                     respectService.insertBatchData(saveRespects);
+                    successCount = saveRespects.size();
                 }
             }
-
-            return new ApiResult(true, "操作成功", 0, null);
+            return new ApiResult(true, "操作成功,成功导入"+successCount, 0, null);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

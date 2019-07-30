@@ -271,6 +271,7 @@
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>--%>
                             <%--<button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>--%>
                             <a class="btn btn-info" id="exportRespect" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
+                                <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -354,7 +355,7 @@
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 
 <script>
-    var pageSize = 10;
+    var pageSize = 50;
     var roleType = 2;
     $(function () {
         $("#headerpage").load("page/header");
@@ -386,11 +387,22 @@
 
 
     $("#search").on("click", function () {
-        selectExamine(1, 10);
+        selectExamine(1, 50);
     })
 
     function selectExamine(pageNum, pageSize) {
         var columns = [];
+        var q = {
+            field: 'dataIndex',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                var dataIndex = (pageNum - 1) * pageSize +1 ;
+                return dataIndex;
+            }
+        };
         var a = {
             field: 'name',
             title: '姓名',
@@ -581,6 +593,8 @@
         columns.push(m);
         columns.push(n);
         columns.push(o);
+        columns.push(q);
+
         var name = $("#name").val();
         var changeState  = $("#changeState").val();
         var idCard = $("#idCard").val();
@@ -606,6 +620,7 @@
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;
+            $("#totalCount").html(data.data.count);
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
