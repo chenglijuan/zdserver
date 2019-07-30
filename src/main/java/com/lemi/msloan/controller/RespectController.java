@@ -5,7 +5,6 @@ import com.lemi.msloan.request.CommunityRequest;
 import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.request.StatisticRequest;
 import com.lemi.msloan.response.ApiResult;
-import com.lemi.msloan.response.RespectSummayResult;
 import com.lemi.msloan.response.StatisticResult;
 import com.lemi.msloan.service.*;
 import com.lemi.msloan.util.*;
@@ -22,8 +21,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
@@ -212,7 +209,6 @@ public class RespectController {
                 respect.setCommunityId(user.getCommunityId());
                 respect.setCommunityName(user.getCommunityName());
             }
-            //respect.setDynamicYearMonth(dynamicYearMonth);
             if (!StringUtils.isBlank(grantTime)) {
                 respect.setGrantTime(grantTime + "-01");
             }
@@ -375,7 +371,16 @@ public class RespectController {
             } else if (type != null && type.intValue() == 4) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(2);
-            } else if (type != null && (type.intValue() == 1 || type.intValue() == 2)) {
+            } else if (type != null && type.intValue() == 1) {
+                //大于70周岁都算 小于90
+                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
+                String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
+                String birthdayEnd = DateUtil.getYearsbefore(nowDate, 80);
+                respectRequest.setBirthdayBegin(birthdayBegin);
+                respectRequest.setBirthdayEnd(birthdayEnd);
+                respectRequest.setType(type);
+                respectRequest.setChangeState(changeState);
+            } else if (type != null && type.intValue() == 2) {
                 //大于70周岁都算 小于90
                 Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
@@ -384,7 +389,6 @@ public class RespectController {
                 respectRequest.setBirthdayEnd(birthdayEnd);
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
-                //respectRequest.setChangeState(1);
             } else if (type != null && type.intValue() == 5) {
                 //已故人员名单   变更情况说明是死亡
                 respectRequest.setChangeState(changeState);
