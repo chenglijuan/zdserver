@@ -373,20 +373,20 @@ public class RespectController {
                 respectRequest.setChangeState(2);
             } else if (type != null && type.intValue() == 1) {
                 //大于70周岁都算 小于90
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
+                /*Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 //String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 80);
                 //respectRequest.setBirthdayBegin(birthdayBegin);
-                respectRequest.setBirthdayEnd(birthdayEnd);
+                respectRequest.setBirthdayEnd(birthdayEnd);*/
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
             } else if (type != null && type.intValue() == 2) {
                 //大于70周岁都算 小于90
-                Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
+                /*Date nextMonth = DateUtil.getNLastMonthInfo(nowDate, 1);
                 //String birthdayBegin = DateUtil.getYearsbefore(nextMonth, 90);
                 String birthdayEnd = DateUtil.getYearsbefore(nowDate, 70);
                 //respectRequest.setBirthdayBegin(birthdayBegin);
-                respectRequest.setBirthdayEnd(birthdayEnd);
+                respectRequest.setBirthdayEnd(birthdayEnd);*/
                 respectRequest.setType(type);
                 respectRequest.setChangeState(changeState);
             } else if (type != null && type.intValue() == 5) {
