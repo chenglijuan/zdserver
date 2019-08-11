@@ -383,4 +383,8 @@
   <select id="getDataByIdCard" resultMap="BaseResultMap">
     select * from zd_respect where id_card = #{0} limit 1
   </select>
+
+  <!--<select id="getDataByIdCard" resultMap="BaseResultMap">
+    select * from zd_respect where id_card = #{0} limit 1
+  </select>-->
 </mapper>

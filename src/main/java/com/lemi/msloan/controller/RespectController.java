@@ -575,14 +575,16 @@ public class RespectController {
                         respect.setCommunityName(respect.getCommunityName());
                     }
                     idCards.add(idCard);
+
+                    if(idCard.length() < 18){
+                        idCard = IdCardUtil.get18Ic(idCard);
+                    }
                     year = idCard.substring(6, 10);
                     month = idCard.substring(10, 12);
                     day = idCard.substring(12, 14);
                     respect.setBirthday(year + "-" + month + "-" + day);
                     respect.setAuditState(1);
                     respect.setCreateTime(current);
-                    /*respect.setCommunityName(user.getCommunityName());
-                    respect.setCommunityId(user.getCommunityId());*/
                     saveRespects.add(respect);
                 }
                 if (saveRespects != null && saveRespects.size() > 0) {
