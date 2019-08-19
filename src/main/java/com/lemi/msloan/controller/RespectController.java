@@ -570,8 +570,8 @@ public class RespectController {
                     }
                     // 社区名称
                     if(communityName.contains(respect.getCommunityName())){
-                        int communityId = communityName.indexOf(respect.getCommunityName());
-                        respect.setCommunityId(communityId);
+                        int indexId = communityName.indexOf(respect.getCommunityName());
+                        respect.setCommunityId(communityIds.get(indexId));
                         respect.setCommunityName(respect.getCommunityName());
                     }
                     idCards.add(idCard);
