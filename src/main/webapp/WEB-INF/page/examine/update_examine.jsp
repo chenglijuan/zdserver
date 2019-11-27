@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>编辑征地人员社会救济金</title>
-        
-        
+
+        <title>编辑征地人员社会救济金</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
     <!-- Favicon icon -->
@@ -287,6 +287,26 @@
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
                                     居民尊老金已故名单</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -606,6 +626,20 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group" id="exitTypeDom" style="display: none;">
+                                    <label class="col-sm-12"><span style="color: red">*</span>退出类型</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control form-control-line" id="exitType">
+                                            <option value="">请选择</option>
+                                            <option value="1">就业退出</option>
+                                            <option value="2">并轨退出</option>
+                                            <option value="3">5560退出</option>
+                                            <option value="4">退休退出</option>
+                                            <option value="5">死亡退出</option>
+                                            <option value="6">其它退出</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" id="stopTypeDom" style="display: none;">
                                     <label class="col-sm-12"><span style="color: red">*</span>暂停原因</label>
                                     <div class="col-sm-12">
@@ -745,7 +779,7 @@
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == -1) {
                 alert(data.message);
-                window.location.href = "<%=basePath%>/login.jsp";
+                window.location.href = "../login/login.jsp";
             } else {
                 $("#username").html(data.data.username);
                 if (data.data.type == 1) {
@@ -787,6 +821,12 @@
         } else {
             $("#stopTypeDom").css("display", "none");
             $("#stopReasonDom").css("display", "none");
+        }
+
+        if (status == 4) {
+            $("#exitTypeDom").css("display", "block");
+        } else {
+            $("#exitTypeDom").css("display", "none");
         }
     })
 
@@ -833,6 +873,7 @@
             var isMove = $("#isMove").val();
             var examineId = $("#examineId").val();
             var loginId = $("#loginId").val();
+            var exitType = $("#exitType").val();
             if (startTime!=null&&startTime!=""){
                 startTime = startTime+"-01";
             }
@@ -874,7 +915,8 @@
                 "status": status,
                 "stopType": stopType,
                 "stopReason": stopReason,
-                "isMove": isMove
+                "isMove": isMove,
+                "exitType":exitType
             }, function (data) {
                 alert(data.message);
             });
@@ -925,6 +967,16 @@
             } else {
                 $("#stopTypeDom").css("display", "none");
                 $("#stopReasonDom").css("display", "none");
+            }
+
+            if (object.exitType != null && object.exitType != ""){
+                $("#exitType").val(object.exitType);
+            }
+
+            if (object.status == 4) {
+                $("#exitTypeDom").css("display", "block");
+            } else {
+                $("#exitTypeDom").css("display", "none");
             }
         })
     }

@@ -44,6 +44,9 @@
         <result column="time2" property="time2" jdbcType="TIMESTAMP"/>
         <result column="time3" property="time3" jdbcType="TIMESTAMP"/>
         <result column="time4" property="time4" jdbcType="TIMESTAMP"/>
+        <result column="exit_type" property="exitType" jdbcType="INTEGER" />
+        <result column="in_time" property="inTime" jdbcType="TIMESTAMP" />
+        <result column="exit_time" property="exitTime" jdbcType="TIMESTAMP" />
     </resultMap>
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Examine" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
@@ -54,7 +57,7 @@
     community_id, community_name, house, status, time, village_time, village_age,
     cd_state, un_start, un_end, stop_type, stop_reason, phone,
     remark1, remark2, remark3, remark4, next_time,
-    next_out, time1, time2, time3, time4
+    next_out, time1, time2, time3, time4, exit_type, in_time, exit_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -79,7 +82,7 @@
       village_time, village_age, cd_state,
       un_start, un_end, stop_type, stop_reason, phone,
       remark1, remark2, remark3, remark4, next_time,
-      next_out, time1, time2, time3, time4
+      next_out, time1, time2, time3, time4, exit_type, in_time, exit_time
       )
     values (#{id,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{stopTime,jdbcType=DATE}, 
       #{dtxsny,jdbcType=VARCHAR}, #{ffbj,jdbcType=VARCHAR}, #{isInsured,jdbcType=INTEGER}, 
@@ -92,7 +95,8 @@
       #{villageTime,jdbcType=DATE}, #{villageAge,jdbcType=INTEGER}, #{cdState,jdbcType=INTEGER},
       #{unStart,jdbcType=DATE}, #{unEnd,jdbcType=DATE}, #{stopType,jdbcType=INTEGER}, #{stopReason,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{remark1,jdbcType=VARCHAR}, #{remark2,jdbcType=VARCHAR}, #{remark3,jdbcType=VARCHAR}, #{remark4,jdbcType=VARCHAR}, #{nextTime,jdbcType=DATE},
-      #{nextOut,jdbcType=DATE}, #{time1,jdbcType=TIMESTAMP}, #{time2,jdbcType=TIMESTAMP}, #{time3,jdbcType=TIMESTAMP}, #{time4,jdbcType=TIMESTAMP}
+      #{nextOut,jdbcType=DATE}, #{time1,jdbcType=TIMESTAMP}, #{time2,jdbcType=TIMESTAMP}, #{time3,jdbcType=TIMESTAMP}, #{time4,jdbcType=TIMESTAMP},
+      #{exitType,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, #{exitTime,jdbcType=TIMESTAMP}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.lemi.msloan.entity.Examine" keyProperty="id"
@@ -225,6 +229,15 @@
             <if test="time4 != null">
                 time4,
             </if>
+            <if test="exitType != null">
+                exit_type,
+            </if>
+            <if test="inTime != null">
+                in_time,
+            </if>
+            <if test="exitTime != null">
+                exit_time,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -352,6 +365,15 @@
             </if>
             <if test="time4 != null">
                 #{time4,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exitType != null">
+                #{exitType,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exitTime != null">
+                #{exitTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -481,6 +503,15 @@
             <if test="time4 != null">
                 time4 = #{time4,jdbcType=TIMESTAMP},
             </if>
+            <if test="exitType != null">
+                exit_type = #{exitType,jdbcType=INTEGER},
+            </if>
+            <if test="inTime != null">
+                in_time = #{inTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="exitTime != null">
+                exit_time = #{exitTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -526,7 +557,10 @@
        time1 = #{time1,jdbcType=TIMESTAMP},
        time2 = #{time2,jdbcType=TIMESTAMP},
        time3 = #{time3,jdbcType=TIMESTAMP},
-       time4 = #{time4,jdbcType=TIMESTAMP}
+       time4 = #{time4,jdbcType=TIMESTAMP},
+       exit_type = #{exitType,jdbcType=INTEGER},
+       in_time = #{inTime,jdbcType=TIMESTAMP},
+       exit_time = #{exitTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -984,5 +1018,41 @@
         <include refid="Base_Column_List"/>
         FROM zd_examine
         WHERE status = 2
+    </select>
+
+    <select id="getExitCountByCommunityId" parameterType="com.lemi.msloan.request.ExamineRequest" resultType="int">
+        SELECT
+        count(*)
+        FROM zd_examine
+        WHERE
+        status = 4
+        <if test="communityId != null">
+            AND community_id = #{communityId}
+        </if>
+        <if test="beginTime != null">
+            <![CDATA[  AND exit_time >= #{beginTime}]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[  AND exit_time <= #{endTime}]]>
+        </if>
+        <if test="exitType != null">
+            AND exit_type = #{exitType}
+        </if>
+    </select>
+    <select id="getAddedCountByCommunityId" parameterType="com.lemi.msloan.request.ExamineRequest" resultType="int">
+        SELECT
+        count(*)
+        FROM zd_examine
+        <where>
+            <if test="communityId != null">
+                AND community_id = #{communityId}
+            </if>
+            <if test="beginTime != null">
+                <![CDATA[  AND in_time >= #{beginTime}]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[  AND in_time <= #{endTime}]]>
+            </if>
+        </where>
     </select>
 </mapper>

@@ -1,14 +1,11 @@
 package com.lemi.msloan.controller;
 
 import com.lemi.msloan.entity.Community;
-import com.lemi.msloan.entity.Respect;
 import com.lemi.msloan.entity.User;
-import com.lemi.msloan.request.RespectRequest;
 import com.lemi.msloan.request.UserRequest;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.service.CommunityService;
 import com.lemi.msloan.service.UserService;
-import com.lemi.msloan.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,6 +32,12 @@ public class UserController {
     @Autowired
     private CommunityService communityService;
 
+    @RequestMapping(value = "userLoginPage")
+    public ModelAndView userLoginPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/login/login");
+        return modelAndView;
+    }
 
     @RequestMapping(value = "userPage")
     public ModelAndView userPager(Integer loginId) {
@@ -85,8 +88,30 @@ public class UserController {
             return new ApiResult(false, "用户名或密码错误", -1);
         }
         Integer userId = user.getId();
-        session.setAttribute("loginId", userId);
+        session.setAttribute("loginId", userId+"");
         return new ApiResult(true, "登录成功", 0, userId);
+    }
+
+    /**
+     *loginId
+     * 退出登录
+     * @return
+     */
+    @RequestMapping(value = "loginOut")
+    @ResponseBody
+    public ApiResult loginOut(Integer loginId, HttpSession session) {
+        try {
+            User user = userService.get(loginId);
+            if (user == null) {
+                return new ApiResult(false, "用户不存在", -1);
+            }
+            Integer userId = user.getId();
+            session.setAttribute("loginId", "");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ApiResult(true, "退出成功", 0, null);
+
     }
 
     /**

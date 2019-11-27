@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>后台管理</title>
-        
-        
+
+    <title>后台管理</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
 
@@ -76,62 +76,6 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <%--<header class="topbar">
-        <nav class="navbar top-navbar navbar-toggleable-sm navbar-light">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
-                    <!-- Logo icon -->
-                    <b>
-                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                        <!-- Dark Logo icon -->
-                        <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo"/>
-
-                    </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
-                    <span>
-                            <!-- dark Logo text -->
-                            <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo"/>
-                        </span>
-                </a>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <div class="navbar-collapse">
-                <!-- ============================================================== -->
-                <!-- toggle and nav items -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav mr-auto mt-md-0 ">
-                    <!-- This is  -->
-                    <li class="nav-item"><a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
-                                            href="javascript:void(0)"><i class="ti-menu"></i></a></li>
-                    <li class="nav-item hidden-sm-down">
-                        <form class="app-search p-l-20">
-                            <input type="text" class="form-control" placeholder="Search for..."> <a class="srh-btn"><i
-                                class="ti-search"></i></a>
-                        </form>
-                    </li>
-                </ul>
-                <!-- ============================================================== -->
-                <!-- User profile and search -->
-                <!-- ============================================================== -->
-                <ul class="navbar-nav my-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img
-                                src="assets/images/users/1.jpg" alt="user" class="profile-pic m-r-5"/>Markarn Doe</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>--%>
     <div id="headerpage"></div>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
@@ -156,15 +100,18 @@
                                 aria-hidden="true"></i>征地人员社会救济金</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/allExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/startWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄进入预警</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/endWarningExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>到龄退出预警</a>
                             </li>
                             <li>
@@ -172,7 +119,8 @@
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待审核</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
+                                <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}"
+                                   class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
                             </li>
                         </ul>
@@ -187,15 +135,18 @@
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>全部</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇居民尊老金</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村居民尊老金</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
+                        <a href="<%=basePath%>respect/longevityPager?loginId=${loginId}" class="waves-effect"><i
+                                class="fa fa-address-card m-r-10" aria-hidden="true"></i>长寿金</a>
                     </li>
                     <li>
                         <a class="waves-effect"><i
@@ -203,10 +154,34 @@
                                 aria-hidden="true"></i>已故人员花名册</a>
                         <ul>
                             <li>
-                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
+                                <a href="<%=basePath%>examine/deceasedPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>征地人员已故名单</a>
                             </li>
                             <li>
-                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                                <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>
+                                    居民尊老金已故名单</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}"
+                                   class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -222,6 +197,10 @@
                             <li>
                                 <a href="<%=basePath%>community/communityPage?loginId=${loginId}"
                                    class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>社区管理</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectSummaryList?loginId=${loginId}"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -242,15 +221,7 @@
         <!-- Container fluid  -->
         <!-- ============================================================== -->
         <div class="container-fluid">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <%--<div class="row page-titles">
-                <div class="col-md-6 col-8 align-self-center">
-                    <h3 class="text-themecolor m-b-0 m-t-0">尊老金</h3>
-                </div>
-            </div>--%>
-            <fieldset class="layui-elem-field layui-field-title" >
+            <fieldset class="layui-elem-field layui-field-title">
                 <legend><span id="pageDesc"></span></legend>
             </fieldset>
             <div class="row">
@@ -310,11 +281,18 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-block" id="operatorBtn">
-                            <button type="button" class="btn btn-info" id="importData" onclick="$('#file').click()">批量导入</button>
+                            <button type="button" class="btn btn-info" id="importData" onclick="$('#file').click()">
+                                批量导入
+                            </button>
                             <input type="file" style="display: none" id="file" name="file" onchange="uploadData(this)">
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>
-                            <button id="addRespect" style="display: none;" type="button" class="btn btn-info"><span class=" fa fa-plus-square"></span> 新增</button>
-                            <a class="btn btn-info" id="exportRespect" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
+                            <button id="addRespect" style="display: none;" type="button" class="btn btn-info"><span
+                                    class=" fa fa-plus-square"></span> 新增
+                            </button>
+                            <a class="btn btn-info" id="exportRespect" style="color: #fff"
+                               onclick="exportRespect()"><span>导出</span></a>
+                            <a class="btn btn-info" id="batchDelete" style="color: #fff" onclick="batchDelete()"><span>批量删除</span></a>
+                            <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -333,7 +311,8 @@
 
 
         <!-- 模态框（Modal） -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -369,7 +348,9 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 <input type="hidden" id="loginId" value="${loginId}">
-<input type="text" id="pageType" value="${pageType}">
+<input type="hidden" id="pageType" value="${pageType}">
+<%--待处理的数据--%>
+<input type="text" id="dealAuditState" value="${dealAuditState}">
 <!-- ============================================================== -->
 <!-- All Jquery -->
 <!-- ============================================================== -->
@@ -400,59 +381,98 @@
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 
 <script>
-    var pageSize = 10;
+    var pageSize = 50;
     var roleType = 2;
     var pageType = 1;
     $(function () {
         $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimes'
-            ,range: true
+            , type: 'month'
+            , range: true
         });
         pageType = $("#pageType").val();
-        if(pageType == 4){
+        if (pageType == 4) {
             $("#operatorBtn").hide();
             $("#changeStateDiv").hide();
             $("#auditStateDiv").hide();
         }
+        //待处理的数据
+        var dealAuditState = $("#dealAuditState").val();
+        if (dealAuditState) {
+            $("#auditState").val(dealAuditState);
+        }
+
         initDesc();
         var loginId = $("#loginId").val();
         verification(loginId);
 
     })
-    function initDesc(){
-        if(pageType == 1){
+
+    function initDesc() {
+        if (pageType == 1) {
             $("#pageDesc").append("城镇居民尊老金");
             $("#addRespect").show();
-        }else if(pageType == 2){
+        } else if (pageType == 2) {
             $("#pageDesc").append("农村居民尊老金");
             $("#addRespect").show();
-        }else if(pageType == 5){
+        } else if (pageType == 5) {
             $("#pageDesc").append("全部");
+            $("#addRespect").show();
+        } else if (pageType == 4) {
+            $("#pageDesc").append("居民尊老金已故名单");
         }
     }
+
     function verification(loginId) {
-        $.post("<%=basePath%>user/getUserByUserId",{"userId":loginId},function (data) {
-            if (data.code == 0){
+        $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
+            if (data.code == 0) {
                 roleType = data.data.type;
                 //如果是社区管理员默认
-                if(roleType == 1){
+                if (roleType == 1) {
                     $("#communityIdDiv").show();
                     findAllCommunity();
                 }
                 selectExamine(1, pageSize);
-            }else{
+            } else {
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href = "../login/login.jsp";
             }
         });
     }
+
     $("#search").on("click", function () {
-        selectExamine(1, 10);
+        selectExamine(1, 50);
     })
 
     function selectExamine(pageNum, pageSize) {
         var columns = [];
+        var box = {
+            field: 'name',
+            title: '<input type="checkbox" name="allSelect" onclick=\"allSelect()\"/>',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                return "<input type=\"checkbox\" idValue=\"" + row.id + "\" name=\"checkItem\" />";
+            }
+        };
+        var q = {
+            field: 'dataIndex',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                var dataIndex = (pageSize * (pageNum - 1)) + (index + 1);
+                return dataIndex;
+            }
+        };
+        var id = {
+            title: 'id',
+            field: 'id',
+            visible: false,//显示或隐藏该列， 默认显示， False为隐藏
+        };
         var a = {
             field: 'name',
             title: '姓名',
@@ -531,8 +551,8 @@
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
-               // console.log("grantTime="+row.grantTime);
-                return row.grantTime == null ? "-" : fmtDate(row.grantTime);
+                // console.log("grantTime="+row.grantTime);
+                return row.grantTime == null ? "-" : fmtDate1(row.grantTime);
             }
         };
         var h = {
@@ -542,19 +562,14 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                var current = fmtmatDate(new Date());
-                var between = 0;
-                if(row.grantTime != null && row.grantTime != ""){
-                    between = getMonthBetween(fmtmatDate(row.grantTime),current);
+                var desc = "-";
+                if (row.grantTime != null && row.grantTime != "") {
+                    var current = fmtmatDate(new Date());
+                    if (!CompareDate(row.grantTime, current)) {
+                        desc = getBetweenMonthStr(fmtmatDate(row.grantTime), current);
+                    }
                 }
-                var year = 0;
-                var month = 0;
-                if(between > 0){
-                    year =  Math.floor(between / 12);
-                    month = between % 12;
-                }
-                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
-                return between == 0 ? "-" : desc;
+                return desc;
             }
         };
         var j = {
@@ -584,8 +599,8 @@
             valign: 'middle',
             width: 120,
             formatter: function (value, row, index) {
-                var age =  row.birthday == null ? "0" : jsMyGetAge(row.birthday);
-                return row.birthday == null ? "-" : setIssuStandard(age,row.type);
+                var age = row.birthday == null ? "0" : jsMyGetAge(row.birthday);
+                return row.birthday == null ? "-" : setIssuStandard(age, row.type);
             }
         };
         var m = {
@@ -595,8 +610,8 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                var htmlRow = row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" :row.auditState == 3 ? "审核未通过" : "-";
-                htmlRow = htmlRow + "<br/><span style='color: red'><a onclick='remarkDetail("+row.id+")'>审核详情</a></span>";
+                var htmlRow = row.auditState == null ? "-" : row.auditState == 1 ? "待审核" : row.auditState == 2 ? "审核通过" : row.auditState == 3 ? "审核未通过" : "-";
+                htmlRow = htmlRow + "<br/><span style='color: red'><a onclick='remarkDetail(" + row.id + ")'>审核详情</a></span>";
                 return htmlRow;
             }
         };
@@ -610,11 +625,24 @@
                 return row.grantState == null ? "-" : row.grantState == 1 ? "已暂停" : row.grantState == 2 ? "发放中" : "-";
             }
         };
-
+        var p = {
+            field: 'type',
+            title: '尊老金类型',
+            align: 'center',
+            valign: 'middle',
+            width: 120,
+            formatter: function (value, row, index) {
+                return row.type == null ? "-" : row.type == 1 ? "城镇" : "农村";
+            }
+        };
+        columns.push(id);
+        columns.push(box);
+        columns.push(q);
         columns.push(a);
         columns.push(b);
         columns.push(c);
         columns.push(d);
+        columns.push(p);
         columns.push(e);
         columns.push(f);
         columns.push(g);
@@ -625,7 +653,8 @@
         columns.push(l);
         columns.push(m);
         columns.push(n);
-        if(pageType != 4){
+
+        if (pageType != 4) {
             var o = {
                 field: 'cz',
                 title: '操作',
@@ -633,37 +662,38 @@
                 valign: 'middle',
                 width: 240,
                 formatter: function (value, row, index) {
-                    return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById("+row.id+")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
-                        "<a class='btn btn-info' style='color: #fff' onclick='auditById("+row.id+")'><span class='fa fa-edit'></span>审核</a>";
+                    return "<a class='btn btn-info' style='color: #fff' onclick='updateExamineById(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>&nbsp;&nbsp;" +
+                        "<a class='btn btn-info' style='color: #fff' onclick='auditById(" + row.id + ")'><span class='fa fa-edit'></span>审核</a>";
                 }
             };
             columns.push(o);
         }
         var name = $("#name").val();
-        var changeState  = $("#changeState").val();
+        var changeState = $("#changeState").val();
         var idCard = $("#idCard").val();
         var phone = $("#phone").val();
-        var grantTimes  = $("#grantTimes").val();
-        var ageRange  = $("#ageRange").val();
-        var communityId  = $("#communityId").val();
-        var auditState =$("#auditState").val();
+        var grantTimes = $("#grantTimes").val();
+        var ageRange = $("#ageRange").val();
+        var communityId = $("#communityId").val();
+        var auditState = $("#auditState").val();
 
         $.post("<%=basePath%>respect/selectRespect", {
             "pageNum": pageNum,
             "pageSize": pageSize,
-            "name":name,
-            "changeState":changeState,
-            "idCard":idCard,
-            "phone":phone,
-            "grantTimes":grantTimes,
-            "ageRange":ageRange,
-            "communityId":communityId,
-            "type":$("#pageType").val(),
-            "auditState":auditState,
-            "loginId":$("#loginId").val()
+            "name": name,
+            "changeState": changeState,
+            "idCard": idCard,
+            "phone": phone,
+            "grantTimes": grantTimes,
+            "ageRange": ageRange,
+            "communityId": communityId,
+            "type": $("#pageType").val(),
+            "auditState": auditState,
+            "loginId": $("#loginId").val()
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;
+            $("#totalCount").html(data.data.count);
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
@@ -673,12 +703,11 @@
                 fixedNumber: 3,
                 columns: columns
             })
-
-            selectByPager(pageNum,totalPage);
+            selectByPager(pageNum, totalPage);
         })
     }
 
-    function selectByPager(pageNum,totalPage){
+    function selectByPager(pageNum, totalPage) {
         $('#pageLimit').bootstrapPaginator({
             currentPage: pageNum,//当前的请求页面。
             totalPages: totalPage,//一共多少页。
@@ -707,9 +736,9 @@
         });
     }
 
-    $("#addRespect").on("click",function () {
+    $("#addRespect").on("click", function () {
         var pageType = $("#pageType").val();
-        window.location.href="<%=basePath%>respect/addRespect?pageType="+pageType+"&loginId="+$("#loginId").val();
+        window.location.href = "<%=basePath%>respect/addRespect?pageType=" + pageType + "&loginId=" + $("#loginId").val();
     })
 
     function findAllCommunity() {
@@ -724,6 +753,7 @@
             }
         });
     }
+
     function fmtDate(birthday) {
         var date = new Date(birthday);
         var y = 1900 + date.getYear();
@@ -732,52 +762,32 @@
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
 
-    function updateExamineById(respectId) {
-        var pageType = $("#pageType").val();
-        window.location.href="<%=basePath%>respect/updateRespect?loginId="+$("#loginId").val()+"&respectId="+respectId+"&pageType="+pageType;
-    }
-    function auditById(respectId) {
-        var pageType = $("#pageType").val();
-        window.location.href="<%=basePath%>respect/auditRespect?loginId="+$("#loginId").val()+"&respectId="+respectId+"&pageType="+pageType;
+    function fmtDate1(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月";
     }
 
-    /*function setIssuStandard(age,roleType) {
-        //2 农村  1城镇
-        var standard = 0;
-        if(roleType == 1){
-            if(age < 79){
-                standard = 0;
-            } else if(age >= 80 && age <= 89){
-                standard = 50;
-            }else if(age >= 90 && age <= 99){
-                standard = 100;
-            } else if(age >= 100 ){
-                standard = 300;
-            }
-        }else{
-            if(age < 70){
-                standard = 0;
-            } else if(age >= 70 && age <= 79){
-                standard = 50;
-            }else if(age >= 80 && age <= 89){
-                standard = 200;
-            }else if(age >= 90 && age <= 99){
-                standard = 500;
-            } else if(age >= 100 ){
-                standard = 1000;
-            }
-        }
-        return standard;
-    }*/
+    function updateExamineById(respectId) {
+        var pageType = $("#pageType").val();
+        window.location.href = "<%=basePath%>respect/updateRespect?loginId=" + $("#loginId").val() + "&respectId=" + respectId + "&pageType=" + pageType;
+    }
+
+    function auditById(respectId) {
+        var pageType = $("#pageType").val();
+        window.location.href = "<%=basePath%>respect/auditRespect?loginId=" + $("#loginId").val() + "&respectId=" + respectId + "&pageType=" + pageType;
+    }
 
     function remarkDetail(respectId) {
         $.post("<%=basePath%>respect/getRemarksByRespectId", {
-            "respectId":respectId,
-            "loginId":$("#loginId").val()
+            "respectId": respectId,
+            "loginId": $("#loginId").val()
         }, function (data) {
-            if(data.success){
+            if (data.success) {
                 var list = data.data;
-                if(list == null || list.length > 0){
+                if (list == null || list.length > 0) {
                     var code = "";
                     for (var i = 0, j = list.length; i < j; i++) {
                         code += "<tr>";
@@ -797,7 +807,7 @@
                     $("#tbody").html(code);
 
                     $('#myModal').modal('show');
-                }else{
+                } else {
                     alert("暂无数据");
                 }
             }
@@ -807,27 +817,30 @@
     function uploadData(fileObj) {
         var allowExtention = ".xlsx,.xls";
         var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        if(allowExtention.indexOf(extention) > -1){
+        if (allowExtention.indexOf(extention) > -1) {
             $.ajaxFileUpload({
                 url: '<%=basePath%>respect/importRespect',
                 type: 'post',
-                data : {
-                    "loginId":$("#loginId").val(),
-                    "pageType":$("#pageType").val()
+                data: {
+                    "loginId": $("#loginId").val(),
+                    "type": $("#pageType").val()
                 },
                 secureuri: false,
                 fileElementId: "file",
                 dataType: 'json',
-                success: function(data, status){
-                    console.log(data);
-                    if(status){
-                        alert("操作成功");
+                success: function (data, status) {
+                    if (status) {
+                        var begin = data.indexOf("{");
+                        var end = data.indexOf("}");
+                        var object = data.substring(begin,end+1);
+                        var message = JSON.parse(object).message;
+                        alert(message);
                         selectExamine(1, pageSize);
                     }
 
                 }
             });
-        }else{
+        } else {
             alert("仅支持" + allowExtention + "为后缀名的文件!");
             fileObj.value = "";
         }
@@ -836,19 +849,52 @@
     function exportRespect() {
         var loginId = $("#loginId").val();
         var name = $("#name").val();
-        var changeState  = $("#changeState").val();
+        var changeState = $("#changeState").val();
         var idCard = $("#idCard").val();
         var phone = $("#phone").val();
-        var grantTimes  = $("#grantTimes").val();
-        var communityId  = $("#communityId").val();
-        var auditState =$("#auditState").val();
+        var grantTimes = $("#grantTimes").val();
+        var communityId = $("#communityId").val();
+        var auditState = $("#auditState").val();
         var type = $("#pageType").val();
 
-        var href = '<%=basePath%>respect/exportRespect?loginId='+loginId+"&name="+name+"&changeState="+changeState+"&idCard="+idCard+"&phone="+phone+"&grantTimes="+grantTimes+"&communityId="+communityId+"&auditState="+auditState+"&type="+type;
-        $('#exportRespect').attr('href',href);
+        var href = '<%=basePath%>respect/exportRespect?loginId=' + loginId + "&name=" + name + "&changeState=" + changeState + "&idCard=" + idCard + "&phone=" + phone + "&grantTimes=" + grantTimes + "&communityId=" + communityId + "&auditState=" + auditState + "&type=" + type;
+        $('#exportRespect').attr('href', href);
         $('#exportRespect span').trigger('click');
     }
 
+    function allSelect() {
+        var selectState = $("input[name='allSelect']").is(':checked');
+        if (selectState) {
+            $("input[name='checkItem']").prop("checked", true);
+        } else {
+            $("input[name='checkItem']").prop("checked", false);
+        }
+    };
+
+
+    function batchDelete() {
+        var ids = "";
+        $('input:checkbox[name=checkItem]:checked').each(function (i) {
+            ids = $(this).attr("idValue") + "," + ids;
+        });
+        if(ids.trim() == ""){
+            alert("请选择需要删除的数据");
+            return;
+        }
+        if (confirm("是否确认提交？")) {
+            $.post("<%=basePath%>respect/batchDeleteRespect", {
+                "ids": ids,
+                "loginId": $("#loginId").val()
+            }, function (data) {
+                if (data.code == 0) {
+                   alert("操作成功");
+                    selectExamine(1, pageSize);
+                } else {
+                    alert(data.message);
+                }
+            })
+        }
+    }
 
 </script>
 </body>

@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>后台管理</title>
-        
-        
+
+        <title>后台管理</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
 
@@ -157,6 +157,26 @@
                     <li>
                         <a class="waves-effect"><i
                                 class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>账号设置</a>
                         <ul>
                             <li>
@@ -251,6 +271,7 @@
                             <a class="btn btn-info" href="<%=basePath%>respect/downRespectExcel" style="color: #fff">下载模板</a>--%>
                             <%--<button type="button" class="btn btn-info" id="addRespect"><span class=" fa fa-plus-square"></span> 新增</button>--%>
                             <a class="btn btn-info" id="exportRespect" style="color: #fff" onclick="exportRespect()" ><span>导出</span></a>
+                                <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -334,13 +355,14 @@
 <script type="text/javascript" src="<%=basePath%>js/ajaxfileupload.js"></script>
 
 <script>
-    var pageSize = 10;
+    var pageSize = 50;
     var roleType = 2;
     $(function () {
         $("#headerpage").load("page/header");
         laydate.render({
             elem: '#grantTimes'
             ,range: true
+            ,type:'month'
         });
         var loginId = $("#loginId").val();
         verification(loginId);
@@ -358,18 +380,29 @@
                 selectExamine(1, pageSize);
             }else{
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href="../login/login.jsp";
             }
         });
     }
 
 
     $("#search").on("click", function () {
-        selectExamine(1, 10);
+        selectExamine(1, 50);
     })
 
     function selectExamine(pageNum, pageSize) {
         var columns = [];
+        var q = {
+            field: 'dataIndex',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                var dataIndex = (pageNum - 1) * pageSize +1 ;
+                return dataIndex;
+            }
+        };
         var a = {
             field: 'name',
             title: '姓名',
@@ -448,19 +481,14 @@
             valign: 'middle',
             width: 180,
             formatter: function (value, row, index) {
-                var current = fmtmatDate(new Date());
-                var between = 0;
+                var desc = "-";
                 if(row.grantTime != null && row.grantTime != ""){
-                    between = getMonthBetween(fmtmatDate(row.grantTime),current);
+                    var current = fmtmatDate(new Date());
+                    if(!CompareDate(row.grantTime , current)){
+                        desc = getBetweenMonthStr(fmtmatDate(row.grantTime),current);
+                    }
                 }
-                var year = 0;
-                var month = 0;
-                if(between > 0){
-                    year =  Math.floor(between / 12);
-                    month = between % 12;
-                }
-                var desc = year == 0 ? (month +"月") :(year +"年"+ month +"月");
-                return between == 0 ? "-" : desc;
+                return desc;
             }
         };
         var i = {
@@ -470,7 +498,7 @@
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
-                return row.grantTime == null ? "-" : fmtDate(row.grantTime);
+                return row.grantTime == null ? "-" : fmtDate1(row.grantTime);
             }
         };
         var j = {
@@ -565,6 +593,8 @@
         columns.push(m);
         columns.push(n);
         columns.push(o);
+        columns.push(q);
+
         var name = $("#name").val();
         var changeState  = $("#changeState").val();
         var idCard = $("#idCard").val();
@@ -590,6 +620,7 @@
         }, function (data) {
             var list = data.data.list;
             var totalPage = data.data.totalPage;
+            $("#totalCount").html(data.data.count);
 
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
@@ -657,41 +688,20 @@
         return y + "年" + m.substring(m.length - 2, m.length) + "月" + d.substring(d.length - 2, d.length) + "日";
     }
 
+    function fmtDate1(birthday) {
+        var date = new Date(birthday);
+        var y = 1900 + date.getYear();
+        var m = "0" + (date.getMonth() + 1);
+        var d = "0" + date.getDate();
+        return y + "年" + m.substring(m.length - 2, m.length) + "月" ;
+    }
+
     function updateExamineById(respectId) {
         window.location.href="<%=basePath%>respect/updateLongevity?loginId="+$("#loginId").val()+"&respectId="+respectId;
     }
 
     function auditById(respectId) {
         window.location.href="<%=basePath%>respect/auditRespect?pageType=3&loginId="+$("#loginId").val()+"&respectId="+respectId;
-    }
-
-    function uploadData(fileObj) {
-        var allowExtention = ".xlsx,.xls";
-        var extention = fileObj.value.substring(fileObj.value.lastIndexOf(".") + 1).toLowerCase();
-        if(allowExtention.indexOf(extention) > -1){
-            $.ajaxFileUpload({
-                url: '<%=basePath%>respect/importRespect',
-                type: 'post',
-                data : {
-                    "loginId":$("#loginId").val(),
-                    "pageType":$("#pageType").val()
-                },
-                secureuri: false,
-                fileElementId: "file",
-                dataType: 'json',
-                success: function(data, status){
-                    console.log(data);
-                    if(status){
-                        alert("操作成功");
-                        selectExamine(1, pageSize);
-                    }
-
-                }
-            });
-        }else{
-            alert("仅支持" + allowExtention + "为后缀名的文件!");
-            fileObj.value = "";
-        }
     }
 
     function remarkDetail(respectId) {

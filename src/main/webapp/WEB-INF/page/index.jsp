@@ -256,6 +256,27 @@
                             </li>
                         </ul>
                     </li>
+
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a class="waves-effect"><i
                                 class="fa fa-address-card m-r-10"
@@ -331,7 +352,7 @@
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == -1) {
                 alert(data.message);
-                window.location.href = "<%=basePath%>/login.jsp";
+                window.location.href = "login.jsp";
             } else {
                 $("#username").html(data.data.username);
                 if (data.data.type == 1) {

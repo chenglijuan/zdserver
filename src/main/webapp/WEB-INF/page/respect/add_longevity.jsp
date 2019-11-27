@@ -6,19 +6,19 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-       
-     <title>新增尊老金</title>
+
+     <title>新增尊老金</title>
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
     <!-- Favicon icon -->
@@ -187,6 +187,26 @@
                             </li>
                             <li>
                                 <a href="<%=basePath%>respect/respectPager?loginId=${loginId}&pageType=4" class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i> 居民尊老金已故名单</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
                             </li>
                         </ul>
                     </li>
@@ -432,7 +452,7 @@
                 }
             }else{
                 alert(data.message);
-                window.location.href="<%=basePath%>/login.jsp";
+                window.location.href="../login/login.jsp";
             }
         });
     }

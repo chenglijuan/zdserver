@@ -79,4 +79,35 @@ public class IdCardUtil {
         return false;
     }
 
+    public static String get18Ic(String identityCard) {
+        String retId = "";
+        String id17 = "";
+        int sum = 0;
+        int y = 0;
+        // 定义数组存放加权因子（weight factor）
+        int[] wf = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 };
+        // 定义数组存放校验码（check code）
+        String[] cc = { "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2" };
+        if (identityCard.length() != 15) {
+            return identityCard;
+        }
+        // 加上两位年19
+        id17 = identityCard.substring(0, 6) + "19" + identityCard.substring(6);
+        // 十七位数字本体码加权求和
+        for (int i = 0; i < 17; i++) {
+            sum = sum + Integer.valueOf(id17.substring(i, i + 1)) * wf[i];
+        }
+        // 计算模
+        y = sum % 11;
+        // 通过模得到对应的校验码 cc[y]
+        retId = id17 + cc[y];
+        return retId;
+    }
+
+    public static void main(String[] args) {
+        // 例子 511702800222130
+        System.out.println(get18Ic("511702800222130"));
+        // 结果 511702198002221308
+    }
+
 }

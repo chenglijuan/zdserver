@@ -6,21 +6,21 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-       
+
     <base href="<%=basePath%>">
-        
-        <title>编辑花名册</title>
-        
-        
+
+        <title>编辑花名册</title>
+
+
     <meta http-equiv="pragma" content="no-cache">
-        
+
     <meta http-equiv="cache-control" content="no-cache">
-        
+
     <meta http-equiv="expires" content="0">
-        
-        
+
+
     <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-        
+
     <meta http-equiv="description" content="This is my page">
 
     <!-- Favicon icon -->
@@ -264,6 +264,26 @@
                     <li>
                         <a class="waves-effect"><i
                                 class="fa fa-address-card m-r-10"
+                                aria-hidden="true"></i>报表分析</a>
+                        <ul>
+                            <li>
+                                <a href="<%=basePath%>examine/examineStatisticPage?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-address-card m-r-10"
+                                        aria-hidden="true"></i>征地统计</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=1"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>城镇人员尊老金</a>
+                            </li>
+                            <li>
+                                <a href="<%=basePath%>respect/respectStatistic?loginId=${loginId}&pageType=2"
+                                   class="waves-effect"><i class="fa fa-user m-r-10" aria-hidden="true"></i>农村人员尊老金</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="waves-effect"><i
+                                class="fa fa-address-card m-r-10"
                                 aria-hidden="true"></i>账号设置</a>
                         <ul>
                             <li>
@@ -496,7 +516,7 @@
         $.post("<%=basePath%>user/getUserByUserId", {"userId": loginId}, function (data) {
             if (data.code == -1) {
                 alert(data.message);
-                window.location.href = "<%=basePath%>/login.jsp";
+                window.location.href = "../login/login.jsp";
             } else {
                 $("#username").html(data.data.username);
                 if (data.data.type == 1) {
