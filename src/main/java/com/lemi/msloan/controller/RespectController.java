@@ -1103,7 +1103,7 @@ public class RespectController {
     }
 
 
-    public String getCurrentMonthStatics(Integer communityId,String communityName, String month) {
+    public String getCurrentMonthStatics(Integer communityId,String communityName, String month,Integer type) {
         int range1Count = 0;
         int range2Count = 0;
         int range3Count = 0;
@@ -1120,12 +1120,12 @@ public class RespectController {
         respectRequest.setAuditState(2);
         respectRequest.setCommunityId(communityId);
         //城镇
-        respectRequest.setType(1);
+        respectRequest.setType(type);
         List<Respect> townList = respectService.selectRespectPager(respectRequest);
 
         StatisticRequest request = new StatisticRequest();
         request.setCommunityId(communityId);
-        request.setType(1);
+        request.setType(type);
         request.setBeginTime(month + "-01");
         request.setEndTime(month + "-31");
         RespectStatistic townStatistic = respectStatisticService.getStatisticByMonth(request);
@@ -1142,39 +1142,43 @@ public class RespectController {
         range3Money = new BigDecimal(0);
         range4Money = new BigDecimal(0);
         totalMoney = new BigDecimal(0);
-        for (Respect respect : townList) {
-            int age = AgeUtils.getAgeFromBirthTime(respect.getBirthday());
-            int issuStandard = AgeUtils.getIssuStandard(age, respect.getType());
-            if (80 <= age && age <= 89) {
-                range2Count++;
-                range2Money = range2Money.add(new BigDecimal(issuStandard));
-            } else if (90 <= age && age <= 99) {
-                range3Count++;
-                range3Money = range3Money.add(new BigDecimal(issuStandard));
-            } else if (100 <= age) {
-                range4Count++;
-                range4Money = range4Money.add(new BigDecimal(issuStandard));
+        //城镇
+        if(type.intValue() == 1){
+            for (Respect respect : townList) {
+                int age = AgeUtils.getAgeFromBirthTime(respect.getBirthday());
+                int issuStandard = AgeUtils.getIssuStandard(age, respect.getType());
+                if (80 <= age && age <= 89) {
+                    range2Count++;
+                    range2Money = range2Money.add(new BigDecimal(issuStandard));
+                } else if (90 <= age && age <= 99) {
+                    range3Count++;
+                    range3Money = range3Money.add(new BigDecimal(issuStandard));
+                } else if (100 <= age) {
+                    range4Count++;
+                    range4Money = range4Money.add(new BigDecimal(issuStandard));
+                }
+                totalCount++;
             }
-            totalCount++;
-        }
-        totalMoney = range2Money.add(range3Money).add(range4Money);
-        townStatistic.setRange1Count(range1Count);
-        townStatistic.setRange1Money(range1Money);
-        townStatistic.setRange2Count(range2Count);
-        townStatistic.setRange2Money(range2Money);
-        townStatistic.setRange3Count(range3Count);
-        townStatistic.setRange3Money(range3Money);
-        townStatistic.setRange4Count(range4Count);
-        townStatistic.setRange4Money(range4Money);
-        townStatistic.setTotalCount(totalCount);
-        townStatistic.setTotalMoney(totalMoney);
-        townStatistic.setType(1);
+            totalMoney = range2Money.add(range3Money).add(range4Money);
+            townStatistic.setRange1Count(range1Count);
+            townStatistic.setRange1Money(range1Money);
+            townStatistic.setRange2Count(range2Count);
+            townStatistic.setRange2Money(range2Money);
+            townStatistic.setRange3Count(range3Count);
+            townStatistic.setRange3Money(range3Money);
+            townStatistic.setRange4Count(range4Count);
+            townStatistic.setRange4Money(range4Money);
+            townStatistic.setTotalCount(totalCount);
+            townStatistic.setTotalMoney(totalMoney);
+            townStatistic.setType(1);
 //        townStatistic.setCreateTime(current);
 //        townStatistic.setSummaryMonth(current);
-        townStatistic.setCommunityId(communityId);
-        townStatistic.setCommunityName(communityName);
-        //insertList.add(townStatistic);
-        //}
+            townStatistic.setCommunityId(communityId);
+            townStatistic.setCommunityName(communityName);
+            //insertList.add(townStatistic);
+            //}
+        }
+
 
 
 
