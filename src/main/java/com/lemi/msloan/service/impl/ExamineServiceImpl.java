@@ -465,4 +465,20 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
         }
         return examineDao.getExitCountByCommunityId(examineRequest);
     }
+
+    @Override
+    public List<Examine> getNotExitExamine(Integer communityId, String beginTime, String endTime) {
+        ExamineRequest examineRequest = new ExamineRequest();
+
+        if (communityId != null){
+            examineRequest.setCommunityId(communityId);
+        }
+        if (!StringUtils.isBlank(beginTime)){
+            examineRequest.setBeginTime(DateUtil.getDateToString(beginTime,"yyyy-MM-dd 00:00:00"));
+        }
+        if (!StringUtils.isBlank(endTime)){
+            examineRequest.setEndTime(DateUtil.getDateToString(endTime,"yyyy-MM-dd 23:59:59"));
+        }
+        return examineDao.getNotExitExamine(examineRequest);
+    }
 }

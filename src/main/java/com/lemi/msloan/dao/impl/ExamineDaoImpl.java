@@ -85,4 +85,9 @@ public class ExamineDaoImpl extends BaseDaoImpl<Examine> implements ExamineDao {
         Object object = sqlSessionTemplate.selectOne("tbl_examine.getAddedCountByCommunityId",examineRequest);
         return object == null?0:(int)object;
     }
+
+    @Override
+    public List<Examine> getNotExitExamine(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectList("tbl_examine.getNotExitExamine",examineRequest);
+    }
 }

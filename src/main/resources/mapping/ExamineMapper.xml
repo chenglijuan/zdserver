@@ -44,9 +44,9 @@
         <result column="time2" property="time2" jdbcType="TIMESTAMP"/>
         <result column="time3" property="time3" jdbcType="TIMESTAMP"/>
         <result column="time4" property="time4" jdbcType="TIMESTAMP"/>
-        <result column="exit_type" property="exitType" jdbcType="INTEGER" />
-        <result column="in_time" property="inTime" jdbcType="TIMESTAMP" />
-        <result column="exit_time" property="exitTime" jdbcType="TIMESTAMP" />
+        <result column="exit_type" property="exitType" jdbcType="INTEGER"/>
+        <result column="in_time" property="inTime" jdbcType="TIMESTAMP"/>
+        <result column="exit_time" property="exitTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <resultMap id="BaseResultMapWithAge" type="com.lemi.msloan.entity.Examine" extends="BaseResultMap">
         <result column="age" property="age" jdbcType="INTEGER"/>
@@ -1054,5 +1054,25 @@
                 <![CDATA[  AND in_time <= #{endTime}]]>
             </if>
         </where>
+    </select>
+    <select id="getNotExitExamine" parameterType="com.lemi.msloan.request.ExamineRequest" resultMap="BaseResultMap">
+        SELECT a.* FROM `zd_examine` a WHERE `status` = 2
+        <if test="communityId != null">
+            AND community_id = #{communityId}
+        </if>
+
+        and id NOT IN ( SELECT examine_id FROM zd_examine_statistic
+        <where>
+            <if test="communityId != null">
+                AND community_id = #{communityId}
+            </if>
+            <if test="beginTime != null">
+                <![CDATA[  AND time >= #{beginTime}]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[  AND time <= #{endTime}]]>
+            </if>
+        </where>
+        )
     </select>
 </mapper>

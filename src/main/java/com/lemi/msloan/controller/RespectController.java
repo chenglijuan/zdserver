@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1077,10 +1078,12 @@ public class RespectController {
                     request.setBeginTime(month + "-01");
                     request.setEndTime(month + "-31");
                     // 如果查询是的当前月份   查询的是最新的
+                    RespectStatistic monthStatistic = null;
                     if (currentMonth.equals(month)) {
-
+                        monthStatistic = getCurrentMonthStatics(community.getId(), community.getName(), month, type);
+                    } else {
+                        monthStatistic = respectStatisticService.getStatisticByMonth(request);
                     }
-                    RespectStatistic monthStatistic = respectStatisticService.getStatisticByMonth(request);
                     if (monthStatistic == null) {
                         monthStatistic = new RespectStatistic();
                         monthStatistic.setTotalCount(0);
@@ -1103,13 +1106,13 @@ public class RespectController {
     }
 
 
-    public String getCurrentMonthStatics(Integer communityId,String communityName, String month,Integer type) {
+    public RespectStatistic getCurrentMonthStatics(Integer communityId, String communityName, String month, Integer type) {
         int range1Count = 0;
         int range2Count = 0;
         int range3Count = 0;
         int range4Count = 0;
         int totalCount = 0;
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         BigDecimal range1Money = new BigDecimal(0);
         BigDecimal range2Money = new BigDecimal(0);
         BigDecimal range3Money = new BigDecimal(0);
@@ -1122,15 +1125,17 @@ public class RespectController {
         //城镇
         respectRequest.setType(type);
         List<Respect> townList = respectService.selectRespectPager(respectRequest);
-
+        if (townList == null || townList.size() <= 0) {
+            return null;
+        }
         StatisticRequest request = new StatisticRequest();
         request.setCommunityId(communityId);
         request.setType(type);
         request.setBeginTime(month + "-01");
         request.setEndTime(month + "-31");
         RespectStatistic townStatistic = respectStatisticService.getStatisticByMonth(request);
-        if(townStatistic == null){
-            townStatistic =  new RespectStatistic();
+        if (townStatistic == null) {
+            townStatistic = new RespectStatistic();
         }
         range1Count = 0;
         range2Count = 0;
@@ -1143,7 +1148,7 @@ public class RespectController {
         range4Money = new BigDecimal(0);
         totalMoney = new BigDecimal(0);
         //城镇
-        if(type.intValue() == 1){
+        if (type.intValue() == 1) {
             for (Respect respect : townList) {
                 int age = AgeUtils.getAgeFromBirthTime(respect.getBirthday());
                 int issuStandard = AgeUtils.getIssuStandard(age, respect.getType());
@@ -1170,80 +1175,71 @@ public class RespectController {
             townStatistic.setRange4Money(range4Money);
             townStatistic.setTotalCount(totalCount);
             townStatistic.setTotalMoney(totalMoney);
-            townStatistic.setType(1);
-//        townStatistic.setCreateTime(current);
-//        townStatistic.setSummaryMonth(current);
-            townStatistic.setCommunityId(communityId);
-            townStatistic.setCommunityName(communityName);
-            //insertList.add(townStatistic);
-            //}
+            if (townStatistic.getId() == null) {
+                townStatistic.setType(1);
+                townStatistic.setCreateTime(new Date());
+                try {
+                    townStatistic.setSummaryMonth(sdf.parse(month + "-01"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                townStatistic.setCommunityId(communityId);
+                townStatistic.setCommunityName(communityName);
+                respectStatisticService.save(townStatistic);
+            } else {
+                respectStatisticService.update(townStatistic);
+            }
+        } else {
+            for (Respect respect : townList) {
+                // 农村
+                int age = AgeUtils.getAgeFromBirthTime(respect.getBirthday());
+                int issuStandard = AgeUtils.getIssuStandard(age, respect.getType());
+                if (70 <= age && age <= 79) {
+                    range1Count++;
+                    range1Money = range1Money.add(new BigDecimal(issuStandard));
+                }
+                if (80 <= age && age <= 89) {
+                    range2Count++;
+                    range2Money = range2Money.add(new BigDecimal(issuStandard));
+                } else if (90 <= age && age <= 99) {
+                    range3Count++;
+                    range3Money = range3Money.add(new BigDecimal(issuStandard));
+                } else if (100 <= age) {
+                    range4Count++;
+                    range4Money = range4Money.add(new BigDecimal(issuStandard));
+                }
+                totalCount++;
+            }
+            totalMoney = range1Money.add(range2Money).add(range3Money).add(range4Money);
+            townStatistic.setRange1Count(range1Count);
+            townStatistic.setRange1Money(range1Money);
+            townStatistic.setRange2Count(range2Count);
+            townStatistic.setRange2Money(range2Money);
+            townStatistic.setRange3Count(range3Count);
+            townStatistic.setRange3Money(range3Money);
+            townStatistic.setRange4Count(range4Count);
+            townStatistic.setTotalCount(totalCount);
+            townStatistic.setRange4Money(range4Money);
+            townStatistic.setTotalMoney(totalMoney);
+
+            if (townStatistic.getId() == null) {
+                townStatistic.setType(2);
+                townStatistic.setCreateTime(new Date());
+                try {
+                    townStatistic.setSummaryMonth(sdf.parse(month + "-01"));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                townStatistic.setCommunityId(communityId);
+                townStatistic.setCommunityName(communityName);
+                respectStatisticService.save(townStatistic);
+            } else {
+                respectStatisticService.update(townStatistic);
+            }
         }
-
-
-
-
         //农村
-//        respectRequest.setType(2);
-//        List<Respect> countryList = respectService.selectRespectPager(respectRequest);
-//        RespectStatistic countryStatistic = new RespectStatistic();
-//        range1Count = 0;
-//        range2Count = 0;
-//        range3Count = 0;
-//        range4Count = 0;
-//        totalCount = 0;
-//        range1Money = new BigDecimal(0);
-//        range2Money = new BigDecimal(0);
-//        range3Money = new BigDecimal(0);
-//        range4Money = new BigDecimal(0);
-//        totalMoney = new BigDecimal(0);
-//
-//        for (Respect respect : countryList) {
-//            // 农村
-//            int age = AgeUtils.getAgeFromBirthTime(respect.getBirthday());
-//            int issuStandard = AgeUtils.getIssuStandard(age, respect.getType());
-//            if (70 <= age && age <= 79) {
-//                range1Count++;
-//                range1Money = range1Money.add(new BigDecimal(issuStandard));
-//            }
-//            if (80 <= age && age <= 89) {
-//                range2Count++;
-//                range2Money = range2Money.add(new BigDecimal(issuStandard));
-//            } else if (90 <= age && age <= 99) {
-//                range3Count++;
-//                range3Money = range3Money.add(new BigDecimal(issuStandard));
-//            } else if (100 <= age) {
-//                range4Count++;
-//                range4Money = range4Money.add(new BigDecimal(issuStandard));
-//            }
-//            totalCount++;
-//        }
-        //if(countryList != null && countryList.size() > 0){
-       /* totalMoney = range1Money.add(range2Money).add(range3Money).add(range4Money);
-        countryStatistic.setRange1Count(range1Count);
-        countryStatistic.setRange1Money(range1Money);
-        countryStatistic.setRange2Count(range2Count);
-        countryStatistic.setRange2Money(range2Money);
-        countryStatistic.setRange3Count(range3Count);
-        countryStatistic.setRange3Money(range3Money);
-        countryStatistic.setRange4Count(range4Count);
-        countryStatistic.setTotalCount(totalCount);
-        countryStatistic.setRange4Money(range4Money);
-        countryStatistic.setTotalMoney(totalMoney);
-        countryStatistic.setType(2);
-        countryStatistic.setCreateTime(current);
-        countryStatistic.setSummaryMonth(current);
-        countryStatistic.setCommunityId(communityId);
-        countryStatistic.setCommunityName(community.getName());
-        insertList.add(countryStatistic);*/
-        // }
-      /* if(insertList !=null&&insertList.size()>0)
-
-    {
-        respectStatisticService.insertBatchData(insertList);
-    }*/
-
-       return"";
-}
+        return townStatistic;
+    }
 
 
     @RequestMapping(value = "exportStatistic")

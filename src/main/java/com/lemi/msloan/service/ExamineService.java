@@ -34,4 +34,6 @@ public interface ExamineService extends BaseService<Examine> {
     Integer getAddedCountByCommunityId(Integer communityId, String beginTime, String endTime);
 
     Integer getExitCountByCommunityId(Integer communityId, String beginTime, String endTime, Integer exitType);
+
+    List<Examine> getNotExitExamine(Integer communityId, String beginTime, String endTime);
 }

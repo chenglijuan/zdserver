@@ -35,4 +35,6 @@ public interface ExamineDao extends BaseDao<Examine> {
     Integer getExitCountByCommunityId(ExamineRequest examineRequest);
 
     Integer getAddedCountByCommunityId(ExamineRequest examineRequest);
+
+    List<Examine> getNotExitExamine(ExamineRequest examineRequest);
 }

@@ -1,9 +1,6 @@
 package com.lemi.msloan.controller;
 
-import com.lemi.msloan.entity.Community;
-import com.lemi.msloan.entity.Examine;
-import com.lemi.msloan.entity.Roster;
-import com.lemi.msloan.entity.User;
+import com.lemi.msloan.entity.*;
 import com.lemi.msloan.response.ApiResult;
 import com.lemi.msloan.response.CommunityInfoResponse;
 import com.lemi.msloan.response.CommunityMoneyInfoResponse;
@@ -1484,6 +1481,63 @@ public class ExamineController {
         return new ApiResult(true, "查询成功", 0, map);
     }
 
+
+    @RequestMapping(value = "getCommunityMoneyInfo")
+    @ResponseBody
+    public ApiResult getCommunityMoneyInfo(String beginTime, String endTime) {
+        List<CommunityMoneyInfoResponse> list = new ArrayList<>();
+        List<Community> communities = communityService.findAll();
+        SimpleDateFormat monthSdf = new SimpleDateFormat("yyyy-MM");
+        String currentMonth = monthSdf.format(new Date());
+        try {
+            List<String> monthList = getMonthBetween(beginTime, endTime);
+            for (Community community : communities) {
+                Integer communityId = community.getId();
+                CommunityMoneyInfoResponse communityMoneyInfoResponse = new CommunityMoneyInfoResponse();
+                List<CommunityMoneyItemResponse> itemList = new ArrayList<>();
+                for (String month : monthList) {
+                    CommunityMoneyItemResponse communityMoneyItemResponse = new CommunityMoneyItemResponse();
+                    //如果是当前月 查询实时的数据
+                    Map<String, String> dateItem = DateUtil.getFirstdayLastdayMonth(DateUtil.getDateToString(month + "-01", "yyyy-MM-dd"));
+                    String first = dateItem.get("first");
+                    String last = dateItem.get("last");
+                    if (currentMonth.equals(month)) {
+                        saveNotExitExamine(communityId,first,last);
+                    }
+
+                    Date startDate = DateUtil.getDateToString(first, "yyyy-MM-dd");
+                    Date endDate = DateUtil.getDateToString(last, "yyyy-MM-dd");
+//                    Integer total_money = examineStatisticService.getTotalMoneyByCommunity(communityId, startDate, endDate);
+                    Integer total_count = examineStatisticService.getTotalCountByCommunity(communityId, startDate, endDate);
+                    Integer total_money = total_count.intValue() * 180;
+                    communityMoneyItemResponse.setDate(month);
+                    communityMoneyItemResponse.setTotalCount(total_count);
+                    communityMoneyItemResponse.setTotalMoney(total_money);
+                    itemList.add(communityMoneyItemResponse);
+                }
+                communityMoneyInfoResponse.setCommunity(community);
+                communityMoneyInfoResponse.setList(itemList);
+                list.add(communityMoneyInfoResponse);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ApiResult(true, "查询成功", 0, list);
+    }
+
+    public void saveNotExitExamine(Integer communityId, String startDate, String endDate) {
+       List<Examine> list = examineService.getNotExitExamine(communityId,startDate,endDate);
+        ExamineStatistic examineStatistic = null;
+        Date current = new Date();
+        for (Examine examine:list){
+            examineStatistic = new ExamineStatistic();
+            examineStatistic.setExamineId(examine.getId());
+            examineStatistic.setCommunityId(examine.getCommunityId());
+            examineStatistic.setMoney(180.0);
+            examineStatistic.setTime(current);
+            examineStatisticService.save(examineStatistic);
+        }
+    }
     /**
      * 发放统计
      *
@@ -1491,7 +1545,7 @@ public class ExamineController {
      * @param endTime
      * @return
      */
-    @RequestMapping(value = "getCommunityMoneyInfo")
+    /*@RequestMapping(value = "getCommunityMoneyInfo")
     @ResponseBody
     public ApiResult getCommunityMoneyInfo(String beginTime, String endTime) {
         List<CommunityMoneyInfoResponse> list = new ArrayList<>();
@@ -1528,7 +1582,7 @@ public class ExamineController {
             e.printStackTrace();
         }
         return new ApiResult(true, "查询成功", 0, list);
-    }
+    }*/
 
 
     private static List<String> getMonthBetween(String beginTime, String endTime) throws ParseException {

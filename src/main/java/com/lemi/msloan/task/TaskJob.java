@@ -28,7 +28,7 @@ public class TaskJob {
     @Autowired
     private ExamineService examineService;
 
-    @Scheduled(cron = "0 0 0 1/1 * ?") // 每天执行一次
+//    @Scheduled(cron = "0 0 0 1/1 * ?") // 每天执行一次
     public void job1() {
 
         Date date = new Date();
