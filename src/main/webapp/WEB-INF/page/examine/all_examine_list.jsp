@@ -451,6 +451,7 @@
                             <button type="button" class="btn btn-info" id="addExamine"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
+                            <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -656,6 +657,16 @@
         var isInsured = $("#isInsured").val();
         var communityId = $("#communityId").val();
         var columns = [];
+        var NUM = {
+            field: 'NUM',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                return ((pageNum-1)*pageSize) + index+1;
+            }
+        };
         var a = {
             field: 'name',
             title: '姓名',
@@ -901,6 +912,7 @@
                     }
             }
         };
+        columns.push(NUM);
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -943,6 +955,7 @@
         }, function (data) {
             var list = data.data.list;
             var count = data.data.count;
+            $("#totalCount").html(count);
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
                 cache: false,
@@ -990,7 +1003,7 @@
                 }
             },
             onPageClicked: function (event, originalEvent, type, page) {
-                selectRoster(page, 10);
+                selectRosterExamine(page, 10);
             }
         });
     }

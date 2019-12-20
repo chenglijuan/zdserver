@@ -518,7 +518,7 @@
         var columns = [];
 
         var NUM = {
-            field: 'idCard',
+            field: 'NUM',
             title: '序号',
             align: 'center',
             valign: 'middle',
