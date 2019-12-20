@@ -418,6 +418,7 @@
                             <button type="button" class="btn btn-info" id="addRoster"><span
                                     class=" fa fa-plus-square"></span> 新增
                             </button>
+                            <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                             <div class="table-responsive">
                                 <table class="table" id="table">
                                 </table>
@@ -515,6 +516,18 @@
         var age = $("#age").val();
         var loginId = $("#loginId").val();
         var columns = [];
+
+        var NUM = {
+            field: 'idCard',
+            title: '序号',
+            align: 'center',
+            valign: 'middle',
+            width: 90,
+            formatter: function (value, row, index) {
+                return ((pageNum-1)*pageSize) + index+1;
+            }
+        };
+
         var a = {
             field: 'idCard',
             title: '身份证号',
@@ -645,6 +658,7 @@
                 return "<a class='btn btn-info' style='color: #fff' onclick='updateRoster(" + row.id + ")'><span class='fa fa-edit'></span> 编辑</a>";
             }
         };
+        columns.push(NUM);
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -670,6 +684,7 @@
             "pageSize": pageSize
         }, function (data) {
             var count = data.data.count;
+            $("#totalCount").html(count);
             var list = data.data.list;
             $('#table').bootstrapTable('destroy').bootstrapTable({
                 data: list,
