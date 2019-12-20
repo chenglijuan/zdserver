@@ -25,6 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RequestMapping(value = "roster")
 @Controller
@@ -41,6 +43,8 @@ public class RosterController {
 
     @Autowired
     private UserService userService;
+
+    public static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
     @RequestMapping(value = "updateRosterPager")
     public ModelAndView updateRosterPager(Integer rosterId, Integer loginId) {
@@ -458,7 +462,8 @@ public class RosterController {
             if (!FileUtil.checkExcelVaild(source)) {
                 return "文件格式不正确";
             }
-            List<Roster> rosters = new ArrayList<Roster>();
+            List<Community> communityList = communityService.findAll();
+            final List<Roster> rosters = new ArrayList<Roster>();
             Workbook wb = null;
             Sheet sheet = null;
             Row row = null;
@@ -470,6 +475,7 @@ public class RosterController {
             if (wb != null) {
                 sheet = wb.getSheetAt(0);
                 int rownum = sheet.getPhysicalNumberOfRows();
+                int rownum1 = sheet.getLastRowNum();
                 for (int i = 2; i < rownum; i++) {
                     row = sheet.getRow(i);
                     if (row != null) {
@@ -479,15 +485,11 @@ public class RosterController {
                             if ("身份证号".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
                                     temp.setIdCard(cellData.trim());
-                                } else {
-                                    return i + "行" + (j + 1) + "列数据，身份证号不能为空。";
                                 }
                             }
                             if ("姓名".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
                                     temp.setName(cellData.trim());
-                                } else {
-                                    return i + "行" + (j + 1) + "列数据，姓名不能为空。";
                                 }
                             }
                             if ("性别".equals(cloumns[j])) {
@@ -526,34 +528,10 @@ public class RosterController {
                             }
                             if ("现所属社区".equals(cloumns[j])) {
                                 if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (loginId != null) {
-                                        User user = userService.get(loginId);
-                                        if (user != null) {
-                                            if (user.getType().intValue() == 2) {
-                                                Community community = communityService.selectByUserId(loginId);
-                                                if (community != null) {
-                                                    temp.setCommunityId(community.getId());
-                                                }
-                                            } else {
-                                                String communityName = cellData.trim();
-                                                Community community = communityService.getByName(communityName);
-                                                if (community != null) {
-                                                    temp.setCommunityId(community.getId());
-                                                }
-                                            }
-                                        } else {
-                                            String communityName = cellData.trim();
-                                            Community community = communityService.getByName(communityName);
-                                            if (community != null) {
-                                                temp.setCommunityId(community.getId());
-                                            }
-                                        }
-                                    } else {
-                                        String communityName = cellData.trim();
-                                        Community community = communityService.getByName(communityName);
-                                        if (community != null) {
-                                            temp.setCommunityId(community.getId());
-                                        }
+                                    String communityName = cellData.trim();
+                                    Community community = sss(communityList,communityName);
+                                    if (community != null) {
+                                        temp.setCommunityId(community.getId());
                                     }
                                 }
                             }
@@ -587,61 +565,77 @@ public class RosterController {
                     }
                 }
             }
-            Integer insertCount = 0;
-            Integer updateCount = 0;
-            for (Roster item : rosters) {
-                Roster roster = rosterService.getByIdCard(item.getIdCard());
-                if (roster == null) {
-                    Examine examine = new Examine();
-                    examine.setIdCard(item.getIdCard());
-                    examine.setName(item.getName());
-                    examine.setGender(item.getGender());
-                    examine.setBirthday(item.getBirthday());
-                    examine.setAddress(item.getAddress());
-                    examine.setVillage(item.getVillage());
-                    examine.setIsMove(item.getIsMove());
-                    examine.setCommunityId(item.getCommunityId());
-                    examine.setHouse(item.getHouse());
-                    examine.setRemark(item.getRemark());
-                    examine.setStatus(item.getStatus());
-                    examine.setTime(new Date());
-                    examine.setState(5);
-                    examineService.save(examine);
-                    Integer examineId = examine.getId();
-                    item.setExamineId(examineId);
-                    item.setTime(new Date());
-                    rosterService.save(item);
-                    insertCount++;
-                } else {
-                    Examine examine = examineService.get(roster.getExamineId());
-                    examine.setIdCard(item.getIdCard());
-                    examine.setName(item.getName());
-                    examine.setGender(item.getGender());
-                    examine.setBirthday(item.getBirthday());
-                    examine.setAddress(item.getAddress());
-                    examine.setVillage(item.getVillage());
-                    examine.setIsMove(item.getIsMove());
-                    examine.setCommunityId(item.getCommunityId());
-                    examine.setHouse(item.getHouse());
-                    examine.setRemark(item.getRemark());
-                    examine.setStatus(item.getStatus());
-                    examineService.update(examine);
-                    roster.setIdCard(item.getIdCard());
-                    roster.setName(item.getName());
-                    roster.setGender(item.getGender());
-                    roster.setBirthday(item.getBirthday());
-                    roster.setAddress(item.getAddress());
-                    roster.setVillage(item.getVillage());
-                    roster.setIsMove(item.getIsMove());
-                    roster.setCommunityId(item.getCommunityId());
-                    roster.setHouse(item.getHouse());
-                    roster.setRemark(item.getRemark());
-                    roster.setStatus(item.getStatus());
-                    rosterService.update(roster);
-                    updateCount++;
+            int total = 0;
+            for (int i=0;i<rosters.size();i++) {
+                if (!StringUtils.isBlank(rosters.get(i).getIdCard())){
+                    total ++;
+                }else {
+
                 }
             }
-            return "共导入" + rosters.size() + "条数据，新增" + insertCount + "条，更新" + updateCount + "条";
+            fixedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    Integer insertCount = 0;
+                    Integer updateCount = 0;
+                    for (int i=0;i<rosters.size();i++) {
+                        Roster item = rosters.get(i);
+                        if (!StringUtils.isBlank(item.getIdCard())){
+                            Roster roster = rosterService.getByIdCard(item.getIdCard());
+                            if (roster == null) {
+                                Examine examine = new Examine();
+                                examine.setIdCard(item.getIdCard());
+                                examine.setName(item.getName());
+                                examine.setGender(item.getGender());
+                                examine.setBirthday(item.getBirthday());
+                                examine.setAddress(item.getAddress());
+                                examine.setVillage(item.getVillage());
+                                examine.setIsMove(item.getIsMove());
+                                examine.setCommunityId(item.getCommunityId());
+                                examine.setHouse(item.getHouse());
+                                examine.setRemark(item.getRemark());
+                                examine.setStatus(item.getStatus());
+                                examine.setTime(new Date());
+                                examine.setState(5);
+                                examineService.save(examine);
+                                Integer examineId = examine.getId();
+                                item.setExamineId(examineId);
+                                item.setTime(new Date());
+                                rosterService.save(item);
+                                insertCount++;
+                            } else {
+                                Examine examine = examineService.get(roster.getExamineId());
+                                examine.setIdCard(item.getIdCard());
+                                examine.setName(item.getName());
+                                examine.setGender(item.getGender());
+                                examine.setBirthday(item.getBirthday());
+                                examine.setAddress(item.getAddress());
+                                examine.setVillage(item.getVillage());
+                                examine.setIsMove(item.getIsMove());
+                                examine.setCommunityId(item.getCommunityId());
+                                examine.setHouse(item.getHouse());
+                                examine.setRemark(item.getRemark());
+                                examine.setStatus(item.getStatus());
+                                examineService.update(examine);
+                                roster.setIdCard(item.getIdCard());
+                                roster.setName(item.getName());
+                                roster.setGender(item.getGender());
+                                roster.setBirthday(item.getBirthday());
+                                roster.setAddress(item.getAddress());
+                                roster.setVillage(item.getVillage());
+                                roster.setIsMove(item.getIsMove());
+                                roster.setCommunityId(item.getCommunityId());
+                                roster.setHouse(item.getHouse());
+                                roster.setRemark(item.getRemark());
+                                roster.setStatus(item.getStatus());
+                                rosterService.update(roster);
+                                updateCount++;
+                            }
+                        }
+                    }
+                }
+            });
+            return "数据正在导入，本次将新增或更新" + total + "条数据";
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -660,4 +654,15 @@ public class RosterController {
         return new ApiResult(true, "操作成功", 0, list);
     }
 
+    private Community sss(List<Community> communityList,String name){
+        Community c = null;
+        for (Community community:communityList){
+            if (community.getName().equals(name.trim())){
+
+                c = community;
+                break;
+            }
+        }
+        return c;
+    }
 }
