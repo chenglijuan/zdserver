@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +29,8 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2019/4/19.
@@ -54,6 +57,7 @@ public class ExamineController {
     @Autowired
     private ExamineStatisticService examineStatisticService;
 
+    public static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(5);
 
     @RequestMapping(value = "updateExaminePager")
     public ModelAndView updateExaminePager(Integer examineId, Integer loginId) {
@@ -93,7 +97,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "findAllExamine")
     @ResponseBody
-    public ApiResult findAllExamine(Integer loginId, Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult findAllExamine(Integer loginId, Integer gender, Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
 
         User user = userService.get(loginId);
         if (user != null) {
@@ -105,9 +109,9 @@ public class ExamineController {
             }
         }
 
-        List<Examine> list = examineService.findAllExamine(state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.findAllExamine(gender, state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.findAllExamineCount(state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.findAllExamineCount(gender, state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -116,6 +120,253 @@ public class ExamineController {
         map.put("count", count);
 
         return new ApiResult(true, "查询成功", 0, map);
+    }
+
+    /**
+     * 导出
+     *
+     * @param gender
+     * @param state
+     * @param house
+     * @param name
+     * @param idCard
+     * @param comping
+     * @param age
+     * @param changes
+     * @param status
+     * @param unemployment
+     * @param isInsured
+     * @param communityId
+     */
+    @RequestMapping(value = "exportExamine")
+    public void exportExamine(HttpServletResponse response,Integer gender, Integer state, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+        List<Examine> list = examineService.findAllExamine(gender, state, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, null, null);
+        try {
+            List<List<String>> strsList = new ArrayList<List<String>>();
+            List<String> title = new ArrayList<String>();
+            title.add("姓名");
+            title.add("性别");
+            title.add("年龄");
+            title.add("出生年月");
+            title.add("身份证号");
+            title.add("户籍所在地");
+            title.add("现住地");
+            title.add("征地时间");
+            title.add("征地时年龄");
+            title.add("征地时所在村（组）");
+            title.add("撤队安置情况");
+            title.add("发放标准");
+            title.add("开始发放时间");
+            title.add("停止发放时间");
+            title.add("动态享受年月");
+            title.add("新增批次");
+            title.add("变动情况");
+            title.add("参保状态");
+            title.add("失业状态");
+            title.add("是否并轨");
+            title.add("发放状态");
+            strsList.add(title);
+            for (int i = 0, length = list.size(); i < length; i++) {
+                List<String> strings = new ArrayList<>();
+                Examine examine = list.get(i);
+
+                //姓名
+                strings.add(examine.getName());
+
+                //性别
+                if (examine.getGender() != null) {
+                    if (examine.getGender().intValue() == 1){
+                        strings.add("男");
+                    }else {
+                        strings.add("女");
+                    }
+                } else {
+                    strings.add("");
+                }
+
+                //年龄
+                strings.add(examine.getAge() + "");
+
+                //出生年月
+                if (examine.getBirthday() != null){
+                    strings.add(DateUtil.formatDate(examine.getBirthday(),"yyyy-MM-dd"));
+                } else {
+                    strings.add("");
+                }
+
+                //身份证号
+                if (!StringUtils.isBlank(examine.getIdCard())){
+                    strings.add(examine.getIdCard());
+                } else {
+                    strings.add("");
+                }
+
+                //户籍所在地
+                if (!StringUtils.isBlank(examine.getHouse())){
+                    strings.add(examine.getHouse());
+                } else {
+                    strings.add("");
+                }
+
+                //现住地
+                if (!StringUtils.isBlank(examine.getAddress())){
+                    strings.add(examine.getAddress());
+                } else {
+                    strings.add("");
+                }
+
+                //征地时间
+                if (examine.getVillageTime() != null){
+                    strings.add(DateUtil.formatDate(examine.getVillageTime(),"yyyy-MM-dd"));
+                } else {
+                    strings.add("");
+                }
+
+                //征地时年龄
+                if (examine.getVillageAge() != null){
+                    strings.add(examine.getVillageAge() + "");
+                } else {
+                    strings.add("");
+                }
+
+                //征地时所在村（组）
+                if (!StringUtils.isBlank(examine.getVillage())){
+                    strings.add(examine.getVillage());
+                } else {
+                    strings.add("");
+                }
+                //撤队安置情况
+                if (examine.getCdState() != null){
+                    if (examine.getCdState().intValue() == 1){
+                        strings.add("未撤队先安置");
+                    }else if (examine.getCdState().intValue() == 2){
+                        strings.add("撤队时安置");
+                    }else if (examine.getCdState().intValue() == 3){
+                        strings.add("领取征地待业");
+                    }else if (examine.getCdState().intValue() == 4){
+                        strings.add("领取一次性补偿金");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //发放标准
+                if (!StringUtils.isBlank(examine.getFfbj())){
+                    strings.add(examine.getFfbj());
+                } else {
+                    strings.add("");
+                }
+                //开始发放时间
+                if (examine.getStartTime() != null){
+                    strings.add(DateUtil.formatDate(examine.getStartTime(),"yyyy-MM-dd"));
+                } else {
+                    strings.add("");
+                }
+                //停止发放时间
+                if (examine.getStopTime() != null ){
+                    strings.add(DateUtil.formatDate(examine.getStopTime(),"yyyy-MM-dd"));
+                } else {
+                    strings.add("");
+                }
+                //动态享受年月
+                if (!StringUtils.isBlank(examine.getDtxsny())){
+                    strings.add(examine.getDtxsny());
+                } else {
+                    strings.add("");
+                }
+                //新增批次
+                if (!StringUtils.isBlank(examine.getBatch())){
+                    strings.add(examine.getBatch());
+                } else {
+                    strings.add("");
+                }
+                //变动情况
+                if (examine.getChanges() != null){
+                    if (examine.getCdState().intValue() == 1){
+                        strings.add("迁出");
+                    }else if (examine.getCdState().intValue() == 2){
+                        strings.add("新增");
+                    }else if (examine.getCdState().intValue() == 3){
+                        strings.add("死亡");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //参保状态
+                if (examine.getIsInsured() != null){
+                    if (examine.getIsInsured().intValue() == 1){
+                        strings.add("已参保");
+                    }else if (examine.getIsInsured().intValue() == 2){
+                        strings.add("未参保");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //失业状态
+                if (examine.getUnemployment() != null){
+                    if (examine.getUnemployment().intValue() == 1){
+                        strings.add("领取失业金");
+                    }else if (examine.getUnemployment().intValue() == 2){
+                        strings.add("未领取失业金");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //是否并轨
+                if (examine.getComping() != null){
+                    if (examine.getComping().intValue() == 1){
+                        strings.add("是");
+                    }else if (examine.getComping().intValue() == 2){
+                        strings.add("否");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                //发放状态
+                if (examine.getStatus() != null){
+                    if (examine.getStatus().intValue() == 1){
+                        strings.add("未开始");
+                    }else if (examine.getStatus().intValue() == 2){
+                        strings.add("发放中");
+                    }else if (examine.getStatus().intValue() == 3){
+                        strings.add("已暂停");
+                    }else if (examine.getStatus().intValue() == 4){
+                        strings.add("已退出");
+                    }else{
+                        strings.add("");
+                    }
+                } else {
+                    strings.add("");
+                }
+                strsList.add(strings);
+            }
+            String str = "征地人员社会救济金导出";
+            String fileName = str + DateUtil.getDateString("yyyy-MM-dd", new Date());
+            response.reset();
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+//            response.setHeader("Content-Disposition", "attachment;filename="
+//                    + new String((fileName + ".xls").getBytes(), "iso-8859-1"));
+
+            response.addHeader("Content-Disposition", "attachment;filename=" +
+                    new String(fileName.getBytes("utf-8"), "iso-8859-1") + ".xls");
+
+            ServletOutputStream out = response.getOutputStream();
+            OutputStream os = out;
+            String excelTitle = "征地人员社会救济金人员名单";
+
+            POIExcelUtil.writerDataInExcelIo(strsList, os, excelTitle, title.size());
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
     }
 
     /**
@@ -353,78 +604,78 @@ public class ExamineController {
                 }
             }
         }
-        if (isInsured == null) {
-            return new ApiResult(false, "请选择是否参保", -1);
-        }
-        if (unemployment == null) {
-            return new ApiResult(false, "请选择失业状态", -1);
-        }
-        if (unemployment != null) {
-            if (unemployment.intValue() == 1) {
-                if (StringUtils.isBlank(unStart) || StringUtils.isBlank(unEnd)) {
-                    return new ApiResult(false, "请选择领取失业金开始时间和截止时间", -1);
-                }
-            }
-        }
-        if (comping == null) {
-            return new ApiResult(false, "请选择是否并轨", -1);
-        }
-        if (changes == null) {
-            return new ApiResult(false, "请选择变动情况", -1);
-        }
-        if (gender == null) {
-            return new ApiResult(false, "请选择性别", -1);
-        }
-        if (isMove == null) {
-            return new ApiResult(false, "请选择是否迁出", -1);
-        }
-        if (communityId == null) {
-            return new ApiResult(false, "请选择现所属社区", -1);
-        }
-        if (status == null) {
-            return new ApiResult(false, "请选择发放状态", -1);
-        }
-        if (status.intValue() == 3) {
-            if (stopType == null) {
-                return new ApiResult(false, "请选择暂停原因", -1);
-            }
-        }
-        if (villageAge == null) {
-            return new ApiResult(false, "请输入征地时年龄", -1);
-        }
-        if (cdState == null) {
-            return new ApiResult(false, "请选择撤队时安置情况", -1);
-        }
-        if (StringUtils.isBlank(startTime)) {
-            return new ApiResult(false, "请输入开始发放时间", -1);
-        }
-        if (StringUtils.isBlank(stopTime)) {
-            return new ApiResult(false, "请输入停止发放时间", -1);
-        }
-        if (StringUtils.isBlank(dtxsny)) {
-            return new ApiResult(false, "请输入动态享受年月", -1);
-        }
-        if (StringUtils.isBlank(ffbj)) {
-            return new ApiResult(false, "请输入发放标准", -1);
-        }
-        if (StringUtils.isBlank(name)) {
-            return new ApiResult(false, "请输入姓名", -1);
-        }
-        if (StringUtils.isBlank(birthday)) {
-            return new ApiResult(false, "请输入出生年月", -1);
-        }
-        if (StringUtils.isBlank(address)) {
-            return new ApiResult(false, "请输入常住地址", -1);
-        }
-        if (StringUtils.isBlank(village)) {
-            return new ApiResult(false, "请输入征地时所在村（组）", -1);
-        }
-        if (StringUtils.isBlank(house)) {
-            return new ApiResult(false, "请输入现户籍所在地", -1);
-        }
-        if (StringUtils.isBlank(villageTime)) {
-            return new ApiResult(false, "请输入征地时间", -1);
-        }
+//        if (isInsured == null) {
+//            return new ApiResult(false, "请选择是否参保", -1);
+//        }
+//        if (unemployment == null) {
+//            return new ApiResult(false, "请选择失业状态", -1);
+//        }
+//        if (unemployment != null) {
+//            if (unemployment.intValue() == 1) {
+//                if (StringUtils.isBlank(unStart) || StringUtils.isBlank(unEnd)) {
+//                    return new ApiResult(false, "请选择领取失业金开始时间和截止时间", -1);
+//                }
+//            }
+//        }
+//        if (comping == null) {
+//            return new ApiResult(false, "请选择是否并轨", -1);
+//        }
+//        if (changes == null) {
+//            return new ApiResult(false, "请选择变动情况", -1);
+//        }
+//        if (gender == null) {
+//            return new ApiResult(false, "请选择性别", -1);
+//        }
+//        if (isMove == null) {
+//            return new ApiResult(false, "请选择是否迁出", -1);
+//        }
+//        if (communityId == null) {
+//            return new ApiResult(false, "请选择现所属社区", -1);
+//        }
+//        if (status == null) {
+//            return new ApiResult(false, "请选择发放状态", -1);
+//        }
+//        if (status.intValue() == 3) {
+//            if (stopType == null) {
+//                return new ApiResult(false, "请选择暂停原因", -1);
+//            }
+//        }
+//        if (villageAge == null) {
+//            return new ApiResult(false, "请输入征地时年龄", -1);
+//        }
+//        if (cdState == null) {
+//            return new ApiResult(false, "请选择撤队时安置情况", -1);
+//        }
+//        if (StringUtils.isBlank(startTime)) {
+//            return new ApiResult(false, "请输入开始发放时间", -1);
+//        }
+//        if (StringUtils.isBlank(stopTime)) {
+//            return new ApiResult(false, "请输入停止发放时间", -1);
+//        }
+//        if (StringUtils.isBlank(dtxsny)) {
+//            return new ApiResult(false, "请输入动态享受年月", -1);
+//        }
+//        if (StringUtils.isBlank(ffbj)) {
+//            return new ApiResult(false, "请输入发放标准", -1);
+//        }
+//        if (StringUtils.isBlank(name)) {
+//            return new ApiResult(false, "请输入姓名", -1);
+//        }
+//        if (StringUtils.isBlank(birthday)) {
+//            return new ApiResult(false, "请输入出生年月", -1);
+//        }
+//        if (StringUtils.isBlank(address)) {
+//            return new ApiResult(false, "请输入常住地址", -1);
+//        }
+//        if (StringUtils.isBlank(village)) {
+//            return new ApiResult(false, "请输入征地时所在村（组）", -1);
+//        }
+//        if (StringUtils.isBlank(house)) {
+//            return new ApiResult(false, "请输入现户籍所在地", -1);
+//        }
+//        if (StringUtils.isBlank(villageTime)) {
+//            return new ApiResult(false, "请输入征地时间", -1);
+//        }
         if (StringUtils.isBlank(idCard)) {
             return new ApiResult(false, "请输入身份证号", -1);
         }
@@ -443,11 +694,11 @@ public class ExamineController {
                 return new ApiResult(false, "身份证号已存在", -1);
             }
         }
-        if (status.intValue() == 4) {
-            if (exitType == null) {
-                return new ApiResult(false, "请选择退出类型", -1);
-            }
-        }
+//        if (status.intValue() == 4) {
+//            if (exitType == null) {
+//                return new ApiResult(false, "请选择退出类型", -1);
+//            }
+//        }
         examine.setStartTime(DateUtil.getDateToString(startTime, "yyyy-MM-dd"));
         examine.setStopTime(DateUtil.getDateToString(stopTime, "yyyy-MM-dd"));
         examine.setDtxsny(dtxsny);
@@ -551,7 +802,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "getExamineWillStart")
     @ResponseBody
-    public ApiResult getExamineWillStart(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult getExamineWillStart(Integer gender, Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
 
         User user = userService.get(loginId);
         if (user != null) {
@@ -563,9 +814,9 @@ public class ExamineController {
             }
         }
 
-        List<Examine> list = examineService.getExamineWillStart(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.getExamineWillStart(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.getExamineWillStartCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.getExamineWillStartCount(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -596,7 +847,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "getExamineWillStop")
     @ResponseBody
-    public ApiResult getExamineWillStop(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult getExamineWillStop(Integer gender, Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         User user = userService.get(loginId);
         if (user != null) {
             if (user.getType().intValue() == 2) {
@@ -606,9 +857,9 @@ public class ExamineController {
                 }
             }
         }
-        List<Examine> list = examineService.getExamineWillStop(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.getExamineWillStop(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.getExamineWillStopCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.getExamineWillStopCount(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -701,371 +952,388 @@ public class ExamineController {
     public String importExamine(Integer loginId, @RequestParam(value = "file", required = false) CommonsMultipartFile file, HttpSession
             session) {
 
+        if (file == null) {
+            return "请上传文件";
+        }
+        String fileOriginalFilename = UUID.randomUUID() + file.getOriginalFilename().replace(",", "");
+        String rootPath = session.getServletContext().getRealPath("/");
+        String uploadPath = rootPath + "temporary/order/";
+        File source = new File(uploadPath + fileOriginalFilename);
         try {
-            if (file == null) {
-                return "请上传文件";
-            }
-            String fileOriginalFilename = UUID.randomUUID() + file.getOriginalFilename().replace(",", "");
-            String rootPath = session.getServletContext().getRealPath("/");
-            String uploadPath = rootPath + "temporary/order/";
-            File source = new File(uploadPath + fileOriginalFilename);
             file.transferTo(source);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             if (!FileUtil.checkExcelVaild(source)) {
                 return "文件格式不正确";
             }
-            List<Examine> examines = new ArrayList<Examine>();
-            Workbook wb = null;
-            Sheet sheet = null;
-            Row row = null;
-            String cellData = null;
-            String cloumns[] = {"身份证号", "姓名", "性别", "出生年月", "常住地址", "征地时所在村组", "是否迁出",
-                    "现所属社区", "现户籍所在地", "发放状态", "备注信息", "开始发放时间", "停止发放时间", "动态享受年月",
-                    "发放标准", "是否参保", "失业状态", "领取失业金开始时间", "领取失业金截止时间", "是否并轨", "变动情况", "新增批次",
-                    "审核状态", "暂停发放原因", "暂停发放备注", "征地时间", "征地时年龄", "撤队时安置情况", "联系电话"};
-            wb = PoiTest.readExcel(source.getPath());
-            if (wb != null) {
-                sheet = wb.getSheetAt(0);
-                int rownum = sheet.getPhysicalNumberOfRows();
-                for (int i = 2; i < rownum; i++) {
-                    row = sheet.getRow(i);
-                    if (row != null) {
-                        Examine temp = new Examine();
-                        for (int j = 0; j < 29; j++) {
-                            cellData = (String) PoiTest.getCellFormatValue(row.getCell(j));
-                            if ("身份证号".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setIdCard(cellData.trim());
-                                } else {
-                                    return i + "行" + (j + 1) + "列数据，身份证号不能为空。";
-                                }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<Community> communityList = communityService.findAll();
+        final List<Examine> examines = new ArrayList<Examine>();
+        Workbook wb = null;
+        Sheet sheet = null;
+        Row row = null;
+        String cellData = null;
+        String cloumns[] = {"身份证号", "姓名", "性别", "出生年月", "常住地址", "征地时所在村组", "是否迁出",
+                "现所属社区", "现户籍所在地", "发放状态", "备注信息", "开始发放时间", "停止发放时间", "动态享受年月",
+                "发放标准", "是否参保", "失业状态", "领取失业金开始时间", "领取失业金截止时间", "是否并轨", "变动情况", "新增批次",
+                "审核状态", "暂停发放原因", "暂停发放备注", "征地时间", "征地时年龄", "撤队时安置情况", "联系电话"};
+        wb = PoiTest.readExcel(source.getPath());
+        if (wb != null) {
+            sheet = wb.getSheetAt(0);
+            int rownum = sheet.getPhysicalNumberOfRows();
+            for (int i = 2; i < rownum; i++) {
+                row = sheet.getRow(i);
+                if (row != null) {
+                    Examine temp = new Examine();
+                    for (int j = 0; j < 29; j++) {
+                        cellData = (String) PoiTest.getCellFormatValue(row.getCell(j));
+                        if ("身份证号".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setIdCard(cellData.trim());
                             }
-                            if ("姓名".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setName(cellData.trim());
-                                } else {
-                                    return i + "行" + (j + 1) + "列数据，姓名不能为空。";
-                                }
+                        }
+                        if ("姓名".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setName(cellData.trim());
                             }
-                            if ("性别".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("男")) {
-                                        temp.setGender(1);
-                                    } else if (cellData.trim().equals("女")) {
-                                        temp.setGender(2);
-                                    }
-                                }
-                            }
-                            if ("出生年月".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date birthday = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
-                                    temp.setBirthday(birthday);
-                                }
-                            }
-                            if ("常住地址".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setAddress(cellData.trim());
-                                }
-                            }
-                            if ("征地时所在村组".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setVillage(cellData.trim());
-                                }
-                            }
-                            if ("是否迁出".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("是")) {
-                                        temp.setIsMove(1);
-                                    } else if (cellData.trim().equals("否")) {
-                                        temp.setIsMove(1);
-                                    }
-                                }
-                            }
-                            if ("现所属社区".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (loginId != null) {
-                                        User user = userService.get(loginId);
-                                        if (user != null) {
-                                            if (user.getType().intValue() == 2) {
-                                                Community community = communityService.selectByUserId(loginId);
-                                                if (community != null) {
-                                                    temp.setCommunityId(community.getId());
-                                                }
-                                            } else {
-                                                String communityName = cellData.trim();
-                                                Community community = communityService.getByName(communityName);
-                                                if (community != null) {
-                                                    temp.setCommunityId(community.getId());
-                                                }
-                                            }
-                                        } else {
-                                            String communityName = cellData.trim();
-                                            Community community = communityService.getByName(communityName);
-                                            if (community != null) {
-                                                temp.setCommunityId(community.getId());
-                                            }
-                                        }
-                                    } else {
-                                        String communityName = cellData.trim();
-                                        Community community = communityService.getByName(communityName);
-                                        if (community != null) {
-                                            temp.setCommunityId(community.getId());
-                                        }
-                                    }
-                                }
-                            }
-                            if ("现户籍所在地".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setHouse(cellData.trim());
-                                }
-                            }
-                            if ("发放状态".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("未开始")) {
-                                        temp.setStatus(1);
-                                    } else if (cellData.trim().equals("发放中")) {
-                                        temp.setStatus(2);
-                                    } else if (cellData.trim().equals("已暂停")) {
-                                        temp.setStatus(3);
-                                    } else if (cellData.trim().equals("已退出")) {
-                                        temp.setStatus(4);
-                                    }
-                                }
-                            }
-                            if ("备注信息".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setRemark(cellData.trim());
-                                }
-                            }
-                            if ("开始发放时间".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date startTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
-                                    temp.setStartTime(startTime);
-                                }
-                            }
-                            if ("停止发放时间".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date stopTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
-                                    temp.setStopTime(stopTime);
-                                }
-                            }
-                            if ("动态享受年月".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setDtxsny(cellData.trim());
-                                }
-                            }
-                            if ("发放标准".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setFfbj(cellData.trim());
-                                }
-                            }
-                            if ("是否参保".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("是")) {
-                                        temp.setIsInsured(1);
-                                    } else if (cellData.trim().equals("否")) {
-                                        temp.setIsInsured(2);
-                                    }
-                                }
-                            }
-                            if ("失业状态".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("领取失业金")) {
-                                        temp.setUnemployment(1);
-                                    } else if (cellData.trim().equals("未领取失业金")) {
-                                        temp.setUnemployment(2);
-                                    }
-                                }
-                            }
-                            if ("领取失业金开始时间".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unStart = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
-                                    temp.setUnStart(unStart);
-                                }
-                            }
-                            if ("领取失业金截止时间".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date unEnd = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
-                                    temp.setUnEnd(unEnd);
-                                }
-                            }
-                            if ("是否并轨".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("是")) {
-                                        temp.setComping(1);
-                                    } else if (cellData.trim().equals("否")) {
-                                        temp.setComping(2);
-                                    }
-                                }
-                            }
-                            if ("变动情况".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("迁出")) {
-                                        temp.setChanges(1);
-                                    } else if (cellData.trim().equals("新增")) {
-                                        temp.setChanges(2);
-                                    } else if (cellData.trim().equals("死亡")) {
-                                        temp.setChanges(3);
-                                    }
-                                }
-                            }
-                            if ("新增批次".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setBatch(cellData.trim());
-                                }
-                            }
-                            if ("审核状态".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("审核通过")) {
-                                        temp.setState(1);
-                                    } else if (cellData.trim().equals("审核不通过")) {
-                                        temp.setState(2);
-                                    } else if (cellData.trim().equals("待定")) {
-                                        temp.setState(3);
-                                    } else if (cellData.trim().equals("待复审")) {
-                                        temp.setState(4);
-                                    } else if (cellData.trim().equals("未审核")) {
-                                        temp.setState(5);
-                                    }
-                                }
-                            }
-                            if ("暂停发放原因".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("就业")) {
-                                        temp.setStopType(1);
-                                    } else if (cellData.trim().equals("退休")) {
-                                        temp.setStopType(2);
-                                    } else if (cellData.trim().equals("其他")) {
-                                        temp.setStopType(3);
-                                    }
-                                }
-                            }
-                            if ("暂停发放备注".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setStopReason(cellData.trim());
-                                }
-                            }
-                            if ("征地时间".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    Date villageTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
-                                    temp.setVillageTime(villageTime);
-                                }
-                            }
-                            if ("征地时年龄".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setVillageAge(Integer.parseInt(cellData.trim()));
-                                }
-                            }
-                            if ("撤队时安置情况".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    if (cellData.trim().equals("未撤队先安置")) {
-                                        temp.setCdState(1);
-                                    } else if (cellData.trim().equals("撤队时安置")) {
-                                        temp.setCdState(2);
-                                    } else if (cellData.trim().equals("领取征地待业")) {
-                                        temp.setCdState(3);
-                                    } else if (cellData.trim().equals("领取一次性补偿金")) {
-                                        temp.setCdState(4);
-                                    }
-                                }
-                            }
-                            if ("联系电话".equals(cloumns[j])) {
-                                if (!StringUtils.isBlank(cellData.trim())) {
-                                    temp.setPhone(cellData.trim());
+                        }
+                        if ("性别".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("男")) {
+                                    temp.setGender(1);
+                                } else if (cellData.trim().equals("女")) {
+                                    temp.setGender(2);
                                 }
                             }
                         }
-                        examines.add(temp);
-                    } else {
-                        return "文件格式有误";
+                        if ("出生年月".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date birthday = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                temp.setBirthday(birthday);
+                            }
+                        }
+                        if ("常住地址".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setAddress(cellData.trim());
+                            }
+                        }
+                        if ("征地时所在村组".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setVillage(cellData.trim());
+                            }
+                        }
+                        if ("是否迁出".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("是")) {
+                                    temp.setIsMove(1);
+                                } else if (cellData.trim().equals("否")) {
+                                    temp.setIsMove(1);
+                                }
+                            }
+                        }
+                        if ("现所属社区".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (loginId != null) {
+                                    String communityName = cellData.trim();
+                                    Community community = sss(communityList, communityName);
+                                    if (community != null) {
+                                        temp.setCommunityId(community.getId());
+                                    }
+                                }
+                            }
+                        }
+                        if ("现户籍所在地".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setHouse(cellData.trim());
+                            }
+                        }
+                        if ("发放状态".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("未开始")) {
+                                    temp.setStatus(1);
+                                } else if (cellData.trim().equals("发放中")) {
+                                    temp.setStatus(2);
+                                } else if (cellData.trim().equals("已暂停")) {
+                                    temp.setStatus(3);
+                                } else if (cellData.trim().equals("已退出")) {
+                                    temp.setStatus(4);
+                                }
+                            }
+                        }
+                        if ("备注信息".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setRemark(cellData.trim());
+                            }
+                        }
+                        if ("开始发放时间".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date startTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
+                                temp.setStartTime(startTime);
+                            }
+                        }
+                        if ("停止发放时间".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date stopTime = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
+                                temp.setStopTime(stopTime);
+                            }
+                        }
+                        if ("动态享受年月".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setDtxsny(cellData.trim());
+                            }
+                        }
+                        if ("发放标准".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setFfbj(cellData.trim());
+                            }
+                        }
+                        if ("是否参保".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("是")) {
+                                    temp.setIsInsured(1);
+                                } else if (cellData.trim().equals("否")) {
+                                    temp.setIsInsured(2);
+                                }
+                            }
+                        }
+                        if ("失业状态".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("领取失业金")) {
+                                    temp.setUnemployment(1);
+                                } else if (cellData.trim().equals("未领取失业金")) {
+                                    temp.setUnemployment(2);
+                                }
+                            }
+                        }
+                        if ("领取失业金开始时间".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date unStart = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
+                                temp.setUnStart(unStart);
+                            }
+                        }
+                        if ("领取失业金截止时间".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date unEnd = DateUtil.getDateToString(cellData.trim() + "-01", "yyyy-MM-dd");
+                                temp.setUnEnd(unEnd);
+                            }
+                        }
+                        if ("是否并轨".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("是")) {
+                                    temp.setComping(1);
+                                } else if (cellData.trim().equals("否")) {
+                                    temp.setComping(2);
+                                }
+                            }
+                        }
+                        if ("变动情况".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("迁出")) {
+                                    temp.setChanges(1);
+                                } else if (cellData.trim().equals("新增")) {
+                                    temp.setChanges(2);
+                                } else if (cellData.trim().equals("死亡")) {
+                                    temp.setChanges(3);
+                                }
+                            }
+                        }
+                        if ("新增批次".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setBatch(cellData.trim());
+                            }
+                        }
+                        if ("审核状态".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("审核通过")) {
+                                    temp.setState(1);
+                                } else if (cellData.trim().equals("审核不通过")) {
+                                    temp.setState(2);
+                                } else if (cellData.trim().equals("待定")) {
+                                    temp.setState(3);
+                                } else if (cellData.trim().equals("待复审")) {
+                                    temp.setState(4);
+                                } else if (cellData.trim().equals("未审核")) {
+                                    temp.setState(5);
+                                }
+                            }
+                        }
+                        if ("暂停发放原因".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("就业")) {
+                                    temp.setStopType(1);
+                                } else if (cellData.trim().equals("退休")) {
+                                    temp.setStopType(2);
+                                } else if (cellData.trim().equals("其他")) {
+                                    temp.setStopType(3);
+                                }
+                            }
+                        }
+                        if ("暂停发放备注".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setStopReason(cellData.trim());
+                            }
+                        }
+                        if ("征地时间".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                Date villageTime = DateUtil.getDateToString(cellData.trim(), "yyyy-MM-dd");
+                                temp.setVillageTime(villageTime);
+                            }
+                        }
+                        if ("征地时年龄".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setVillageAge(Integer.parseInt(cellData.trim()));
+                            }
+                        }
+                        if ("撤队时安置情况".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                if (cellData.trim().equals("未撤队先安置")) {
+                                    temp.setCdState(1);
+                                } else if (cellData.trim().equals("撤队时安置")) {
+                                    temp.setCdState(2);
+                                } else if (cellData.trim().equals("领取征地待业")) {
+                                    temp.setCdState(3);
+                                } else if (cellData.trim().equals("领取一次性补偿金")) {
+                                    temp.setCdState(4);
+                                }
+                            }
+                        }
+                        if ("联系电话".equals(cloumns[j])) {
+                            if (!StringUtils.isBlank(cellData.trim())) {
+                                temp.setPhone(cellData.trim());
+                            }
+                        }
                     }
+                    examines.add(temp);
                 }
             }
-            Integer insertCount = 0;
-            Integer updateCount = 0;
-            for (Examine item : examines) {
-                Examine examine = examineService.getBeanByIdCard(item.getIdCard());
-                if (examine == null) {
-                    item.setTime(new Date());
-                    examineService.save(item);
-                    Integer examineId = examine.getId();
-                    Roster roster = new Roster();
-                    roster.setIdCard(item.getIdCard());
-                    roster.setName(item.getName());
-                    roster.setGender(item.getGender());
-                    roster.setBirthday(item.getBirthday());
-                    roster.setAddress(item.getAddress());
-                    roster.setVillage(item.getVillage());
-                    roster.setIsMove(item.getIsMove());
-                    roster.setCommunityId(item.getCommunityId());
-                    roster.setHouse(item.getHouse());
-                    roster.setRemark(item.getRemark());
-                    roster.setStatus(item.getStatus());
-                    roster.setTime(new Date());
-                    roster.setExamineId(examineId);
-                    rosterService.save(roster);
-                    insertCount++;
+            int total = 0;
+            for (int i = 0; i < examines.size(); i++) {
+                if (!StringUtils.isBlank(examines.get(i).getIdCard()) && !StringUtils.isBlank(examines.get(i).getName())) {
+                    total++;
                 } else {
-                    examine.setStartTime(item.getStartTime());
-                    examine.setStopTime(item.getStopTime());
-                    examine.setDtxsny(item.getDtxsny());
-                    examine.setPhone(item.getPhone());
-                    examine.setFfbj(item.getFfbj());
-                    examine.setIsInsured(item.getIsInsured());
-                    examine.setUnemployment(item.getUnemployment());
-                    examine.setComping(item.getComping());
-                    examine.setChanges(item.getChanges());
-                    examine.setRemark(item.getRemark());
-                    examine.setBatch(item.getBatch());
-                    examine.setState(item.getState());
-                    examine.setIdCard(item.getIdCard());
-                    examine.setName(item.getName());
-                    examine.setGender(item.getGender());
-                    examine.setBirthday(item.getBirthday());
-                    examine.setAddress(item.getAddress());
-                    examine.setVillage(item.getVillage());
-                    examine.setIsMove(item.getIsMove());
-                    examine.setCommunityId(item.getCommunityId());
-                    examine.setHouse(item.getHouse());
-                    examine.setStatus(item.getStatus());
-                    examine.setVillageTime(item.getVillageTime());
-                    examine.setVillageAge(item.getVillageAge());
-                    examine.setCdState(item.getCdState());
-                    if (item.getUnEnd() != null) {
-                        examine.setUnEnd(item.getUnEnd());
-                    }
-                    if (item.getUnStart() != null) {
-                        examine.setUnEnd(item.getUnStart());
-                    }
-                    if (item.getStopType() != null) {
-                        examine.setStopType(item.getStopType());
-                    }
-                    if (!StringUtils.isBlank(item.getStopReason())) {
-                        examine.setStopReason(item.getStopReason());
-                    }
-                    examineService.update(examine);
-                    Roster roster = rosterService.getByIdCard(item.getIdCard());
-                    roster.setIdCard(item.getIdCard());
-                    roster.setName(item.getName());
-                    roster.setGender(item.getGender());
-                    roster.setBirthday(item.getBirthday());
-                    roster.setAddress(item.getAddress());
-                    roster.setVillage(item.getVillage());
-                    roster.setIsMove(item.getIsMove());
-                    roster.setCommunityId(item.getCommunityId());
-                    roster.setHouse(item.getHouse());
-                    roster.setRemark(item.getRemark());
-                    roster.setStatus(item.getStatus());
-                    rosterService.update(roster);
-                    updateCount++;
+
                 }
             }
-            return "共导入" + examines.size() + "条数据，新增" + insertCount + "条，更新" + updateCount + "条";
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            fixedThreadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    for (Examine item : examines) {
+                        if (!StringUtils.isBlank(item.getIdCard()) && !StringUtils.isBlank(item.getName())) {
+                            Examine examine = examineService.getBeanByIdCard(item.getIdCard());
+                            if (examine == null) {
+                                item.setTime(new Date());
+                                examineService.save(item);
+                                Integer examineId = item.getId();
+                                Roster roster = new Roster();
+                                roster.setIdCard(item.getIdCard());
+                                roster.setName(item.getName());
+                                roster.setGender(item.getGender());
+                                roster.setBirthday(item.getBirthday());
+                                roster.setAddress(item.getAddress());
+                                roster.setVillage(item.getVillage());
+                                roster.setIsMove(item.getIsMove());
+                                roster.setCommunityId(item.getCommunityId());
+                                roster.setHouse(item.getHouse());
+                                roster.setRemark(item.getRemark());
+                                roster.setStatus(item.getStatus());
+                                roster.setTime(new Date());
+                                roster.setExamineId(examineId);
+                                rosterService.save(roster);
+                            } else {
+                                examine.setStartTime(item.getStartTime());
+                                examine.setStopTime(item.getStopTime());
+                                examine.setDtxsny(item.getDtxsny());
+                                examine.setPhone(item.getPhone());
+                                examine.setFfbj(item.getFfbj());
+                                examine.setIsInsured(item.getIsInsured());
+                                examine.setUnemployment(item.getUnemployment());
+                                examine.setComping(item.getComping());
+                                examine.setChanges(item.getChanges());
+                                examine.setRemark(item.getRemark());
+                                examine.setBatch(item.getBatch());
+                                examine.setState(item.getState());
+                                examine.setIdCard(item.getIdCard());
+                                examine.setName(item.getName());
+                                examine.setGender(item.getGender());
+                                examine.setBirthday(item.getBirthday());
+                                examine.setAddress(item.getAddress());
+                                examine.setVillage(item.getVillage());
+                                examine.setIsMove(item.getIsMove());
+                                examine.setCommunityId(item.getCommunityId());
+                                examine.setHouse(item.getHouse());
+                                examine.setStatus(item.getStatus());
+                                examine.setVillageTime(item.getVillageTime());
+                                examine.setVillageAge(item.getVillageAge());
+                                examine.setCdState(item.getCdState());
+                                if (item.getUnEnd() != null) {
+                                    examine.setUnEnd(item.getUnEnd());
+                                }
+                                if (item.getUnStart() != null) {
+                                    examine.setUnEnd(item.getUnStart());
+                                }
+                                if (item.getStopType() != null) {
+                                    examine.setStopType(item.getStopType());
+                                }
+                                if (!StringUtils.isBlank(item.getStopReason())) {
+                                    examine.setStopReason(item.getStopReason());
+                                }
+                                examineService.update(examine);
+                                Roster roster = rosterService.getByIdCard(item.getIdCard());
+                                if (roster != null) {
+                                    roster.setIdCard(item.getIdCard());
+                                    roster.setName(item.getName());
+                                    roster.setGender(item.getGender());
+                                    roster.setBirthday(item.getBirthday());
+                                    roster.setAddress(item.getAddress());
+                                    roster.setVillage(item.getVillage());
+                                    roster.setIsMove(item.getIsMove());
+                                    roster.setCommunityId(item.getCommunityId());
+                                    roster.setHouse(item.getHouse());
+                                    roster.setRemark(item.getRemark());
+                                    roster.setStatus(item.getStatus());
+                                    rosterService.update(roster);
+                                } else {
+                                    roster = new Roster();
+                                    roster.setIdCard(item.getIdCard());
+                                    roster.setName(item.getName());
+                                    roster.setGender(item.getGender());
+                                    roster.setBirthday(item.getBirthday());
+                                    roster.setAddress(item.getAddress());
+                                    roster.setVillage(item.getVillage());
+                                    roster.setIsMove(item.getIsMove());
+                                    roster.setCommunityId(item.getCommunityId());
+                                    roster.setHouse(item.getHouse());
+                                    roster.setRemark(item.getRemark());
+                                    roster.setStatus(item.getStatus());
+                                    rosterService.save(roster);
+                                }
+
+                            }
+                        }
+                    }
+                }
+            });
+            return "数据正在导入";
         }
-        return "操作失败";
+
+        return "导入失败";
     }
 
+    private Community sss(List<Community> communityList, String name) {
+        Community c = null;
+        for (Community community : communityList) {
+            if (community.getName().equals(name.trim())) {
+
+                c = community;
+                break;
+            }
+        }
+        return c;
+    }
 
     /**
      * 征地人员已故名单
@@ -1270,7 +1538,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "findAgainExamine")
     @ResponseBody
-    public ApiResult findAgainExamine(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult findAgainExamine(Integer gender, Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         User user = userService.get(loginId);
         if (user != null) {
             if (user.getType().intValue() == 2) {
@@ -1281,9 +1549,9 @@ public class ExamineController {
             }
         }
 
-        List<Examine> list = examineService.findAgainExamine(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.findAgainExamine(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.findAgainExamineCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.findAgainExamineCount(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -1314,7 +1582,7 @@ public class ExamineController {
      */
     @RequestMapping(value = "findUndeterminedExamine")
     @ResponseBody
-    public ApiResult findUndeterminedExamine(Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public ApiResult findUndeterminedExamine(Integer gender, Integer loginId, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         User user = userService.get(loginId);
         if (user != null) {
             if (user.getType().intValue() == 2) {
@@ -1325,9 +1593,9 @@ public class ExamineController {
             }
         }
 
-        List<Examine> list = examineService.findUndeterminedExamine(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
+        List<Examine> list = examineService.findUndeterminedExamine(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId, pageSize, pageNum);
 
-        Integer count = examineService.findUndeterminedExamineCount(house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
+        Integer count = examineService.findUndeterminedExamineCount(gender, house, name, idCard, comping, age, changes, status, unemployment, isInsured, communityId);
 
         Map<String, Object> map = new HashMap<>();
 
@@ -1359,11 +1627,11 @@ public class ExamineController {
         }
 
         //进入预警的数量
-        Integer startCount = examineService.getExamineWillStartCount(null, null, null, null, null, null, null, null, null, communityId);
+        Integer startCount = examineService.getExamineWillStartCount(null,null, null, null, null, null, null, null, null, null, communityId);
         //退出预警的数量
-        Integer endCount = examineService.getExamineWillStopCount(null, null, null, null, null, null, null, null, null, communityId);
+        Integer endCount = examineService.getExamineWillStopCount(null,null, null, null, null, null, null, null, null, null, communityId);
         //征地待复审的数量
-        Integer againExamineCount = examineService.findAgainExamineCount(null, null, null, null, null, null, null, null, null, communityId);
+        Integer againExamineCount = examineService.findAgainExamineCount(null, null, null, null, null, null, null, null, null, null, communityId);
         //尊老金城市待审核的数量
         Integer respectTownCount = respectService.selectRemindRespectCount(communityId, 1, 1);
         //尊老金农村待审核的数量
@@ -1502,7 +1770,7 @@ public class ExamineController {
                     String first = dateItem.get("first");
                     String last = dateItem.get("last");
                     if (currentMonth.equals(month)) {
-                        saveNotExitExamine(communityId,first,last);
+                        saveNotExitExamine(communityId, first, last);
                     }
 
                     Date startDate = DateUtil.getDateToString(first, "yyyy-MM-dd");
@@ -1526,10 +1794,10 @@ public class ExamineController {
     }
 
     public void saveNotExitExamine(Integer communityId, String startDate, String endDate) {
-       List<Examine> list = examineService.getNotExitExamine(communityId,startDate,endDate);
+        List<Examine> list = examineService.getNotExitExamine(communityId, startDate, endDate);
         ExamineStatistic examineStatistic = null;
         Date current = new Date();
-        for (Examine examine:list){
+        for (Examine examine : list) {
             examineStatistic = new ExamineStatistic();
             examineStatistic.setExamineId(examine.getId());
             examineStatistic.setCommunityId(examine.getCommunityId());
@@ -1538,6 +1806,7 @@ public class ExamineController {
             examineStatisticService.save(examineStatistic);
         }
     }
+
     /**
      * 发放统计
      *
@@ -1583,8 +1852,6 @@ public class ExamineController {
         }
         return new ApiResult(true, "查询成功", 0, list);
     }*/
-
-
     private static List<String> getMonthBetween(String beginTime, String endTime) throws ParseException {
         ArrayList<String> result = new ArrayList<String>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");//格式化为年月

@@ -28,10 +28,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public List<Examine> findAllExamine(Integer state,String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public List<Examine> findAllExamine(Integer gender,Integer state,String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (state!=null){
             examineRequest.setState(state);
@@ -70,10 +73,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public Integer findAllExamineCount(Integer state,String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+    public Integer findAllExamineCount(Integer gender,Integer state,String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (state!=null){
             examineRequest.setState(state);
@@ -126,10 +132,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public List<Examine> getExamineWillStart(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public List<Examine> getExamineWillStart(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (!StringUtils.isBlank(name)) {
             examineRequest.setName(name);
@@ -165,10 +174,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public Integer getExamineWillStartCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+    public Integer getExamineWillStartCount(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (!StringUtils.isBlank(name)) {
             examineRequest.setName(name);
@@ -201,10 +213,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public List<Examine> getExamineWillStop(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public List<Examine> getExamineWillStop(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (!StringUtils.isBlank(name)) {
             examineRequest.setName(name);
@@ -240,10 +255,13 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public Integer getExamineWillStopCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+    public Integer getExamineWillStopCount(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (!StringUtils.isBlank(name)) {
             examineRequest.setName(name);
@@ -276,8 +294,11 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public List<Examine> findAgainExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public List<Examine> findAgainExamine(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
+        if (gender!=null){
+            examineRequest.setGender(gender);
+        }
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
         }
@@ -315,7 +336,7 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public Integer findAgainExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+    public Integer findAgainExamineCount(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
@@ -351,16 +372,22 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public List<Examine> findUndeterminedExamine(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
+    public List<Examine> findUndeterminedExamine(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId, Integer pageSize, Integer pageNum) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
+        }
+        if (gender!=null){
+            examineRequest.setGender(gender);
         }
         if (!StringUtils.isBlank(name)) {
             examineRequest.setName(name);
         }
         if (!StringUtils.isBlank(idCard)) {
             examineRequest.setIdCard(idCard);
+        }
+        if (gender != null) {
+            examineRequest.setGender(gender);
         }
         if (comping != null) {
             examineRequest.setComping(comping);
@@ -390,7 +417,7 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
     }
 
     @Override
-    public Integer findUndeterminedExamineCount(String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
+    public Integer findUndeterminedExamineCount(Integer gender, String house, String name, String idCard, Integer comping, Integer age, Integer changes, Integer status, Integer unemployment, Integer isInsured, Integer communityId) {
         ExamineRequest examineRequest = new ExamineRequest();
         if (!StringUtils.isBlank(house)){
             examineRequest.setHouse(house);
@@ -400,6 +427,9 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
         }
         if (!StringUtils.isBlank(idCard)) {
             examineRequest.setIdCard(idCard);
+        }
+        if (gender != null) {
+            examineRequest.setGender(gender);
         }
         if (comping != null) {
             examineRequest.setComping(comping);

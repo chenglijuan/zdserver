@@ -470,12 +470,9 @@ public class RosterController {
             String cellData = null;
             String cloumns[] = {"身份证号", "姓名", "性别", "出生年月", "常住地址", "征地时所在村组", "是否迁出", "现所属社区", "现户籍所在地", "发放状态", "备注信息"};
             wb = PoiTest.readExcel(source.getPath());
-            int successCount = 0;
-            int errorCount = 0;
             if (wb != null) {
                 sheet = wb.getSheetAt(0);
                 int rownum = sheet.getPhysicalNumberOfRows();
-                int rownum1 = sheet.getLastRowNum();
                 for (int i = 2; i < rownum; i++) {
                     row = sheet.getRow(i);
                     if (row != null) {
@@ -576,8 +573,6 @@ public class RosterController {
             fixedThreadPool.execute(new Runnable() {
                 @Override
                 public void run() {
-                    Integer insertCount = 0;
-                    Integer updateCount = 0;
                     for (int i=0;i<rosters.size();i++) {
                         Roster item = rosters.get(i);
                         if (!StringUtils.isBlank(item.getIdCard())){
@@ -602,7 +597,6 @@ public class RosterController {
                                 item.setExamineId(examineId);
                                 item.setTime(new Date());
                                 rosterService.save(item);
-                                insertCount++;
                             } else {
                                 Examine examine = examineService.get(roster.getExamineId());
                                 examine.setIdCard(item.getIdCard());
@@ -629,7 +623,6 @@ public class RosterController {
                                 roster.setRemark(item.getRemark());
                                 roster.setStatus(item.getStatus());
                                 rosterService.update(roster);
-                                updateCount++;
                             }
                         }
                     }

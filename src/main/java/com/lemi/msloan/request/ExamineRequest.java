@@ -36,6 +36,16 @@ public class ExamineRequest extends BaseRequest {
 
     private Integer exitType;
 
+    private Integer gender;
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
     public Integer getExitType() {
         return exitType;
     }

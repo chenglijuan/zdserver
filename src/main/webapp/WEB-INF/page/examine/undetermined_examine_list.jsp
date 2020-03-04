@@ -423,7 +423,12 @@
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-
+                        <label for="comping">性别：</label>
+                        <select class="form-control" id="gender">
+                            <option selected value="">请选择</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
@@ -690,6 +695,7 @@
     })
 
     function selectUndetermined(pageNum, pageSize) {
+        var gender = $("#gender").val();
         var name = $("#name").val();
         var idCard = $("#idCard").val();
         var house = $("#house").val();
@@ -956,6 +962,7 @@
         columns.push(w);
         var loginId = $("#loginId").val();
         $.post("<%=basePath%>examine/findUndeterminedExamine", {
+            "gender" : gender,
             "loginId": loginId,
             "name": name,
             "idCard": idCard,
@@ -1018,7 +1025,7 @@
                 }
             },
             onPageClicked: function (event, originalEvent, type, page) {
-                selectRoster(page, 10);
+                selectUndetermined(page, 10);
             }
         });
     }

@@ -570,6 +570,9 @@
         , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
         FROM zd_examine
         <where>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
             <if test="state != null">
                 AND state = #{state}
             </if>
@@ -614,6 +617,9 @@
         count(*)
         FROM zd_examine
         <where>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
             <if test="state != null">
                 AND state = #{state}
             </if>
@@ -670,6 +676,9 @@
         OR
         (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
         )
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -717,6 +726,9 @@
         OR
         (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 40)
         )
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -762,6 +774,9 @@
         OR
         (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
         )
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -809,6 +824,9 @@
         OR
         (gender=2 AND TIMESTAMPDIFF(YEAR,DATE_ADD(birthday,INTERVAL -1 MONTH),CURDATE()) >= 50)
         )
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -858,6 +876,9 @@
         FROM zd_examine
         WHERE
         (status = 5 OR status = 6)
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -900,6 +921,9 @@
         FROM zd_examine
         WHERE
         (status = 5 OR status = 6)
+        <if test="gender != null">
+            AND gender = #{gender}
+        </if>
         <if test="house != null">
             AND house LIKE '%${house}%'
         </if>
@@ -941,6 +965,9 @@
         (status = 7 OR status = 8)
         <if test="house != null">
             AND house LIKE '%${house}%'
+        </if>
+        <if test="gender != null">
+            AND gender = #{gender}
         </if>
         <if test="name != null">
             AND name LIKE '%${name}%'
@@ -989,6 +1016,9 @@
         </if>
         <if test="idCard != null">
             AND id_card LIKE '%${idCard}%'
+        </if>
+        <if test="gender != null">
+            AND gender = #{gender}
         </if>
         <if test="comping != null">
             AND comping = #{comping}
