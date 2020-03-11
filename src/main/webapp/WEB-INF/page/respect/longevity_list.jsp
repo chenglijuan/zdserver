@@ -119,6 +119,10 @@
                                 <a href="<%=basePath%>roster/undeterminedExamineListPage?loginId=${loginId}" class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
                             </li>
+                            <li>
+                                <a href="<%=basePath%>examine/fftjExamineList?loginId=${loginId}" class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>发放统计</a>
+                            </li>
                         </ul>
                     </li>
                     <li>

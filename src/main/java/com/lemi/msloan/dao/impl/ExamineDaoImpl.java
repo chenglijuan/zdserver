@@ -90,4 +90,19 @@ public class ExamineDaoImpl extends BaseDaoImpl<Examine> implements ExamineDao {
     public List<Examine> getNotExitExamine(ExamineRequest examineRequest) {
         return sqlSessionTemplate.selectList("tbl_examine.getNotExitExamine",examineRequest);
     }
+
+    @Override
+    public List<Examine> findNoStartTimeExamine() {
+        return sqlSessionTemplate.selectList("tbl_examine.findNoStartTimeExamine");
+    }
+
+    @Override
+    public List<Examine> findFftjExamineList(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectList("tbl_examine.findFftjExamineList",examineRequest);
+    }
+
+    @Override
+    public int findFftjExamineCount(ExamineRequest examineRequest) {
+        return sqlSessionTemplate.selectOne("tbl_examine.findFftjExamineCount",examineRequest);
+    }
 }

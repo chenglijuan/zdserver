@@ -511,4 +511,21 @@ public class ExamineServiceImpl extends BaseServiceImpl<Examine> implements Exam
         }
         return examineDao.getNotExitExamine(examineRequest);
     }
+
+    @Override
+    public List<Examine> findNoStartTimeExamine() {
+        return examineDao.findNoStartTimeExamine();
+    }
+
+    @Override
+    public List<Examine> findFftjExamineList(ExamineRequest examineRequest) {
+        return examineDao.findFftjExamineList(examineRequest);
+    }
+
+    @Override
+    public int findFftjExamineCount(ExamineRequest examineRequest) {
+        return examineDao.findFftjExamineCount(examineRequest);
+    }
+
+
 }

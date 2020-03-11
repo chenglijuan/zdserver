@@ -1105,4 +1105,97 @@
         </where>
         )
     </select>
+
+
+    <select id="findNoStartTimeExamine" parameterType="com.lemi.msloan.request.ExamineRequest"
+            resultMap="BaseResultMap">
+        select * from zd_examine where start_time is null or stop_time  is null and gender is not null and birthday is not null
+    </select>
+
+    <select id="findFftjExamineList" parameterType="com.lemi.msloan.request.ExamineRequest"
+            resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        , TIMESTAMPDIFF(YEAR,birthday,CURDATE()) as age
+        FROM zd_examine
+
+        <where>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
+            <if test="house != null and !&quot;&quot;.equals(house.trim())">
+                AND house LIKE '%${house}%'
+            </if>
+            <if test="name != null and !&quot;&quot;.equals(name.trim())">
+                AND name LIKE '%${name}%'
+            </if>
+            <if test="idCard != null and !&quot;&quot;.equals(idCard.trim())">
+                AND id_card LIKE '%${idCard}%'
+            </if>
+            <if test="comping != null">
+                AND comping = #{comping}
+            </if>
+            <if test="changes != null">
+                AND changes = #{changes}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="unemployment != null">
+                AND unemployment = #{unemployment}
+            </if>
+            <if test="communityId != null">
+                AND community_id = #{communityId}
+            </if>
+            <if test="beginStr != null and !&quot;&quot;.equals(beginStr.trim()) and endStr != null and !&quot;&quot;.equals(endStr.trim())">
+            and  (<![CDATA[(start_time >= #{beginStr} and start_time <= #{endStr} and stop_time >= #{endStr}) or ]]>
+            <![CDATA[(start_time <= #{beginStr} and stop_time >= #{endStr}) or]]>
+            <![CDATA[(start_time <= #{beginStr} and stop_time >= #{beginStr} and stop_time <= #{endStr})]]>)
+            </if>
+        </where>
+        ORDER BY time DESC
+        <if test="start != null and end != null">
+            LIMIT #{start},#{end}
+        </if>
+    </select>
+
+    <select id="findFftjExamineCount" parameterType="com.lemi.msloan.request.ExamineRequest"
+            resultType="java.lang.Integer">
+        SELECT count(*) FROM zd_examine
+        <where>
+            <if test="gender != null">
+                AND gender = #{gender}
+            </if>
+            <if test="house != null and !&quot;&quot;.equals(house.trim())">
+                AND house LIKE '%${house}%'
+            </if>
+            <if test="name != null and !&quot;&quot;.equals(name.trim())">
+                AND name LIKE '%${name}%'
+            </if>
+            <if test="idCard != null and !&quot;&quot;.equals(idCard.trim())">
+                AND id_card LIKE '%${idCard}%'
+            </if>
+            <if test="comping != null">
+                AND comping = #{comping}
+            </if>
+            <if test="changes != null">
+                AND changes = #{changes}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="unemployment != null">
+                AND unemployment = #{unemployment}
+            </if>
+            <if test="communityId != null">
+                AND community_id = #{communityId}
+            </if>
+            <if test="beginStr != null and !&quot;&quot;.equals(beginStr.trim()) and endStr != null and !&quot;&quot;.equals(endStr.trim())">
+               and (<![CDATA[(start_time >= #{beginStr} and start_time <= #{endStr} and stop_time >= #{endStr}) or ]]>
+                <![CDATA[(start_time <= #{beginStr} and stop_time >= #{endStr}) or]]>
+                <![CDATA[(start_time <= #{beginStr} and stop_time >= #{beginStr} and stop_time <= #{endStr})]]>)
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

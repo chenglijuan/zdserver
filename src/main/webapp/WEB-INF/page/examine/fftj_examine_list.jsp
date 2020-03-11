@@ -366,69 +366,60 @@
                         <label for="house">户籍所在地：</label>
                         <input type="text" class="form-control" id="house" placeholder="请输户籍所在地">
                     </div>
-
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="comping">是否并轨：</label>
-                        <select class="form-control" id="comping">
-                            <option selected value="">请选择</option>
-                            <option value="1">是</option>
-                            <option value="2">否</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="age">人员年龄：</label>
-                        <input type="number" class="form-control" id="age" placeholder="请输年龄">
-                    </div>
-
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="changes">变动情况：</label>
-                        <select class="form-control" id="changes">
-                            <option selected value="">请选择</option>
-                            <option value="1">迁出</option>
-                            <option value="2">新增</option>
-                            <option value="2">死亡</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="status">发放状态：</label>
-                        <select class="form-control" id="status">
-                            <option selected value="">请选择</option>
-                            <option value="1">未开始</option>
-                            <option value="2">发放中</option>
-                            <option value="3">已暂停</option>
-                            <option value="4">已退出</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="unemployment">失业状态：</label>
-                        <select class="form-control" id="unemployment">
-                            <option selected value="">请选择</option>
-                            <option value="1">领取失业金</option>
-                            <option value="2">未领取失业金</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="isInsured">参保状态：</label>
-                        <select class="form-control" id="isInsured">
-                            <option selected value="">请选择</option>
-                            <option value="1">是</option>
-                            <option value="2">否</option>
-                        </select>
-                    </div>
+                    <%--<div class="form-group col-md-3" style="margin-top: 20px">--%>
+                        <%--<label for="comping">是否并轨：</label>--%>
+                        <%--<select class="form-control" id="comping">--%>
+                            <%--<option selected value="">请选择</option>--%>
+                            <%--<option value="1">是</option>--%>
+                            <%--<option value="2">否</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group col-md-3" style="margin-top: 20px">--%>
+                        <%--<label for="changes">变动情况：</label>--%>
+                        <%--<select class="form-control" id="changes">--%>
+                            <%--<option selected value="">请选择</option>--%>
+                            <%--<option value="1">迁出</option>--%>
+                            <%--<option value="2">新增</option>--%>
+                            <%--<option value="2">死亡</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group col-md-3" style="margin-top: 20px">--%>
+                        <%--<label for="status">发放状态：</label>--%>
+                        <%--<select class="form-control" id="status">--%>
+                            <%--<option selected value="">请选择</option>--%>
+                            <%--<option value="1">未开始</option>--%>
+                            <%--<option value="2">发放中</option>--%>
+                            <%--<option value="3">已暂停</option>--%>
+                            <%--<option value="4">已退出</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                    <%--<div class="form-group col-md-3" style="margin-top: 20px">--%>
+                        <%--<label for="unemployment">失业状态：</label>--%>
+                        <%--<select class="form-control" id="unemployment">--%>
+                            <%--<option selected value="">请选择</option>--%>
+                            <%--<option value="1">领取失业金</option>--%>
+                            <%--<option value="2">未领取失业金</option>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
                     <div class="form-group col-md-3" style="margin-top: 20px" id="tab_4">
                         <label for="communityId">所属社区：</label>
                         <select class="form-control" id="communityId"></select>
                     </div>
 
                     <div class="form-group col-md-3" style="margin-top: 20px">
-                        <label for="comping">性别：</label>
+                        <label for="gender">性别：</label>
                         <select class="form-control" id="gender">
                             <option selected value="">请选择</option>
                             <option value="1">男</option>
                             <option value="2">女</option>
                         </select>
                     </div>
-
+                    <div class="form-group col-md-3">
+                        <label for="grantTimes">查询时间:</label>
+                        <input type="text" placeholder=""
+                               class="form-control col-md-8 date_picker"
+                               name="grantTimes" id="grantTimes" readonly="readonly">
+                    </div>
                     <div class="form-group col-md-3" style="margin-top: 20px">
                         <button type="button" class="btn btn-info" id="search">搜索</button>
                         <button type="reset" class="btn btn-primary" style="margin-left: 5px;">重置</button>
@@ -673,15 +664,10 @@
 <script type="text/javascript" src="<%=basePath%>myjs/dialog.min.js"></script>
 <script>
     $(function () {
-        lay('.date_picker').each(function () {
-            laydate.render({
-                elem: this,
-                type: 'month',
-                done: function (value, date, endDate) {
-                    var elemId = $(this.elem[0]).attr("id");
-                    changeDate(value, elemId);
-                }
-            });
+        laydate.render({
+            elem: '#grantTimes'
+            ,type:'month'
+            ,range: true
         });
 
         findAllCommunity();
@@ -721,12 +707,10 @@
         var name = $("#name").val();
         var idCard = $("#idCard").val();
         var house = $("#house").val();
-        var comping = $("#comping").val();
-        var age = $("#age").val();
-        var changes = $("#changes").val();
-        var status = $("#status").val();
-        var unemployment = $("#unemployment").val();
-        var isInsured = $("#isInsured").val();
+        // var comping = $("#comping").val();
+        // var changes = $("#changes").val();
+        // var status = $("#status").val();
+        // var unemployment = $("#unemployment").val();
         var communityId = $("#communityId").val();
         var columns = [];
         var a = {
@@ -799,46 +783,6 @@
                 return row.address;
             }
         };
-        var h = {
-            field: 'villageTime',
-            title: '征地时间',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return fmtDate(row.villageTime);
-            }
-        };
-        var i = {
-            field: 'villageAge',
-            title: '征地时年龄',
-            align: 'center',
-            valign: 'middle',
-            width: 150,
-            formatter: function (value, row, index) {
-                return row.villageAge;
-            }
-        };
-        var j = {
-            field: 'village',
-            title: '征地时所在村（组）',
-            align: 'center',
-            valign: 'middle',
-            width: 240,
-            formatter: function (value, row, index) {
-                return row.village;
-            }
-        };
-        var k = {
-            field: 'cdState',
-            title: '撤队安置情况',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-                return row.cdState == 1 ? "未撤队先安置" : row.cdState == 2 ? "撤队时安置" : row.cdState == 3 ? "领取征地待业" : row.cdState == 4 ? "领取一次性补偿金" : "";
-            }
-        };
         var l = {
             field: 'ffbj',
             title: '发放标准',
@@ -848,6 +792,17 @@
             formatter: function (value, row, index) {
 //                return row.examine == null ? "" : row.examine.ffbj;
                 return row.ffbj == null ? "" : row.ffbj;
+            }
+        };
+        var h = {
+            field: 'ffje',
+            title: '发放金额（元）',
+            align: 'center',
+            valign: 'middle',
+            width: 150,
+            formatter: function (value, row, index) {
+//                return row.examine == null ? "" : row.examine.ffbj;
+                return row.ffbj == null ? "" : row.ffje;
             }
         };
         var m = {
@@ -872,103 +827,6 @@
                 return row.stopTime == null ? "" : fmtDate3(row.stopTime);
             }
         };
-        var o = {
-            field: 'dtxsny',
-            title: '动态享受年月',
-            align: 'center',
-            valign: 'middle',
-            width: 180,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine == null ? "" : row.examine.dtxsny;
-                return row.dtxsny == null ? "" : row.dtxsny;
-            }
-        };
-        var p = {
-            field: 'batch',
-            title: '新增批次',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine.batch;
-                return row.batch == null ? "" : row.batch;
-            }
-        };
-        var q = {
-            field: 'changes',
-            title: '变动情况',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine.changes == 1 ? "迁出" : row.examine.changes == 2 ? "新增" : row.examine.changes == 3 ? "死亡" : "";
-                return row.changes == null ? "" : row.changes == 1 ? "迁出" : row.changes == 2 ? "新增" : row.changes == 3 ? "死亡" : "";
-            }
-        };
-        var r = {
-            field: 'isInsured',
-            title: '参保状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine.isInsured == 1 ? "已参保" : row.examine.isInsured == 2 ? "未参保" : "";
-                return row.isInsured == null ? "" : row.isInsured == 1 ? "已参保" : row.isInsured == 2 ? "未参保" : "";
-            }
-        };
-        var s = {
-            field: 'unemployment',
-            title: '失业状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine.unemployment == 1 ? "领取失业金" : row.examine.unemployment == 2 ? "未领取失业金" : "";
-                return row.unemployment == null ? "" : row.unemployment == 1 ? "领取失业金" : row.unemployment == 2 ? "未领取失业金" : "";
-            }
-        };
-        var t = {
-            field: 'comping',
-            title: '是否并轨',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "" : row.examine.comping == 1 ? "是" : "否";
-                return row.comping == null ? "" : row.comping == 1 ? "是" : "否";
-            }
-        };
-        var u = {
-            field: 'state',
-            title: '审核状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-//                return row.examine == null ? "待审核" : row.examine.state == 1 ? "审核通过" : row.examine.state == 2 ? "审核不通过" : "待定";
-                return row.state == null ? "" : row.state == 1 ? "审核通过" : row.state == 2 ? "审核不通过" : row.state == 3 ? "待定" : row.state == 4 ? "待复审" : "未审核";
-            }
-        };
-        var v = {
-            field: 'status',
-            title: '发放状态',
-            align: 'center',
-            valign: 'middle',
-            width: 120,
-            formatter: function (value, row, index) {
-                return row.status == 1 ? "未开始" : row.status == 2 ? "发放中" : row.status == 3 ? "已暂停" : row.status == 4 ? "已退出" :row.status == 5 ? "进入待复审" :row.status == 6 ? "退出待复审" :row.status == 7 ? "进入待定" :row.status == 8 ? "退出待定" : "";
-            }
-        };
-        var w = {
-            field: 'cz',
-            title: '操作',
-            align: 'center',
-            valign: 'middle',
-            width: 240,
-            formatter: function (value, row, index) {
-                return "<a class='btn btn-info' style='color: #fff' onclick='SH(" + row.id + ")'><span class='fa fa-edit'></span> 审核</a>";
-            }
-        };
         columns.push(a);
         columns.push(b);
         columns.push(c);
@@ -976,39 +834,20 @@
         columns.push(e);
         columns.push(f);
         columns.push(g);
-        columns.push(h);
-        columns.push(i);
-        columns.push(j);
-        columns.push(k);
         columns.push(l);
+        columns.push(h);
         columns.push(m);
         columns.push(n);
-        columns.push(o);
-        columns.push(p);
-        columns.push(q);
-        columns.push(r);
-        columns.push(s);
-        columns.push(t);
-//        columns.push(u);
-        columns.push(v);
-        var userType = $("#userType").val();
-        if (userType != 2){
-            columns.push(w);
-        }
         var loginId = $("#loginId").val();
-        $.post("<%=basePath%>examine/findAgainExamine", {
+        var grantTimes = $("#grantTimes").val()
+        $.post("<%=basePath%>examine/findFftjExamineList", {
             "gender" : gender,
             "loginId":loginId,
             "name": name,
             "idCard": idCard,
             "house": house,
-            "comping": comping,
-            "age": age,
-            "changes": changes,
-            "status": status,
-            "unemployment": unemployment,
-            "isInsured": isInsured,
             "communityId": communityId,
+            "grantTimes": grantTimes,
             "pageNum": pageNum,
             "pageSize": pageSize
         }, function (data) {
@@ -1060,7 +899,8 @@
                 }
             },
             onPageClicked: function (event, originalEvent, type, page) {
-                selectRoster(page, 10);
+               // selectRoster(page, 10);
+                selectExamine(page,10);
             }
         });
     }
@@ -1090,79 +930,6 @@
         var m = "0" + (date.getMonth() + 1);
         var d = "0" + date.getDate();
         return y + "年" + m.substring(m.length - 2, m.length) + "月";
-    }
-
-    function fmtDate1(birthday) {
-        var date = new Date(birthday);
-        var y = 1900 + date.getYear();
-        var m = "0" + (date.getMonth() + 1);
-        var d = "0" + date.getDate();
-        return y + "-" + m.substring(m.length - 2, m.length) + "-" + d.substring(d.length - 2, d.length);
-    }
-
-    function fmtDate2(birthday) {
-        var date = new Date(birthday);
-        var y = 1900 + date.getYear();
-        var m = "0" + (date.getMonth() + 1);
-        var d = "0" + date.getDate();
-        return y + "-" + m.substring(m.length - 2, m.length);
-    }
-    function getAge(birthday) {
-        //出生时间 毫秒
-        var birthDayTime = new Date(birthday).getTime();
-        //当前时间 毫秒
-        var nowTime = new Date().getTime();
-        //一年毫秒数(365 * 86400000 = 31536000000)
-        return Math.ceil((nowTime - birthDayTime) / 31536000000);
-    }
-
-    function examineById(examineId) {
-        window.location.href = "<%=basePath%>examine/auditExaminePager?loginId=" + $("#loginId").val() + "&examineId=" + examineId;
-    }
-
-    function SH(examineId) {
-        $("#examineId").val(examineId);
-        $.post("<%=basePath%>examine/getExamineById", {"examineId": examineId}, function (data) {
-            var object = data.data;
-            console.log(object);
-            $("#name_tab").html(object.name);
-            if (object.gender == 1) {
-                $("#gender_tab").html("男");
-            } else if (object.gender == 2) {
-                $("#gender_tab").html("女");
-            }
-            $("#birthday_tab").html(fmtDate(object.birthday));
-            $("#idCard_tab").html(object.idCard);
-            $("#phone_tab").html(object.phone);
-            $("#house_tab").html(object.house);
-            $("#address_tab").html(object.address);
-            $("#community_tab").html(object.communityName);
-            $("#age_tab").html(object.age);
-            if (object.isMove == 1) {
-                $("#isMove_tab").html("否");
-            } else if (object.isMove == 2) {
-                $("#isMove_tab").html("是");
-            }
-            $("#startTime_tab").val(fmtDate2(object.startTime));
-            $("#stopTime_tab").val(fmtDate2(object.stopTime));
-            $("#dtxsny_tab").val(object.dtxsny);
-            $("#ffbj_tab").val(object.ffbj);
-            $("#batch_tab").val(object.batch);
-
-            $("#isInsured_tab").val(object.isInsured);
-            $("#unemployment_tab").val(object.unemployment);
-            $("#unStart_tab").val(fmtDate2(object.unStart));
-            $("#unEnd_tab").val(fmtDate2(object.unEnd));
-            if (object.unemployment == 1) {
-                $("#unemploymentDom").css("display", "");
-            } else {
-                $("#unemploymentDom").css("display", "none");
-            }
-            $("#comping_tab").val(object.comping);
-            $("#changes_tab").val(object.changes);
-        })
-
-        $("#examineModal").modal('toggle');
     }
 
     $("#submit").on("click",function () {
@@ -1227,8 +994,6 @@
             stopTime = value;
         }
         if (startTime != "" && stopTime != "") {
-//            var days = datedifference(startTime, stopTime);
-//            $("#dtxsny_tab").val(days + "天");
             var month = getMonthBetween(stopTime+"-01",startTime+"-01");
             $("#dtxsny_tab").val(month + "个月");
         }

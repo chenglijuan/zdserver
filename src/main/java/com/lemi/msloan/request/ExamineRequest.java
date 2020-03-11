@@ -38,6 +38,26 @@ public class ExamineRequest extends BaseRequest {
 
     private Integer gender;
 
+    private String beginStr;
+
+    private String endStr;
+
+    public String getBeginStr() {
+        return beginStr;
+    }
+
+    public void setBeginStr(String beginStr) {
+        this.beginStr = beginStr;
+    }
+
+    public String getEndStr() {
+        return endStr;
+    }
+
+    public void setEndStr(String endStr) {
+        this.endStr = endStr;
+    }
+
     public Integer getGender() {
         return gender;
     }

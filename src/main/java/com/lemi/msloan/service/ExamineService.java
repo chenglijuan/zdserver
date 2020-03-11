@@ -1,6 +1,7 @@
 package com.lemi.msloan.service;
 
 import com.lemi.msloan.entity.Examine;
+import com.lemi.msloan.request.ExamineRequest;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface ExamineService extends BaseService<Examine> {
     Integer getExitCountByCommunityId(Integer communityId, String beginTime, String endTime, Integer exitType);
 
     List<Examine> getNotExitExamine(Integer communityId, String beginTime, String endTime);
+
+    List<Examine> findNoStartTimeExamine();
+
+    List<Examine> findFftjExamineList(ExamineRequest examineRequest);
+
+    int findFftjExamineCount(ExamineRequest examineRequest);
+
 }

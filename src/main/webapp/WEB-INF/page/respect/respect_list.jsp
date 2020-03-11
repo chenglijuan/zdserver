@@ -123,6 +123,11 @@
                                    class="waves-effect"><i
                                         class="fa fa-user m-r-10" aria-hidden="true"></i>待定人员名单</a>
                             </li>
+                            <li>
+                                <a href="<%=basePath%>examine/fftjExamineList?loginId=${loginId}"
+                                   class="waves-effect"><i
+                                        class="fa fa-user m-r-10" aria-hidden="true"></i>发放统计</a>
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -292,7 +297,8 @@
                             <a class="btn btn-info" id="exportRespect" style="color: #fff"
                                onclick="exportRespect()"><span>导出</span></a>
                             <a class="btn btn-info" id="batchDelete" style="color: #fff" onclick="batchDelete()"><span>批量删除</span></a>
-                            <span >总人数：<span id="totalCount" style="color: red"></span>（人）</span>
+                            <a class="btn btn-info" id="batchVerify" style="color: #fff" onclick="batchVerify()"><span>批量审核</span></a>
+                            <span>总人数：<span id="totalCount" style="color: red"></span>（人）</span>
                         </div>
                         <div class="table-responsive">
                             <table class="table" id="table">
@@ -340,6 +346,49 @@
         <!-- End Container fluid  -->
         <!-- ============================================================== -->
     </div>
+    <%--点击批量审核--%>
+    <div class="modal fade bs-example-modal-lg" id="myModal1" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel1">批量审核</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-lg-8 col-xlg-9 col-md-7">
+                                <div class="card-block">
+                                    <form class="form-horizontal form-material" style="text-align: center">
+                                        <div class="form-group" row="3">
+                                            <label for="auditState" class="col-md-3">审核状态：</label>
+                                            <select class="form-control col-md-8" id="batchAuditState">
+                                                <option value="2" selected>通过</option>
+                                                <option value="3">不通过</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" rows="3">
+                                            <label class="col-md-3">备注</label>
+                                            <textarea rows="3" placeholder="请填写内容" class="form-control col-md-8"
+                                                      id="batchAuditRemark"></textarea>
+                                        </div>
+                                        <a class="btn btn-info" id="batchAudit" style="color: #fff"
+                                           onclick="batchAudit()"><span>确定</span></a>
+                                        <a class="btn btn-warning" data-dismiss="modal" id="batchClose"><span>取消</span></a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
     <!-- ============================================================== -->
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
@@ -551,7 +600,6 @@
             valign: 'middle',
             width: 150,
             formatter: function (value, row, index) {
-                // console.log("grantTime="+row.grantTime);
                 return row.grantTime == null ? "-" : fmtDate1(row.grantTime);
             }
         };
@@ -832,7 +880,7 @@
                     if (status) {
                         var begin = data.indexOf("{");
                         var end = data.indexOf("}");
-                        var object = data.substring(begin,end+1);
+                        var object = data.substring(begin, end + 1);
                         var message = JSON.parse(object).message;
                         alert(message);
                         selectExamine(1, pageSize);
@@ -877,7 +925,7 @@
         $('input:checkbox[name=checkItem]:checked').each(function (i) {
             ids = $(this).attr("idValue") + "," + ids;
         });
-        if(ids.trim() == ""){
+        if (ids.trim() == "") {
             alert("请选择需要删除的数据");
             return;
         }
@@ -887,13 +935,54 @@
                 "loginId": $("#loginId").val()
             }, function (data) {
                 if (data.code == 0) {
-                   alert("操作成功");
+                    alert("操作成功");
                     selectExamine(1, pageSize);
                 } else {
                     alert(data.message);
                 }
             })
         }
+    }
+
+    function batchVerify() {
+        var ids = "";
+        $('input:checkbox[name=checkItem]:checked').each(function (i) {
+            ids = $(this).attr("idValue") + "," + ids;
+        });
+        if (ids.trim() == "") {
+            alert("请选择需要审核的数据");
+            return;
+        }
+        $("#myModal1").modal('show');
+    }
+
+    function batchAudit() {
+        var ids = "";
+        var remark = $("#batchAuditRemark").val();
+        var auditState = $("#batchAuditState").val();
+        $('input:checkbox[name=checkItem]:checked').each(function (i) {
+            ids = $(this).attr("idValue") + "," + ids;
+        });
+        if (ids.trim() == "") {
+            alert("请选择需要审核的数据");
+            return;
+        }
+        if (confirm("是否确认提交？")) {
+            $.post("<%=basePath%>respect/batchAuditRespect", {
+                "ids": ids,
+                "loginId": $("#loginId").val(),
+                "remark": remark,
+                "auditState": auditState
+            }, function (data) {
+                if (data.code == 0) {
+                    alert("操作成功");
+                    selectExamine(1, pageSize);
+                } else {
+                    alert(data.message);
+                }
+            })
+        }
+        $("#myModal1").modal('hide');
     }
 
 </script>

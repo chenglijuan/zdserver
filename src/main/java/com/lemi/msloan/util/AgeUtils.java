@@ -38,28 +38,28 @@ public class AgeUtils {
         return age < 0 ? 0 : age;
     }
 
-    public static int getIssuStandard(int age,int respectType){
+    public static int getIssuStandard(int age, int respectType) {
         int standard = 0;
-        if(respectType == 1){
-            if(age < 79){
+        if (respectType == 1) {
+            if (age < 79) {
                 standard = 0;
-            } else if(age >= 80 && age <= 89){
+            } else if (age >= 80 && age <= 89) {
                 standard = 50;
-            }else if(age >= 90 && age <= 99){
+            } else if (age >= 90 && age <= 99) {
                 standard = 100;
-            } else if(age >= 100 ){
+            } else if (age >= 100) {
                 standard = 300;
             }
-        }else if(respectType == 2){
-            if(age < 70){
+        } else if (respectType == 2) {
+            if (age < 70) {
                 standard = 0;
-            } else if(age >= 70 && age <= 79){
+            } else if (age >= 70 && age <= 79) {
                 standard = 50;
-            }else if(age >= 80 && age <= 89){
+            } else if (age >= 80 && age <= 89) {
                 standard = 200;
-            }else if(age >= 90 && age <= 99){
+            } else if (age >= 90 && age <= 99) {
                 standard = 500;
-            } else if(age >= 100 ){
+            } else if (age >= 100) {
                 standard = 1000;
             }
         }
@@ -76,8 +76,35 @@ public class AgeUtils {
     }
 
 
+    public static Date getTimeByBirth(int distance, String birthday) {
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            // 生日
+            Calendar born = Calendar.getInstance();
+            try {
+                born.setTime(sdf.parse(birthday));
+                // System.out.println("birthday=" + birthday);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            // 年龄 = 当前年 - 出生年
+            int year = born.get(Calendar.YEAR) + distance;
+            int bornMonth = born.get(Calendar.MONTH) + 1;
+            if (bornMonth < 10) {
+                return sdf.parse(year + "-0" + bornMonth + "-01");
+            } else {
+                return sdf.parse(year + "-" + bornMonth + "-01");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
-        System.out.println("32051119260909102X".substring(6,14));
+        //System.out.println("32051119260909102X".substring(6,14));
+
+        System.out.println("getTimeByBirth=" + getTimeByBirth(50, "1965-01-20"));
     }
 }
 

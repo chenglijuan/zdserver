@@ -1375,6 +1375,13 @@ public class RespectController {
         }
     }
 
+    /**
+     * 批量删除
+     * @param response
+     * @param ids
+     * @param loginId
+     * @return
+     */
     @RequestMapping(value = "batchDeleteRespect")
     @ResponseBody
     public ApiResult batchDeleteRespect(HttpServletResponse response, String ids, Integer loginId) {
@@ -1397,5 +1404,34 @@ public class RespectController {
         }
     }
 
+
+    @RequestMapping(value = "batchAuditRespect")
+    @ResponseBody
+    public ApiResult batchAuditRespect(HttpServletResponse response, String ids,String remark,Integer auditState, Integer loginId) {
+        try {
+            User user = userService.getByUserId(loginId);
+            if (user == null) {
+                return new ApiResult(false, "用户不存", -1, null);
+            }
+            if (StringUtils.isBlank(ids)) {
+                return new ApiResult(false, "请选择要审核的数据", -1, null);
+            }
+//            System.out.println("ids="+ids);
+//            System.out.println("remark="+remark);
+//            System.out.println("auditState="+auditState);
+            String[] idArray = ids.split(",");
+            for (String id : idArray) {
+                Respect respect = new Respect();
+                respect.setId(Integer.parseInt(id));
+                respect.setAuditState(auditState);
+                respect.setRemark(remark);
+                respectService.updateByPrimaryKeySelective(respect);
+            }
+            return new ApiResult(true, "操作成功", 0, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ApiResult(false, "操作失败", -1, null);
+        }
+    }
 
 }

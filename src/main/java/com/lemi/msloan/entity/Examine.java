@@ -1,5 +1,6 @@
 package com.lemi.msloan.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Examine {
@@ -94,6 +95,16 @@ public class Examine {
     private Date inTime;
 
     private Date exitTime;
+
+    private BigDecimal ffje;
+
+    public BigDecimal getFfje() {
+        return ffje;
+    }
+
+    public void setFfje(BigDecimal ffje) {
+        this.ffje = ffje;
+    }
 
     public Date getExitTime() {
         return exitTime;
